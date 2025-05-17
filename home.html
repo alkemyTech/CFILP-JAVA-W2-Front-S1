@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+</head>
+<body>
+    <h1>Bienvenido</h1>
+    <button id="logoutBtn">Cerrar sesión</button>
+    <div id="data"></div>
+
+    <script src="auth.js"></script>
+    <script src="api.js"></script>
+    <script>
+        if (!isAuthenticated()) {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            removeToken();
+            window.location.href = "index.html";
+        });
+
+        // Ejemplo: obtener datos protegidos
+        fetchProtected("/api/user/me").then(data => {
+            document.getElementById("data").innerText = JSON.stringify(data, null, 2);
+        }).catch(() => {
+            alert("No autorizado");
+            removeToken();
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
