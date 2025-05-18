@@ -482,12 +482,11 @@
 
 @media (max-width: 768px) {
     .sidebar {
-        width: 0;
-        padding: 0;
+        display: none !important;
     }
-    
+
     .main-content {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
     
     .balance-actions {
