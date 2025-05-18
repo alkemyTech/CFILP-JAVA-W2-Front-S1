@@ -42,7 +42,7 @@
                 </ul>
             </nav>
             <div class="user-info">
-                <img src="https://via.placeholder.com/50" alt="Foto de perfil" class="profile-pic" />
+                <img src="#" alt="Foto de perfil" class="profile-pic" />
                 <div>
                     <p class="user-name">Juan Pérez</p>
                     <p class="user-role">Usuario</p>
@@ -194,11 +194,11 @@
                                 <div class="dollar-values">
                                     <div class="buy">
                                         <span class="label">Compra</span>
-                                        <span class="value">$950.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                     <div class="sell">
                                         <span class="label">Venta</span>
-                                        <span class="value">$970.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +207,11 @@
                                 <div class="dollar-values">
                                     <div class="buy">
                                         <span class="label">Compra</span>
-                                        <span class="value">$1050.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                     <div class="sell">
                                         <span class="label">Venta</span>
-                                        <span class="value">$1070.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                 </div>
                             </div>
@@ -229,13 +229,13 @@
             window.location.href = "../index.html";
         }
 
-        document.getElementById("logoutBtn").addEventListener("click", () => {
+            document.getElementById("logoutBtn").addEventListener("click", () => {
             removeToken();
             window.location.href = "../index.html";
         });
 
         // Ejemplo: obtener datos protegidos
-        fetchProtected("/api/user/me")
+        fetchProtected("/api/user/me") 
             .then((data) => {
                 document.getElementById("data").innerText = JSON.stringify(
                     data,
@@ -248,6 +248,7 @@
                 removeToken();
                 window.location.href = "../index.html";
             });
+           
     </script>
 </body>
 
