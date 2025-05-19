@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlkyWallet - Registro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/mobile-menu.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-container register-container">
+            <div class="form-container">
+                <div class="logo-container">
+                    <img src="img/logo.png" alt="AlkyWallet Logo" class="logo">
+                    <h1>AlkyWallet</h1>
+                </div>
+                <h2>Crear una cuenta</h2>
+                <p class="subtitle">Completa tus datos para comenzar a usar AlkyWallet</p>
+                
+                <form id="registerForm" class="login-form">
+                    <div class="form-group">
+                        <label for="fullName">Nombre completo</label>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="fullName" name="fullName" placeholder="Ingresa tu nombre completo" required>
+                        </div>
+                        <span class="error-message" id="fullNameError"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+                        </div>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Crea tu contraseña" required>
+                                <i class="fas fa-eye toggle-password" data-target="password"></i>
+                            </div>
+                            <span class="error-message" id="passwordError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirmar contraseña</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirma tu contraseña" required>
+                                <i class="fas fa-eye toggle-password" data-target="confirmPassword"></i>
+                            </div>
+                            <span class="error-message" id="confirmPasswordError"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">Acepto los <a href="#" class="link">Términos y Condiciones</a> y la <a href="#" class="link">Política de Privacidad</a></label>
+                        <span class="error-message" id="termsError"></span>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Crear cuenta</button>
+                    
+                    <div class="separator">
+                        <span>o</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn-social google">
+                            <i class="fab fa-google"></i>
+                            <span>Registrarse con Google</span>
+                        </button>
+                        <button type="button" class="btn-social facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Registrarse con Facebook</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="register-link">
+                    ¿Ya tienes una cuenta? <a href="index.html" class="link">Iniciar sesión</a>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div class="image-overlay"></div>
+                <div class="welcome-text">
+                    <h2>¡Bienvenido a AlkyWallet!</h2>
+                    <p>La forma más segura de administrar tu dinero y realizar transacciones en línea.</p>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Transferencias sin costo</li>
+                        <li><i class="fas fa-check-circle"></i> Pagos de servicios</li>
+                        <li><i class="fas fa-check-circle"></i> Inversiones inteligentes</li>
+                        <li><i class="fas fa-check-circle"></i> Seguridad garantizada</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menú móvil para Usuario -->
+    <div class="mobile-menu-container user-menu">
+        <nav class="mobile-menu">
+            <a href="index.html" class="menu-item active">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Ingresar</span>
+            </a>
+            <a href="register.html" class="menu-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Registrarse</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-info-circle"></i>
+                <span>Acerca de</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-question-circle"></i>
+                <span>Ayuda</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-headset"></i>
+                <span>Contacto</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/register.js"></script>
+    <script src="js/mobile-menu.js"></script>
+</body>
+</html>
