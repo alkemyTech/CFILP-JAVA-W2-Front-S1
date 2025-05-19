@@ -27,6 +27,7 @@
 
 .sidebar-menu {
     flex-grow: 1;
+    overflow: hidden;
 }
 
 .sidebar-menu ul {
@@ -51,13 +52,13 @@
 .sidebar-menu a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: scale(1.05);
 }
 
 .sidebar-menu li.active a {
     background-color: rgba(255, 255, 255, 0.2);
     color: white;
     font-weight: 500;
-    border-left: 4px solid white;
 }
 
 .sidebar-menu i {
