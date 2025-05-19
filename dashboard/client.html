@@ -7,13 +7,14 @@
     <title>AlkyWallet - Dashboard Usuario</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/client.css" />
     <link rel="stylesheet" href="/css/mobile-menu.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <div class="dashboard-container">
+    <div class="dashboard-container client-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
@@ -22,22 +23,22 @@
             </div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="active">
+                    <li class="menu-link active">
                         <a href="#"><i class="fas fa-home"></i> Inicio</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-exchange-alt"></i> Transferencias</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-money-bill-wave"></i> Retiros</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-credit-card"></i> Tarjetas</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-cog"></i> Configuración</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                     </li>
                 </ul>
@@ -250,6 +251,7 @@
     <script src="../js/client.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/api.js"></script>
+    <script src="../js/menuActiveState.js"></script>
     <script src="../js/mobile-menu.js"></script>
     <script>
         document.body.classList.add('has-mobile-menu');
