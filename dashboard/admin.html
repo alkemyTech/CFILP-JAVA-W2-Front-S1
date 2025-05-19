@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlkyWallet - Panel de Administración</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar admin-sidebar">
+            <div class="logo-container">
+                <i class="fas fa-wallet"></i>
+                <h1>AlkyWallet</h1>
+            </div>
+            <div class="admin-badge">Administrador</div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Usuarios</a></li>
+                    <li><a href="#"><i class="fas fa-user-tag"></i> Roles</a></li>
+                    <li><a href="#"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
+                    <li><a href="#"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/50" alt="Foto de perfil" class="profile-pic">
+                <div>
+                    <p class="user-name">Admin AlkyWallet</p>
+                    <p class="user-role">Administrador</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2>Panel de Administración</h2>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">5</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon users-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Usuarios Totales</h3>
+                        <p class="stat-value">1,254</p>
+                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 12% este mes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon transactions-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Transacciones</h3>
+                        <p class="stat-value">8,549</p>
+                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 8% este mes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon revenue-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Ingresos</h3>
+                        <p class="stat-value">$125,430</p>
+                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 15% este mes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon active-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Usuarios Activos</h3>
+                        <p class="stat-value">876</p>
+                        <p class="stat-change negative"><i class="fas fa-arrow-down"></i> 3% este mes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="two-column">
+                <section class="card chart-card">
+                    <div class="card-header">
+                        <h3>Transacciones Mensuales</h3>
+                        <div class="card-actions">
+                            <select id="chartPeriod">
+                                <option value="week">Esta semana</option>
+                                <option value="month" selected>Este mes</option>
+                                <option value="year">Este año</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="transactionsChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="card chart-card">
+                    <div class="card-header">
+                        <h3>Distribución de Usuarios</h3>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Users Table -->
+            <section class="card users-card">
+                <div class="card-header">
+                    <h3>Lista de Usuarios</h3>
+                    <div class="card-actions">
+                        <button class="add-btn"><i class="fas fa-user-plus"></i> Nuevo Usuario</button>
+                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="roleFilter">Rol:</label>
+                            <select id="roleFilter">
+                                <option value="all">Todos</option>
+                                <option value="user">Usuario</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="statusFilter">Estado:</label>
+                            <select id="statusFilter">
+                                <option value="all">Todos</option>
+                                <option value="active">Activo</option>
+                                <option value="inactive">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <span class="pagination-ellipsis">...</span>
+                        <button class="pagination-btn">10</button>
+                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roles Management -->
+            <section class="card roles-card">
+                <div class="card-header">
+                    <h3>Gestión de Roles</h3>
+                    <div class="card-actions">
+                        <button class="add-btn"><i class="fas fa-plus"></i> Nuevo Rol</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <table class="roles-table" id="rolesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Permisos</th>
+                                <th>Usuarios</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Roles will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="card transactions-card">
+                <div class="card-header">
+                    <h3>Transacciones Recientes</h3>
+                    <div class="card-actions">
+                        <button class="view-all-btn">Ver todas</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <table class="transactions-table" id="adminTransactionsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/admin.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        if (!isAuthenticated()) {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            removeToken();
+            window.location.href = "index.html";
+        });
+
+        // Ejemplo: obtener datos protegidos
+        fetchProtected("/api/user/me").then(data => {
+            document.getElementById("data").innerText = JSON.stringify(data, null, 2);
+        }).catch(() => {
+            alert("No autorizado");
+            removeToken();
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlkyWallet - Dashboard Usuario</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class="fas fa-wallet"></i>
+                <h1>AlkyWallet</h1>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-money-bill-wave"></i> Retiros</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-credit-card"></i> Tarjetas</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+                    </li>
+                    <li>
+                        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <img src="#" alt="Foto de perfil" class="profile-pic" />
+                <div>
+                    <p class="user-name">Juan Pérez</p>
+                    <p class="user-role">Usuario</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2>Dashboard</h2>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar..." />
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Balance Card -->
+            <section class="card balance-card">
+                <div class="card-header">
+                    <h3>Saldo Disponible</h3>
+                    <div class="card-actions">
+                        <button class="refresh-btn" id="refreshBalance">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="balance-amount">
+                        <span class="currency">$</span>
+                        <span class="amount" id="balanceAmount">15,750.00</span>
+                    </div>
+                    <div class="balance-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-plus"></i> Depositar
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-paper-plane"></i> Transferir
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-money-bill-wave"></i> Retirar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="card transactions-card">
+                <div class="card-header">
+                    <h3>Movimientos Recientes</h3>
+                    <div class="card-actions">
+                        <button class="view-all-btn">Ver todos</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <table class="transactions-table" id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Two Column Layout -->
+            <div class="two-column">
+                <!-- Transfers -->
+                <section class="card transfers-card">
+                    <div class="card-header">
+                        <h3>Transferencias</h3>
+                        <div class="card-actions">
+                            <button class="view-all-btn">Ver todas</button>
+                        </div>
+                    </div>
+                    <div class="card-content" id="transfersContent">
+                        <!-- Transfers will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Withdrawals -->
+                <section class="card withdrawals-card">
+                    <div class="card-header">
+                        <h3>Retiros</h3>
+                        <div class="card-actions">
+                            <button class="view-all-btn">Ver todos</button>
+                        </div>
+                    </div>
+                    <div class="card-content" id="withdrawalsContent">
+                        <!-- Withdrawals will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="two-column">
+                <!-- Cards -->
+                <section class="card cards-section">
+                    <div class="card-header">
+                        <h3>Mis Tarjetas</h3>
+                        <div class="card-actions">
+                            <button class="add-btn">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content" id="cardsContent">
+                        <div class="credit-card">
+                            <div class="card-type">
+                                <span>Visa</span>
+                                <i class="fab fa-cc-visa"></i>
+                            </div>
+                            <div class="card-number">**** **** **** 4589</div>
+                            <div class="card-info">
+                                <div class="card-holder">Juan Pérez</div>
+                                <div class="card-expiry">12/25</div>
+                            </div>
+                        </div>
+                        <!-- More cards will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Dollar Exchange Rate -->
+                <section class="card dollar-card">
+                    <div class="card-header">
+                        <h3>Dólar Hoy</h3>
+                        <div class="card-actions">
+                            <button class="refresh-btn" id="refreshDollar">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content" id="dollarContent">
+                        <div class="dollar-rates">
+                            <div class="dollar-type">
+                                <h4>Dólar Oficial</h4>
+                                <div class="dollar-values">
+                                    <div class="buy">
+                                        <span class="label">Compra</span>
+                                        <span class="value">$ - </span>
+                                    </div>
+                                    <div class="sell">
+                                        <span class="label">Venta</span>
+                                        <span class="value">$ - </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dollar-type">
+                                <h4>Dólar Blue</h4>
+                                <div class="dollar-values">
+                                    <div class="buy">
+                                        <span class="label">Compra</span>
+                                        <span class="value">$ - </span>
+                                    </div>
+                                    <div class="sell">
+                                        <span class="label">Venta</span>
+                                        <span class="value">$ - </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="../js/client.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        if (!isAuthenticated()) {
+            window.location.href = "../index.html";
+        }
+
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+            removeToken();
+            window.location.href = "../index.html";
+        });
+
+        // Ejemplo: obtener datos protegidos
+        fetchProtected("/api/user/me") 
+            .then((data) => {
+                document.getElementById("data").innerText = JSON.stringify(
+                    data,
+                    null,
+                    2
+                );
+            })
+            .catch(() => {
+                alert("No autorizado");
+                removeToken();
+                window.location.href = "../index.html";
+            });
+           
+    </script>
+</body>
+
+</html>
