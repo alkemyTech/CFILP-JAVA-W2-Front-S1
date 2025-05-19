@@ -260,7 +260,7 @@ section[id],
 @media (max-width: 1024px) {
     .mobile-menu-container {
         display: block;
-    }
+    }   
 }
 
 /* Ocultar el menú móvil en pantallas grandes */

@@ -12,6 +12,14 @@ body {
     justify-content: center;
     min-height: 100vh;
     overflow-y: auto;
+
+}
+
+body.dashboard{
+    height: 100% !important;
+    width: 100%;
+    padding-bottom: 0 !important;
+    
 }
 
 .container {

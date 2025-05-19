@@ -3,21 +3,24 @@
     display: flex;
     min-height: 100vh;
     background-color: #f5f7fa;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /* Sidebar Styles */
 .sidebar {
+    background: linear-gradient(135deg, #41d1a4ba, #185a9d);
     width: 250px;
-    background: linear-gradient(135deg, #185a9d, #43cea2);
-    color: white;
     display: flex;
+    color: white;
     flex-direction: column;
     padding: 20px 0;
-    position: fixed;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    bottom: 0;
     height: 100vh;
     overflow-y: auto;
-    transition: all 0.3s ease;
-    z-index: 100;
 }
 
 .sidebar .logo-container {
@@ -97,7 +100,6 @@
 .main-content {
     flex: 1;
     padding: 20px;
-    margin-left: 250px;
     transition: all 0.3s ease;
 }
 
@@ -173,6 +175,12 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
@@ -489,13 +497,43 @@
     .main-content {
         margin-left: 0 !important;
     }
-    
+
     .balance-actions {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .action-btn {
         width: 100%;
+    }
+}
+
+/* Extra Large Screens */
+@media (min-width: 1440px) {
+    body {
+        font-size: 1.05rem;
+    }
+
+    .dashboard-header h2 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px;
+    }
+
+    .card-content {
+        font-size: 1.05rem;
+        padding: 30px;
+    }
+
+    .two-column {
+        gap: 40px;
+    }
+
+    .sidebar {
+        width: 300px;
     }
 }
