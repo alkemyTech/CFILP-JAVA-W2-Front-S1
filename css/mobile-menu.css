@@ -27,7 +27,7 @@
 }
 
 /* Media query para mostrar el menú solo en móviles */
-@media (max-width: 768px) {
+@media (max-width: 766px) {
     .mobile-menu-container {
         display: block;
     }
