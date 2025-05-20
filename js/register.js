@@ -129,7 +129,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Recopilar los datos del formulario
             const data = {
                 username: document.getElementById('username').value.trim(),
-                password: passwordInput.value
+                password: passwordInput.value,
+                email: document.getElementById('email').value.trim(),
+                person: {
+                    name: document.getElementById('nombre').value.trim(),
+                    lastname: document.getElementById('apellido').value.trim(),
+                    address: document.getElementById('direccion').value.trim(),
+                    location: document.getElementById('localidad').value.trim(),
+                    province: document.getElementById('provincia').value.trim(),
+                    phoneNumber: document.getElementById('telefono').value.trim(),
+                    identityCard: document.getElementById('dni').value.trim(),
+                    dateBirth: document.getElementById('fechaNacimiento').value.trim(),
+                }
             };
             console.log("enviando datos al servidor")
             console.log(data)
