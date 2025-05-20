@@ -132,14 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 password: passwordInput.value,
                 email: document.getElementById('email').value.trim(),
                 person: {
-                    name: document.getElementById('nombre').value.trim(),
-                    lastname: document.getElementById('apellido').value.trim(),
-                    address: document.getElementById('direccion').value.trim(),
-                    location: document.getElementById('localidad').value.trim(),
-                    province: document.getElementById('provincia').value.trim(),
-                    phoneNumber: document.getElementById('telefono').value.trim(),
-                    identityCard: document.getElementById('dni').value.trim(),
-                    dateBirth: document.getElementById('fechaNacimiento').value.trim(),
+                    name: document.getElementById('name').value.trim(),
+                    lastName: document.getElementById('lastname').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    location: document.getElementById('location').value.trim(),
+                    province: document.getElementById('province').value.trim(),
+                    phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                    identityCard: document.getElementById('identityCard').value.trim(),
+                    dateBirth: document.getElementById('dateBirth').value.trim(),
                 }
             };
             console.log("enviando datos al servidor")
@@ -264,27 +264,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Formateo de número de teléfono
-    const phoneInput = document.getElementById('phone');
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
+    // // Formateo de número de teléfono
+    // const phoneInput = document.getElementById('phone');
+    // phoneInput.addEventListener('input', function(e) {
+    //     let value = e.target.value.replace(/\D/g, '');
         
-        if (value.length > 0) {
-            // Formato: (XXX) XXX-XXXX para números de 10 dígitos
-            if (value.length <= 10) {
-                if (value.length > 6) {
-                    value = `(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}`;
-                } else if (value.length > 3) {
-                    value = `(${value.substring(0, 3)}) ${value.substring(3)}`;
-                } else if (value.length > 0) {
-                    value = `(${value}`;
-                }
-            } else {
-                // Para números internacionales más largos
-                value = `+${value.substring(0, value.length)}`;
-            }
-        }
+    //     if (value.length > 0) {
+    //         // Formato: (XXX) XXX-XXXX para números de 10 dígitos
+    //         if (value.length <= 10) {
+    //             if (value.length > 6) {
+    //                 value = `(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}`;
+    //             } else if (value.length > 3) {
+    //                 value = `(${value.substring(0, 3)}) ${value.substring(3)}`;
+    //             } else if (value.length > 0) {
+    //                 value = `(${value}`;
+    //             }
+    //         } else {
+    //             // Para números internacionales más largos
+    //             value = `+${value.substring(0, value.length)}`;
+    //         }
+    //     }
         
-        e.target.value = value;
-    });
+    //     e.target.value = value;
+    // });
 });
