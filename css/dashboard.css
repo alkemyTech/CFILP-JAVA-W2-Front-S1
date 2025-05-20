@@ -3,21 +3,24 @@
     display: flex;
     min-height: 100vh;
     background-color: #f5f7fa;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /* Sidebar Styles */
 .sidebar {
+    background: linear-gradient(135deg, #41d1a4ba, #185a9d);
     width: 250px;
-    background: linear-gradient(135deg, #185a9d, #43cea2);
-    color: white;
     display: flex;
+    color: white;
     flex-direction: column;
     padding: 20px 0;
-    position: fixed;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    bottom: 0;
     height: 100vh;
     overflow-y: auto;
-    transition: all 0.3s ease;
-    z-index: 100;
 }
 
 .sidebar .logo-container {
@@ -97,7 +100,6 @@
 .main-content {
     flex: 1;
     padding: 20px;
-    margin-left: 250px;
     transition: all 0.3s ease;
 }
 
@@ -173,6 +175,12 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
@@ -243,19 +251,23 @@
 .balance-card .card-content {
     padding: 30px 20px;
 }
-
 .balance-amount {
     font-size: 2.5rem;
     font-weight: 700;
     color: #185a9d;
     margin-bottom: 20px;
     text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 5px;
 }
 
 .currency {
     font-size: 1.8rem;
-    vertical-align: top;
-    margin-right: 5px;
+    margin-right: 0;
+    vertical-align: baseline;
 }
 
 .balance-actions {
@@ -479,23 +491,126 @@
     .two-column {
         grid-template-columns: 1fr;
     }
+    .sidebar {
+        display: none !important;
+    }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 780px) {
+    .main-content,
+    .dashboard-container,
+    header,
+    section.card {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+    body, html {
+        overflow-x: hidden;
+    }
+
     .sidebar {
         display: none !important;
     }
 
     .main-content {
         margin-left: 0 !important;
+        max-width: 90%;
+        padding : 10px;
     }
-    
-    .balance-actions {
-        flex-direction: column;
-        gap: 10px;
+
+    .balance-amount {
+    font-size: 2rem; /* reduce tamaño general */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: baseline; /* para que currency y amount se alineen bien */
+    gap: 4px; /* espacio entre $ y cantidad */
+    margin-bottom: 15px; /* un poco menos espacio que en desktop */
     }
-    
-    .action-btn {
-        width: 100%;
+    .dashboard-container {
+        align-items: center;
     }
+    header, 
+    section.card.balance-card, 
+    div.card-header, 
+    section.card.transactions-card, 
+    section.card.transfers-card,
+    section.card.withdrawals-card,
+    section.card.cards-section,
+    section.card.dollar-card,
+    #transactions{
+        width: 650px !important;
+        padding: 20px;
+    } 
+    .balance-amount .currency {
+    font-size: 1.5rem; /* reduce tamaño símbolo */
+    margin-right: 0; /* ya no hace falta por gap */
+    }
+
+
+    .balance-amount .amount {
+    font-weight: 700; /* mantenemos el peso */
+    }
+     /* Ajuste general para las tarjetas */
+    .card {
+        margin-bottom: 15px;   /* Menor espacio entre tarjetas */
+        padding: 5px !important;    /* Reduce padding interno */
+        box-shadow: 0 1px 5px rgba(0,0,0,0.05); /* Sombra más sutil */
+    }
+
+    .card-header {
+        padding: 5px;   /* Reduce padding del encabezado */
+    }
+
+    .card-content {
+        padding: 5px;   /* Reduce padding del contenido */
+    }
+
 }
+@media (max-width: 601px) {
+
+    .main-content, .dashboard-container{
+        background: linear-gradient(135deg, #41d1a4ba, #185a9d);
+        margin-top: 0;
+        padding-top: 0;
+    }
+    .balance-amount {
+    font-size: 2rem; /* reduce tamaño general */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: baseline; /* para que currency y amount se alineen bien */
+    gap: 4px; /* espacio entre $ y cantidad */
+    margin-bottom: 15px; /* un poco menos espacio que en desktop */
+    }
+    .dashboard-container {
+        align-items: center;
+    }
+    header, 
+    section.card.balance-card, 
+    div.card-header, 
+    section.card.transactions-card, 
+    section.card.transfers-card,
+    section.card.withdrawals-card,
+    section.card.cards-section,
+    section.card.dollar-card,
+    #transactions{
+        box-sizing: content-box; /* valor por defecto */
+        box-sizing: border-box; 
+        width: 500px !important;
+        padding: 30px;
+        }
+    .dashboard-header, .dashboard-header{
+        background-color: #f5f7fa;;
+        width: 601px !important;
+        margin-top: 0 !important;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.05); /* Sombra más sutil */
+    }
+
+}
+
