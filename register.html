@@ -23,22 +23,14 @@
                 
                 <form id="registerForm" class="login-form">
                     <div class="form-group">
-                        <label for="fullName">Nombre completo</label>
+                        <label for="username">Nombre de Usuario</label>
                         <div class="input-group">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="fullName" name="fullName" placeholder="Ingresa tu nombre completo" required>
+                            <input type="text" id="username" name="username" placeholder="Ingresa tu nombre de usuario." required>
                         </div>
-                        <span class="error-message" id="fullNameError"></span>
+                        <span class="error-message" id="usernameError"></span>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="email">Correo electrónico</label>
-                        <div class="input-group">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
-                        </div>
-                        <span class="error-message" id="emailError"></span>
-                    </div>
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -68,7 +60,7 @@
                         <span class="error-message" id="termsError"></span>
                     </div>
                     
-                    <button type="submit" class="btn-login">Crear cuenta</button>
+                    <button type="submit" id="crearCuenta" class="btn-login">Crear cuenta</button>
                     
                     <div class="separator">
                         <span>o</span>
