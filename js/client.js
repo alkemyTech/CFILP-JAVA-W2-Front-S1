@@ -222,19 +222,44 @@ function loadCards(userId) {
 }
 
 // Función para cargar cotización del dólar
-function loadDollarRates(isRefresh = false) {
+function loadDollarRates(isRefresh = true) { //false
     const dollarContainer = document.getElementById('dollarContent');
     
     if (isRefresh) {
         dollarContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Actualizando cotizaciones...</div>';
     }
-    
-    // Simulación de llamada a API externa
-    //TODO: FETCH A DOLARAPI
+ //   fetch para el accesspoint DOLAR API*   
+      let compraOficial = 0, ventaOficial= 0;
+      let compraBlue = 0, ventaBlue = 0;
+ 
+ fetch("https://dolarapi.com/v1/dolares")
+      .then(response => response.json())
+      .then(data => {
+            data.forEach((dolar, index) => {
+                if (index === 0) {
+                        compraOficial = dolar.compra;
+                        ventaOficial = dolar.venta;
+                        console.log("Dolar: ", dolar);   
+                } 
+                if (index === 1) {
+                    compraBlue = dolar.compra;
+                    ventaBlue = dolar.venta;
+                    console.log("Dolar: ", dolar);
+                    };        
+                                            } 
+                    )
+})
+            .catch(error => {
+            console.error('Error al obtener los datos: ', error)
+
+            });
+
+   
     setTimeout(() => {
+    
         const dollarRates = {
-            oficial: { buy: 950.00, sell: 970.00 },
-            blue: { buy: 1050.00, sell: 1070.00 }
+            oficial: { buy: compraOficial, sell: ventaOficial }, //buy: 950.00, sell: 970.00 
+            blue: { buy: compraBlue, sell: ventaBlue }
         };
         
         let html = `
@@ -244,11 +269,11 @@ function loadDollarRates(isRefresh = false) {
                     <div class="dollar-values">
                         <div class="buy">
                             <span class="label">Compra</span>
-                            <span class="value">$${dollarRates.oficial.buy.toFixed(2)}</span>
+                            <span class="value">$${dollarRates.oficial.buy}</span>
                         </div>
                         <div class="sell">
                             <span class="label">Venta</span>
-                            <span class="value">$${dollarRates.oficial.sell.toFixed(2)}</span>
+                            <span class="value">$${dollarRates.oficial.sell}</span>
                         </div>
                     </div>
                 </div>
@@ -257,11 +282,11 @@ function loadDollarRates(isRefresh = false) {
                     <div class="dollar-values">
                         <div class="buy">
                             <span class="label">Compra</span>
-                            <span class="value">$${dollarRates.blue.buy.toFixed(2)}</span>
+                            <span class="value">$${dollarRates.blue.buy}</span>
                         </div>
                         <div class="sell">
                             <span class="label">Venta</span>
-                            <span class="value">$${dollarRates.blue.sell.toFixed(2)}</span>
+                            <span class="value">$${dollarRates.blue.sell}</span>
                         </div>
                     </div>
                 </div>
@@ -271,3 +296,4 @@ function loadDollarRates(isRefresh = false) {
         dollarContainer.innerHTML = html;
     }, isRefresh ? 1500 : 0);
 }
+

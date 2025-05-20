@@ -1,0 +1,186 @@
+/* Estilos específicos para la página de registro */
+.register-container {
+    max-width: 1200px;
+    height: auto;
+    min-height: 600px;
+}
+
+.form-container {
+    padding: 30px 40px;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    margin: 15px 0;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-top: 3px;
+}
+
+.checkbox-group label {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    min-height: 18px;
+}
+
+.password-strength {
+    height: 5px;
+    background-color: #eee;
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.password-strength-meter {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.password-strength-text {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #666;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.features-list li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.features-list i {
+    color: #43cea2;
+}
+
+/* Estilos para el indicador de fortaleza de contraseña */
+.weak { background-color: #e74c3c; width: 25%; }
+.medium { background-color: #f39c12; width: 50%; }
+.good { background-color: #3498db; width: 75%; }
+.strong { background-color: #2ecc71; width: 100%; }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-container {
+        flex-direction: column-reverse;
+    }
+    
+    .image-container {
+        height: 200px;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .form-container {
+        border-radius: 15px 15px 0 0;
+        padding: 20px;
+    }
+    
+    .welcome-text {
+        padding: 20px;
+    }
+    
+    .welcome-text h2 {
+        font-size: 22px;
+    }
+    
+    .welcome-text p {
+        font-size: 14px;
+    }
+    
+    .features-list {
+        display: none;
+    }
+    
+    .logo-container {
+        margin-bottom: 15px;
+    }
+    
+    .logo-container h1 {
+        font-size: 24px;
+    }
+    
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    .subtitle {
+        font-size: 13px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .btn-login {
+        margin-top: 10px;
+    }
+    
+    .register-link {
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-login {
+        flex-direction: column;
+    }
+    
+    .btn-social {
+        width: 100%;
+    }
+    
+    .checkbox-group label {
+        font-size: 12px;
+    }
+    
+    .form-container {
+        padding: 15px;
+    }
+}

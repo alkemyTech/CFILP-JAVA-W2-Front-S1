@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlkyWallet - Panel de Administración</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/mobile-menu.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class = "dashboard">
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar admin-sidebar">
@@ -23,13 +24,13 @@
             <div class="admin-badge">Administrador</div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> Usuarios</a></li>
-                    <li><a href="#"><i class="fas fa-user-tag"></i> Roles</a></li>
-                    <li><a href="#"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
-                    <li><a href="#"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
-                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <li class="active menu-link"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="menu-link"><a href="#users"><i class="fas fa-users"></i> Usuarios</a></li>
+                    <li class="menu-link"><a href="#roles"><i class="fas fa-user-tag"></i> Roles</a></li>
+                    <li class="menu-link"><a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
+                    <li class="menu-link"><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
+                    <li class="menu-link"><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li class="menu-link"><a href="index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </nav>
             <div class="user-info">
@@ -130,7 +131,7 @@
             </div>
 
             <!-- Users Table -->
-            <section class="card users-card">
+            <section id="users" class="card users-card">
                 <div class="card-header">
                     <h3>Lista de Usuarios</h3>
                     <div class="card-actions">
@@ -186,7 +187,7 @@
             </section>
 
             <!-- Roles Management -->
-            <section class="card roles-card">
+            <section id="roles" class="card roles-card">
                 <div class="card-header">
                     <h3>Gestión de Roles</h3>
                     <div class="card-actions">
@@ -213,7 +214,7 @@
             </section>
 
             <!-- Recent Transactions -->
-            <section class="card transactions-card">
+            <section id="transactions" class="card transactions-card">
                 <div class="card-header">
                     <h3>Transacciones Recientes</h3>
                     <div class="card-actions">
@@ -239,11 +240,165 @@
                     </table>
                 </div>
             </section>
+
+
+            <!-- Accounts Management -->
+            <section id="accounts" class="card accounts-card">
+                <div class="card-header">
+                    <h3>Administración de Cuentas</h3>
+                    <div class="card-actions">
+                        <button class="add-btn"><i class="fas fa-plus"></i> Nueva Cuenta</button>
+                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="accountStatusFilter">Estado:</label>
+                            <select id="accountStatusFilter">
+                                <option value="all">Todos</option>
+                                <option value="active">Activa</option>
+                                <option value="inactive">Inactiva</option>
+                                <option value="suspended">Suspendida</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="accountTypeFilter">Tipo:</label>
+                            <select id="accountTypeFilter">
+                                <option value="all">Todos</option>
+                                <option value="savings">Ahorro</option>
+                                <option value="checking">Corriente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="accounts-table" id="accountsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Tipo</th>
+                                <th>Número</th>
+                                <th>Saldo</th>
+                                <th>Estado</th>
+                                <th>Fecha Creación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1001</td>
+                                <td>Juan Pérez</td>
+                                <td>Ahorro</td>
+                                <td>1234-5678-9012-3456</td>
+                                <td>$15,750.00</td>
+                                <td><span class="user-status status-active">Activa</span></td>
+                                <td>15/01/2023</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <div class="action-icon view-icon" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                        <div class="action-icon edit-icon" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-icon delete-icon" title="Suspender">
+                                            <i class="fas fa-ban"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1002</td>
+                                <td>María López</td>
+                                <td>Corriente</td>
+                                <td>9876-5432-1098-7654</td>
+                                <td>$8,320.50</td>
+                                <td><span class="user-status status-active">Activa</span></td>
+                                <td>20/02/2023</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <div class="action-icon view-icon" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                        <div class="action-icon edit-icon" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-icon delete-icon" title="Suspender">
+                                            <i class="fas fa-ban"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1003</td>
+                                <td>Carlos Rodríguez</td>
+                                <td>Ahorro</td>
+                                <td>5678-1234-5678-1234</td>
+                                <td>$25,100.75</td>
+                                <td><span class="user-status status-inactive">Inactiva</span></td>
+                                <td>10/11/2022</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <div class="action-icon view-icon" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                        <div class="action-icon edit-icon" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-icon delete-icon" title="Activar">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <span class="pagination-ellipsis">...</span>
+                        <button class="pagination-btn">10</button>
+                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
         </main>
+    </div>
+    <!-- Menú móvil para Administrador -->
+    <div class="mobile-menu-container admin-menu">
+        <nav class="mobile-menu">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#users" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Usuarios</span>
+            </a>
+            <a href="#accounts" class="menu-item">
+                <i class="fas fa-money-check-alt"></i>
+                <span>Cuentas</span>
+            </a>
+            <a href="#transactions" class="menu-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Trans.</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Config.</span>
+            </a>
+        </nav>
     </div>
     <script src="../js/admin.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/api.js"></script>
+    <script src="../js/menuActiveState.js"></script>
+    <script src="../js/mobile-menu.js" defer></script>
+    <script>
+        document.body.classList.add('has-mobile-menu');
+    </script>
     <script>
         if (!isAuthenticated()) {
             window.location.href = "index.html";

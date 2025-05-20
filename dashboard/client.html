@@ -5,14 +5,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AlkyWallet - Dashboard Usuario</title>
+    <link rel="stylesheet" href="/css/mobile-menu.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/client.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
-    <div class="dashboard-container">
+<body class = "dashboard">
+    <div class="dashboard-container client-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
@@ -21,28 +23,28 @@
             </div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="active">
+                    <li class="menu-link active">
                         <a href="#"><i class="fas fa-home"></i> Inicio</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-exchange-alt"></i> Transferencias</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-money-bill-wave"></i> Retiros</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-credit-card"></i> Tarjetas</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="#"><i class="fas fa-cog"></i> Configuración</a>
                     </li>
-                    <li>
+                    <li class="menu-link">
                         <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                     </li>
                 </ul>
             </nav>
             <div class="user-info">
-                <img src="https://via.placeholder.com/50" alt="Foto de perfil" class="profile-pic" />
+                <img src="#" alt="Foto de perfil" class="profile-pic" />
                 <div>
                     <p class="user-name">Juan Pérez</p>
                     <p class="user-role">Usuario</p>
@@ -67,6 +69,7 @@
             </header>
 
             <!-- Balance Card -->
+        
             <section class="card balance-card">
                 <div class="card-header">
                     <h3>Saldo Disponible</h3>
@@ -194,11 +197,11 @@
                                 <div class="dollar-values">
                                     <div class="buy">
                                         <span class="label">Compra</span>
-                                        <span class="value">$950.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                     <div class="sell">
                                         <span class="label">Venta</span>
-                                        <span class="value">$970.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +210,11 @@
                                 <div class="dollar-values">
                                     <div class="buy">
                                         <span class="label">Compra</span>
-                                        <span class="value">$1050.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                     <div class="sell">
                                         <span class="label">Venta</span>
-                                        <span class="value">$1070.00</span>
+                                        <span class="value">$ - </span>
                                     </div>
                                 </div>
                             </div>
@@ -219,23 +222,53 @@
                     </div>
                 </section>
             </div>
+            <!-- Menú móvil para Usuario -->
+            <div class="mobile-menu-container user-menu">
+                <nav class="mobile-menu">
+                    <a href="#" class="menu-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transferir</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-wallet"></i>
+                        <span>Billetera</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Tarjetas</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a>
+                </nav>
+            </div>
         </main>
     </div>
     <script src="../js/client.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/api.js"></script>
+    <script src="../js/menuActiveState.js"></script>
+    <script src="../js/mobile-menu.js"></script>
+    <script>
+        document.body.classList.add('has-mobile-menu');
+    </script>
     <script>
         if (!isAuthenticated()) {
             window.location.href = "../index.html";
         }
 
-        document.getElementById("logoutBtn").addEventListener("click", () => {
+            document.getElementById("logoutBtn").addEventListener("click", () => {
             removeToken();
             window.location.href = "../index.html";
         });
 
         // Ejemplo: obtener datos protegidos
-        fetchProtected("/api/user/me")
+        fetchProtected("/api/user/me") 
             .then((data) => {
                 document.getElementById("data").innerText = JSON.stringify(
                     data,
@@ -248,6 +281,7 @@
                 removeToken();
                 window.location.href = "../index.html";
             });
+    
     </script>
 </body>
 

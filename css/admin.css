@@ -263,6 +263,145 @@
     margin-left: 10px;
 }
 
+/* Estilos para la sección de cuentas */
+.accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.accounts-table th {
+    text-align: left;
+    padding: 12px 15px;
+    background-color: #f5f7fa;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.accounts-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.accounts-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilos para los tipos de cuenta */
+.account-type {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.type-savings {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.type-checking {
+    background-color: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+/* Estilos para el modal de detalles de cuenta */
+.account-details-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-details-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.account-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.account-details-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #777;
+}
+
+.account-details-body {
+    padding: 20px;
+}
+
+.account-detail-item {
+    margin-bottom: 15px;
+}
+
+.account-detail-label {
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.account-detail-value {
+    color: #333;
+}
+
+.account-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.account-action-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #f5f7fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
 /* Responsive Design for Admin */
 @media (max-width: 1200px) {
     .stats-container {

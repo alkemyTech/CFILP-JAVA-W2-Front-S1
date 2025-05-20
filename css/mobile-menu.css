@@ -1,0 +1,269 @@
+/* Estilos para el menú móvil */
+.mobile-menu-container {
+    display: none;
+    /* Oculto por defecto en desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px 0 5px;
+    font-family: "Mulish", sans-serif;
+    /* Asegurar que permanezca fijo incluso durante scroll */
+    position: fixed !important;
+    /* Asegurar que esté por encima de otros elementos */
+    z-index: 9999;
+    /* Prevenir que el menú se desplace con el contenido */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    /* Asegurar que el menú permanezca visible en iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Añadir un pequeño padding extra en la parte inferior para dispositivos con barra de navegación */
+    padding-bottom: calc(5px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Media query para mostrar el menú solo en móviles */
+@media (max-width: 766px) {
+    .mobile-menu-container {
+        display: block;
+    }
+
+    /* Ajustar el padding del contenido principal para que no quede oculto detrás del menú */
+    body {
+        padding-bottom: 80px !important;
+    }
+
+    .main-content,
+    section[id],
+    .content-wrapper,
+    .dashboard-container {
+        padding-bottom: 80px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Ocultar el sidebar en móviles */
+    .sidebar {
+        display: none;
+    }
+
+    /* Asegurar que los elementos con posición absoluta no queden debajo del menú */
+    .modal-container,
+    .popup,
+    .dropdown-content {
+        bottom: 80px !important;
+    }
+}
+
+
+.mobile-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #777;
+    padding: 8px 0;
+    width: 20%;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.menu-item i {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.menu-item span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Estilos para hover */
+.menu-item:hover {
+    color: #43cea2;
+}
+
+.menu-item:hover i {
+    transform: translateY(-2px);
+}
+
+/* Estilos para el ítem activo */
+.menu-item.active {
+    color: #185a9d;
+}
+
+.menu-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: #185a9d;
+    border-radius: 50%;
+}
+
+/* Estilos específicos para el menú de administrador */
+.admin-menu .menu-item.active {
+    color: #3498db;
+}
+
+.admin-menu .menu-item.active::after {
+    background-color: #3498db;
+}
+
+.admin-menu .menu-item:hover {
+    color: #2980b9;
+}
+
+/* Estilos específicos para el menú de usuario */
+.user-menu .menu-item.active {
+    color: #43cea2;
+}
+
+.user-menu .menu-item.active::after {
+    background-color: #43cea2;
+}
+
+.user-menu .menu-item:hover {
+    color: #185a9d;
+}
+
+/* Estilos adicionales para asegurar que el menú permanezca fijo */
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Asegurar que el menú permanezca visible en dispositivos iOS */
+@supports (-webkit-touch-callout: none) {
+    .mobile-menu-container {
+        padding-bottom: calc(5px + env(safe-area-inset-bottom));
+    }
+}
+
+/* Estilos para cuando el menú está fijo */
+body.has-mobile-menu {
+    overscroll-behavior-y: none;
+    /* Prevenir el rebote en iOS */
+}
+
+/* Asegurar que el contenido no quede oculto detrás del menú */
+.content-wrapper,
+.main-content,
+main,
+.dashboard-container {
+    padding-bottom: var(--mobile-menu-height, 80px);
+}
+
+/* Estilo para el efecto de presionar */
+.menu-item:active {
+    transform: scale(0.95);
+}
+
+/* Mejorar la visibilidad del menú con un fondo semi-transparente */
+.mobile-menu-container::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent);
+    z-index: -1;
+}
+
+/* Asegurar que el menú permanezca visible incluso con contenido scrollable */
+html,
+body {
+    overscroll-behavior-y: contain;
+}
+
+body {
+    padding-bottom: 80px !important;
+}
+
+/* Media query para mostrar el menú solo en móviles */
+@media (max-width: 768px) {
+    .mobile-menu-container {
+        display: block;
+    }
+
+    .main-content,
+    section[id],
+    .content-wrapper,
+    .dashboard-container {
+        padding-bottom: 80px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+.main-content,
+section[id],
+.content-wrapper,
+.dashboard-container {
+    padding-bottom: 80px !important;
+    margin-bottom: 10px !important;
+}
+
+/* Animación para el menú */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.mobile-menu-container {
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Indicador de notificación */
+.notification-indicator {
+    position: absolute;
+    top: 0;
+    right: 25%;
+    width: 8px;
+    height: 8px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+}
+
+/* Mostrar el menú móvil solo en móviles */
+@media (max-width: 1024px) {
+    .mobile-menu-container {
+        display: block;
+    }   
+}
+
+/* Ocultar el menú móvil en pantallas grandes */
+@media (min-width: 1025px) {
+    .mobile-menu-container {
+        display: none !important;
+    }
+}
