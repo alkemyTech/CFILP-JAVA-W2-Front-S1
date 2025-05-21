@@ -10,7 +10,7 @@ function getUserIdFromToken() {
 }
 
 const userId = getUserIdFromToken();
-
+console.log('User ID:', userId);
 
     // Cargar datos iniciales
     fetchUserData(userId); 
@@ -50,7 +50,7 @@ function fetchUserData(userId) {
         .then(data => {
             console.log('Nombre del usuario:', data);
             document.getElementById("userName").innerText = data.username;
-            document.getElementById("userRole").innerText = data.role;
+            // document.getElementById("userRole").innerText = data.role;
         })
         .catch(error => {
             console.error('Error al obtener datos del usuario:', error);
