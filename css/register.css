@@ -9,6 +9,9 @@
     padding: 30px 40px;
     overflow-y: auto;
     max-height: 100vh;
+        width: 100%;
+    max-width: 100%; /* Añadir esto para que crezca con el contenedor padre */
+    box-sizing: border-box;
 }
 
 .subtitle {
@@ -87,6 +90,8 @@
 .features-list i {
     color: #43cea2;
 }
+
+
 
 /* Estilos para el indicador de fortaleza de contraseña */
 .weak { background-color: #e74c3c; width: 25%; }
@@ -167,6 +172,62 @@
     }
 }
 
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-top: 5px;
+}
+
+.input-group i {
+    color: #888;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+/* Para inputs y selects */
+.input-group input,
+.input-group select {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-family: 'Mulish', sans-serif;
+    background-color: transparent;
+}
+
+/* Para que los selects tengan altura consistente */
+.input-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 1.5rem;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23888' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+/* Hover y focus para inputs y selects */
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Mensajes de error */
+.error-message {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+}
+
+
 @media (max-width: 480px) {
     .social-login {
         flex-direction: column;
@@ -185,14 +246,17 @@
     }
 }
 
+/* Para que el select no sea tan ancho */
+select {
+    width: 100%;
+    max-width: 100%; 
+    box-sizing: border-box; /* para que el padding no agrande el ancho */
+}
 
-/* intente que el select de provincia no se vea tan grande, pero no m toma*/
-         /*   @media (max-width: 768px) { /* Ejemplo para pantallas pequeñas (móviles) */
-           /* select {
-                width: 100%; /* Ocupa todo el ancho disponible */
-                /* Puedes agregar otros estilos específicos para dispositivos móviles aquí */
-         /*   }
-            }
-            .select {
-            width: 100%;
-            }*/
+/* Solo para pantallas pequeñas */
+@media (max-width: 768px) {
+    select {
+        width: 100%;
+        max-width: 100%; /* que ocupe todo el ancho disponible en móvil */
+    }
+}
