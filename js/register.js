@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('registerForm');
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-    
+
     // Función para mostrar/ocultar contraseña
     togglePasswordButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const targetId = this.getAttribute('data-target');
             const targetInput = document.getElementById(targetId);
-            
+
             if (targetInput.type === 'password') {
                 targetInput.type = 'text';
                 this.classList.remove('fa-eye');
@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Validación del formulario
-    registerForm.addEventListener('submit', function(e) {
+    registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         let isValid = true;
         console.log('Validando el formulario...');
-      
+
 
         // Validar nombre completo
         const username = document.getElementById('username').value.trim();
         // const usernameError = document.getElementById('usernameError');
-        
+
         // console.log('Validando nombre de usuario:', username);
 
         // if (username === '') {
@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // } else {
         //     usernameError.textContent = '';
         // }
-        
+
         // // // Validar email
         // const email = document.getElementById('email').value.trim();
         // const emailError = document.getElementById('emailError');
         // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         // if (email === '') {
         //     emailError.textContent = 'Por favor, ingresa tu correo electrónico';
         //     isValid = false;
@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // } else {
         //     emailError.textContent = '';
         // }
-        
+
         // // Validar teléfono
         // const phone = document.getElementById('phone').value.trim();
         // const phoneError = document.getElementById('phoneError');
         // const phoneRegex = /^[0-9]{10,15}$/;
-        
+
         // if (phone === '') {
         //     phoneError.textContent = 'Por favor, ingresa tu número de teléfono';
         //     isValid = false;
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // } else {
         //     phoneError.textContent = '';
         // }
-        
+
         // Validar contraseña
         const password = passwordInput.value;
         // const passwordError = document.getElementById('passwordError');
@@ -98,11 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // } else {
         //     passwordError.textContent = '';
         // }
-        
+
         // // Validar confirmación de contraseña
         // const confirmPassword = confirmPasswordInput.value;
         // const confirmPasswordError = document.getElementById('confirmPasswordError');
-        
+
         // if (confirmPassword === '') {
         //     confirmPasswordError.textContent = 'Por favor, confirma tu contraseña';
         //     isValid = false;
@@ -112,18 +112,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // } else {
         //     confirmPasswordError.textContent = '';
         // }
-        
+
         // // Validar términos y condiciones
         // const terms = document.getElementById('terms');
         // const termsError = document.getElementById('termsError');
-        
+
         // if (!terms.checked) {
         //     termsError.textContent = 'Debes aceptar los términos y condiciones';
         //     isValid = false;
         // } else {
         //     termsError.textContent = '';
         // }
-        
+
         // Si todo es válido, enviar el formulario
         if (isValid) {
             // Recopilar los datos del formulario
@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: document.getElementById('name').value.trim(),
                     lastName: document.getElementById('lastname').value.trim(),
                     address: document.getElementById('address').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    province: document.getElementById('province').value.trim(),
+                    location: document.getElementById('location').value.trim(),  //VER COMO GUARDA ---USE LAS MISMOS NOMBRES DEBERIA ANDAR IGUAL
+                    province: document.getElementById('province').value.trim(), //VER COMO GUARDA -- USE LOS MISMO NOMBRES DEBRIA ANDAR IGUAL --- SOLO NO DEBERIAMOS GUARDAR MUNICIPIO
                     phoneNumber: document.getElementById('phoneNumber').value.trim(),
                     identityCard: document.getElementById('identityCard').value.trim(),
                     dateBirth: document.getElementById('dateBirth').value.trim(),
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         }
     });
-    
+
 
     //TODO: ESTO SE PERSONALIZARÁ
     // Función para mostrar mensaje de éxito
@@ -183,54 +183,54 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Tu cuenta ha sido creada correctamente.</p>
             <p>Serás redirigido al inicio de sesión en unos segundos...</p>
         `;
-        
+
         // Reemplazar el formulario con el mensaje de éxito
         const formContainer = document.querySelector('.form-container');
         const formContent = formContainer.innerHTML;
         formContainer.innerHTML = '';
         formContainer.appendChild(successMessage);
-        
+
         // Redireccionar después de 3 segundos
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 3000);
     }
-    
+
     // Validación en tiempo real para la contraseña
-    passwordInput.addEventListener('input', function() {
+    passwordInput.addEventListener('input', function () {
         validatePasswordStrength(this.value);
     });
-    
+
     // Función para validar la fortaleza de la contraseña
     function validatePasswordStrength(password) {
         // Si no existe el elemento para mostrar la fortaleza, lo creamos
         if (!document.querySelector('.password-strength')) {
             const strengthContainer = document.createElement('div');
             strengthContainer.className = 'password-strength';
-            
+
             const strengthMeter = document.createElement('div');
             strengthMeter.className = 'password-strength-meter';
-            
+
             const strengthText = document.createElement('div');
             strengthText.className = 'password-strength-text';
-            
+
             strengthContainer.appendChild(strengthMeter);
-            
+
             const passwordGroup = passwordInput.closest('.form-group');
             passwordGroup.insertBefore(strengthContainer, document.getElementById('passwordError'));
             passwordGroup.insertBefore(strengthText, document.getElementById('passwordError'));
         }
-        
+
         const strengthMeter = document.querySelector('.password-strength-meter');
         const strengthText = document.querySelector('.password-strength-text');
-        
+
         // Criterios de fortaleza
         const lengthValid = password.length >= 8;
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumbers = /[0-9]/.test(password);
         const hasSpecialChars = /[!@#$%^&*]/.test(password);
-        
+
         // Calcular puntuación
         let score = 0;
         if (lengthValid) score++;
@@ -238,10 +238,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasLowerCase) score++;
         if (hasNumbers) score++;
         if (hasSpecialChars) score++;
-        
+
         // Actualizar indicador visual
         strengthMeter.className = 'password-strength-meter';
-        
+
         if (password === '') {
             strengthMeter.style.width = '0';
             strengthText.textContent = '';
@@ -263,12 +263,12 @@ document.addEventListener('DOMContentLoaded', function() {
             strengthText.style.color = '#2ecc71';
         }
     }
-    
+
     // // Formateo de número de teléfono
     // const phoneInput = document.getElementById('phone');
     // phoneInput.addEventListener('input', function(e) {
     //     let value = e.target.value.replace(/\D/g, '');
-        
+
     //     if (value.length > 0) {
     //         // Formato: (XXX) XXX-XXXX para números de 10 dígitos
     //         if (value.length <= 10) {
@@ -284,7 +284,93 @@ document.addEventListener('DOMContentLoaded', function() {
     //             value = `+${value.substring(0, value.length)}`;
     //         }
     //     }
-        
+
     //     e.target.value = value;
     // });
+});
+
+
+/*Select de provincia, municipio y localidad*/
+
+const $d = document;
+const $selectProvincias = $d.getElementById("province");
+const $selectDepartamentos = $d.getElementById("municipality");
+const $selectLocalidades = $d.getElementById("location");
+
+function selectProvince() {
+    fetch("https://apis.datos.gob.ar/georef/api/provincias")
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(json => {
+            let $options = `<option value="">Elige una provincia</option>`;
+            json.provincias.forEach(ele =>
+                $options += `<option value="${ele.id}">${ele.nombre}</option>`
+            );
+            $selectProvincias.innerHTML = $options;
+        })
+        .catch(error => {
+            let message = error.statusText || "Ocurrió un error";
+            let status = error.status || "";
+            $selectProvincias.nextElementSibling.innerHTML = `Error: ${status} ${message}`;
+        })
+}
+
+function selectDepartament(provinciaId) {
+    fetch(`https://apis.datos.gob.ar/georef/api/departamentos?provincia=${provinciaId}&max=100`)
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(json => {
+            let $options = `<option value="">Elige un departamento</option>`;
+            json.departamentos.forEach(ele =>
+                $options += `<option value="${ele.id}">${ele.nombre}</option>`
+            );
+            $selectDepartamentos.innerHTML = $options;
+        })
+        .catch(error => {
+            let message = error.statusText || "Ocurrió un error";
+            let status = error.status || "";
+            $selectDepartamentos.nextElementSibling.innerHTML = `Error: ${status} ${message}`;
+        });
+}
+
+function selectLocation(departamentoId) {
+    fetch(`https://apis.datos.gob.ar/georef/api/localidades?departamento=${departamentoId}&max=100`)
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(json => {
+            let $options = `<option value="">Elige una localidad</option>`;
+            json.localidades.forEach(ele =>
+                $options += `<option value="${ele.id}">${ele.nombre}</option>`
+            );
+            $selectLocalidades.innerHTML = $options;
+        })
+        .catch(error => {
+            let message = error.statusText || "Ocurrió un error";
+            let status = error.status || "";
+            $selectLocalidades.nextElementSibling.innerHTML = `Error: ${status} ${message}`;
+        });
+}
+
+$d.addEventListener("DOMContentLoaded", selectProvince);
+
+$selectProvincias.addEventListener('change', function(event) {
+    const provinciaId = event.target.value;
+    if (provinciaId) {
+        selectDepartament(provinciaId);
+        $selectLocalidades.innerHTML = `<option value="">Elige una localidad</option>`;
+    } else {
+        $selectDepartamentos.innerHTML = `<option value="">Elige un departamento</option>`;
+        $selectLocalidades.innerHTML = `<option value="">Elige una localidad</option>`;
+    }
+});
+
+$selectDepartamentos.addEventListener('change', function(event) {
+    const departamentoId = event.target.value;
+    if (departamentoId) {
+        selectLocation(departamentoId);
+    } else {
+        $selectLocalidades.innerHTML = `<option value="">Elige una localidad</option>`;
+    }
+});
+
+$selectLocalidades.addEventListener('change', function(event) {
+    const localidadId = event.target.value;
+    console.log("Seleccionaste la localidad (id):", localidadId);
 });

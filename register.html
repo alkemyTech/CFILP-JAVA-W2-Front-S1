@@ -44,49 +44,64 @@
                         <span class="error-message" id="lastnameError"></span>
                     </div>
 
-                        <div class="form-group">
+                    <div class="form-group">
                         <label for="dateBirth">Fecha de nacimiento</label>
                         <div class="input-group">
                             <i class="fas fa-calendar-alt"></i>
-                            <input type="date" id="dateBirth" name="dateBirth" placeholder="Ingresa tu fecha de nacimiento."
-                                required>
+                            <input type="date" id="dateBirth" name="dateBirth"
+                                placeholder="Ingresa tu fecha de nacimiento." required>
                         </div>
                         <span class="error-message" id="dateBirthError"></span>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="address">Dirección</label>
                         <div class="input-group">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" id="address" name="address" placeholder="Ingresa tu dirección."
-                                required>
+                            <input type="text" id="address" name="address" placeholder="Ingresa tu dirección." required>
                         </div>
                         <span class="error-message" id="addressError"></span>
                     </div>
 
-                    
+                    <!--Aqui se agregan las prov, municipio y localidades con el select-->
+
+
                     <div class="form-group">
-                        <label for="location">Localidad</label>
+                        <label for="province"> Provincia</label>
                         <div class="input-group">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" id="location" name="location" placeholder="Ingresa tu localidad."
-                                required>
+                            <select id="province" name="province">
+                                <option value="Elige una provincia"> Elige una provincia</option>
+                            </select>
+                        </div>
+                        <span class="error-message" id="provinceError"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="municipality"> Municipio</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="municipality" name="municipality">
+                                <option value="Elige un municipio"> Elige un municipio</option>
+                            </select>
+                        </div>
+                        <span class="error-message" id="municipalityError"></span>  <!-- crear el error de municality error-->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location"> Localidad</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="location" name="location">
+                                <option value="Elige una Localidad"> Elige una Localidad</option>
+                            </select>
                         </div>
                         <span class="error-message" id="locationError"></span>
                     </div>
 
-                    
-                    <div class="form-group">
-                        <label for="province">Provincia</label>
-                        <div class="input-group">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" id="province" name="province" placeholder="Ingresa tu provincia."
-                                required>
-                        </div>
-                        <span class="error-message" id="provinceError"></span>
-                    </div>
 
-                    
+                    <!-- fin select-->
+
                     <div class="form-group">
                         <label for="phoneNumber">Teléfono</label>
                         <div class="input-group">
@@ -229,3 +244,31 @@
 </body>
 
 </html>
+
+<!-- asi estaba antes de los select
+
+<div class="form-group">
+                        <label for="location">Localidad</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="location" name="location" placeholder="Ingresa tu localidad."
+                                required>
+                        </div>
+                        <span class="error-message" id="locationError"></span>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label for="province">Provincia</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="province" name="province" placeholder="Ingresa tu provincia."
+                                required>
+                        </div>
+                        <span class="error-message" id="provinceError"></span>
+                    </div>
+
+
+
+
+-->
