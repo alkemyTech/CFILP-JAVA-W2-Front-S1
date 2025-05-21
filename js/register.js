@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: document.getElementById('name').value.trim(),
                     lastName: document.getElementById('lastname').value.trim(),
                     address: document.getElementById('address').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    province: document.getElementById('province').value.trim(),
+                    location: document.getElementById('location').value.trim(),  //VER COMO GUARDA ---USE LAS MISMOS NOMBRES DEBERIA ANDAR IGUAL
+                    province: document.getElementById('province').value.trim(), //VER COMO GUARDA -- USE LOS MISMO NOMBRES DEBRIA ANDAR IGUAL --- SOLO NO DEBERIAMOS GUARDAR MUNICIPIO
                     phoneNumber: document.getElementById('phoneNumber').value.trim(),
                     identityCard: document.getElementById('identityCard').value.trim(),
                     dateBirth: document.getElementById('dateBirth').value.trim(),
@@ -287,4 +287,81 @@ document.addEventListener('DOMContentLoaded', function() {
         
     //     e.target.value = value;
     // });
+});
+
+
+/*Select de provincia, municipio y localidad*/
+
+const $d = document; // el signo $ signifca q es una variable del dom
+const $selectProvincias = $d.getElementById("province");
+const $selectMunicipios = $d.getElementById("municipality");
+const $selectLocalidades = $d.getElementById("location");
+
+
+/* Select de Provincias Argentinas */
+function selectProvince(){
+  fetch("https://apis.datos.gob.ar/georef/api/provincias")
+  .then(res => res.ok ? res.json() : Promise.reject(res))
+  .then (json =>{
+    let $options = `<option value="Elige una provincia"> Elige una provincia</option>`;
+    json.provincias.forEach(ele => $options += `<option value="${ele.nombre}"> ${ele.nombre}</option>` );
+    $selectProvincias.innerHTML = $options;
+  
+  })
+  .catch( error => {
+    let message = error.statusText || "Ocurrio un error";
+    $selectProvincias.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+  })
+}
+$d.addEventListener("DOMContentLoaded", selectProvince)
+
+/* Select de municipios por provincia*/
+function selectMunicipality(provincia){
+  fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${provincia}`) // &provincia
+  .then(res => res.ok ? res.json() : Promise.reject(res))
+  .then (json =>{
+    let $options = `<option value="Elige un municipio"> Elige un municipio</option>`;
+    json.municipios.forEach(ele => $options += `<option value="${ele.nombre}"> ${ele.nombre}</option>` );
+    $selectMunicipios.innerHTML = $options
+  })
+    .catch( error => {
+    let message = error.statusText || "Ocurrio un error";
+    $selectMunicipios.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+  })
+}
+
+$selectProvincias.addEventListener('change', function(event){
+   const nuevoValorSeleccionado = event.target.value;
+  console.log("Seleccionaste la provincia:", nuevoValorSeleccionado); //coemntario p eliminar desp
+   selectMunicipality(nuevoValorSeleccionado);
+});
+
+/*Select localidades por municipio */
+
+function selectLocation(municipio){
+  fetch(`https://apis.datos.gob.ar/georef/api/localidades?municipio=${municipio}`) 
+  .then(res => res.ok ? res.json() : Promise.reject(res))
+  .then (json =>{
+    let $options = `<option value="Elige una localidad "> Elige un localidad</option>`;
+    json.localidades.forEach(ele => $options += `<option value="${ele.nombre}"> ${ele.nombre}</option>` );
+    $selectLocalidades.innerHTML = $options
+  })
+    .catch( error => {
+    let message = error.statusText || "Ocurrio un error";
+    $selectLocalidades.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+  })
+
+
+}
+
+$selectMunicipios.addEventListener('change', function(event){
+   const nuevoValorSeleccionado = event.target.value;
+  console.log("Seleccionaste el municipio:", nuevoValorSeleccionado); //coemntario p eliminar desp
+   selectLocation(nuevoValorSeleccionado);
+});
+
+$selectLocalidades.addEventListener('change', function(event){
+   const nuevoValorSeleccionado = event.target.value;
+  console.log("Seleccionaste la localidad:", nuevoValorSeleccionado); //coemntario p eliminar desp
+  
 });

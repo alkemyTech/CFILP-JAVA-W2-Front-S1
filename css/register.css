@@ -184,3 +184,15 @@
         padding: 15px;
     }
 }
+
+
+/* intente que el select de provincia no se vea tan grande, pero no m toma*/
+         /*   @media (max-width: 768px) { /* Ejemplo para pantallas pequeñas (móviles) */
+           /* select {
+                width: 100%; /* Ocupa todo el ancho disponible */
+                /* Puedes agregar otros estilos específicos para dispositivos móviles aquí */
+         /*   }
+            }
+            .select {
+            width: 100%;
+            }*/
