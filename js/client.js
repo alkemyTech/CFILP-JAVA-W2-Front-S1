@@ -8,7 +8,8 @@ function getUserIdFromToken() {
     const payload = JSON.parse(atob(payloadBase64));
     return payload.userId; 
 }
-
+const tokenOnLocal = localStorage.getItem('token');
+console.log('Token en localStorage:', tokenOnLocal);
 const userId = getUserIdFromToken();
 console.log('User ID:', userId);
 
