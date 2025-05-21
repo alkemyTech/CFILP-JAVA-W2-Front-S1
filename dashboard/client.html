@@ -39,7 +39,7 @@
                         <a href="#"><i class="fas fa-cog"></i> Configuración</a>
                     </li>
                     <li class="menu-link">
-                        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                        <a href="../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                     </li>
                 </ul>
             </nav>
@@ -266,22 +266,6 @@
             removeToken();
             window.location.href = "../index.html";
         });
-
-        // Ejemplo: obtener datos protegidos
-        fetchProtected("/api/user/me") 
-            .then((data) => {
-                document.getElementById("data").innerText = JSON.stringify(
-                    data,
-                    null,
-                    2
-                );
-            })
-            .catch(() => {
-                alert("No autorizado");
-                removeToken();
-                window.location.href = "../index.html";
-            });
-    
     </script>
 </body>
 
