@@ -605,12 +605,86 @@
         width: 500px !important;
         padding: 30px;
         }
-    .dashboard-header, .dashboard-header{
-        background-color: #f5f7fa;;
-        width: 601px !important;
+    .dashboard-header{
+        background-color: #f5f7fa;
+        box-sizing: content-box; /* valor por defecto */
+        box-sizing: border-box; 
+        width: 600px !important;
         margin-top: 0 !important;
+        padding-left: 50px;
         box-shadow: 0 1px 5px rgba(0,0,0,0.05); /* Sombra más sutil */
+        
     }
-
+    .dashboard-header h2 {
+    transform: translateX(10px);
+    }
+    .header-actions{
+        transform : translateX(-25px);
+    }
 }
+@media (max-width: 490px) {
+
+    .main-content, .dashboard-container{
+        background: linear-gradient(135deg, #41d1a4ba, #185a9d);
+        margin-top: 0;
+        padding-top: 0;
+    }
+    .balance-amount {
+    font-size: 2rem; /* reduce tamaño general */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: baseline; /* para que currency y amount se alineen bien */
+    gap: 4px; /* espacio entre $ y cantidad */
+    margin-bottom: 15px; /* un poco menos espacio que en desktop */
+    }
+    .dashboard-container {
+        align-items: center;
+    }
+    header, 
+    section.card.balance-card, 
+    div.card-header, 
+    section.card.transactions-card, 
+    section.card.transfers-card,
+    section.card.withdrawals-card,
+    section.card.cards-section,
+    section.card.dollar-card,
+    #transactions{
+        box-sizing: content-box; /* valor por defecto */
+        box-sizing: border-box; 
+        width: 430px !important;
+        padding: 35px;
+        }
+    .dashboard-header{
+        background-color: #f5f7fa;
+        box-sizing: content-box; /* valor por defecto */
+        box-sizing: border-box; 
+        width: 500px !important;
+        margin-top: 0 !important;
+        padding-left: 50px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.05); /* Sombra más sutil */
+        
+    }
+    .dashboard-header h2 {
+    transform: translateX(10px);
+    }
+    .header-actions{
+        transform : translateX(-25px);
+    }
+    .transfer-item,
+    .withdrawal-item{
+        transform: translateX(10px);
+    }
+    .transfer-amount.amount-negative,
+    .withdrawal-amount.amount-negative{
+        transform : translateX(-25px);
+    }
+    td.amount-positive,
+    td.amount-negative{
+        transform : translateX(-15px);
+    }
+}
+
+
+
 
