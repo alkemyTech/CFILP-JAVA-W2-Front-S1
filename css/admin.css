@@ -13,7 +13,15 @@
     margin: -20px 20px 20px;
     font-weight: 500;
 }
-
+.logo-container h1{
+    color: #f5f7fadb;
+}
+body{
+    background:linear-gradient(150deg,#2f485a,  #394754)!important;
+}
+.dashboard-container{
+    width: 95%;
+}
 /* Stats Cards */
 .stats-container {
     display: grid;
