@@ -8,14 +8,17 @@ function getUserIdFromToken() {
     const payload = JSON.parse(atob(payloadBase64));
     return payload.userId; 
 }
-const tokenOnLocal = localStorage.getItem('token');
-console.log('Token en localStorage:', tokenOnLocal);
+
+//Obtenemos el id del usuario logueado desde el token
+// y lo guardamos en una variable
+//no borrar
 const userId = getUserIdFromToken();
-console.log('User ID:', userId);
+
 
     // Cargar datos iniciales
     fetchUserData(userId); 
-    loadBalance(userId);
+    loadInitialData();    
+    
     loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
@@ -49,9 +52,10 @@ function fetchUserData(userId) {
             return res.json();
         })
         .then(data => {
-            console.log('Nombre del usuario:', data);
-            document.getElementById("userName").innerText = data.username;
-            // document.getElementById("userRole").innerText = data.role;
+        
+        
+            localStorage.setItem('data', JSON.stringify(data));
+
         })
         .catch(error => {
             console.error('Error al obtener datos del usuario:', error);
@@ -59,6 +63,16 @@ function fetchUserData(userId) {
     }
 });
 
+    //CARgar la data desde el localStorage
+    //TODO: cargar la balanceElement.textContent = 
+    function loadInitialData() {
+        const userData = JSON.parse(localStorage.getItem('data'));
+       
+        const balanceElement = document.getElementById('balanceAmount')
+         balanceElement.textContent = userData.accounts[0].balance.toLocaleString();
+        
+
+    }
 
     // Función para cargar el saldo
     function loadBalance(userId, isRefresh = false) {
@@ -68,16 +82,22 @@ function fetchUserData(userId) {
             balanceElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         }
 
-        // Simulación de llamada a API
-        setTimeout(() => {
-            // TODO: Fetch a /api/accounts/user/{id}/balance
-            const balance = 15750.00;
-            balanceElement.textContent = balance.toLocaleString('es-AR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }, isRefresh ? 1000 : 0);
-    }
+      fetch(`http://localhost:8080/api/accounts/user/${userId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    }
+                }
+            ).then(res => {
+                if (!res.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+            }).then( data => {
+                console.log(data)
+            }               
+            )
 
     // Función para cargar transacciones
     function loadTransactions(userId) {
@@ -336,4 +356,4 @@ function fetchUserData(userId) {
             dollarContainer.innerHTML = html;
         }, isRefresh ? 1500 : 0);
     }
-
+    }
