@@ -24,7 +24,7 @@ body.dashboard{
 
 .container {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     padding: 20px;
 }
 
@@ -33,6 +33,7 @@ body.dashboard{
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     padding: 30px;
+    max-width: 400px;
 }
 
 .logo-container {

@@ -9,16 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/mobile-menu.css">
+    <link rel="icon" href="../wallet_icon.png" type="image/svg+xml">
 </head>
 
 <body>
     <div class="container">
         <div class="login-container register-container">
             <div class="form-container">
-                <div class="logo-container">
-                    <img src="img/logo.png" alt="AlkyWallet Logo" class="logo">
-                    <h1>AlkyWallet</h1>
+                <div class="logo-container" style=" margin-bottom: 20px;">
+                    <img src="../wallet_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                    <h1 style="padding-left: 10px; transform: translateY(5px);">AlkyWallet</h1>
                 </div>
                 <h2>Crear una cuenta</h2>
                 <p class="subtitle">Completa tus datos para comenzar a usar AlkyWallet</p>
@@ -78,7 +78,7 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="=municipality"> Municipio</label>
+                        <label for="municipality"> Municipio</label>
                         <div class="input-group">
                             <i class="fas fa-map-marker-alt"></i>
                             <select id="municipality" name="municipality">
@@ -212,33 +212,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Menú móvil para Usuario -->
-    <div class="mobile-menu-container user-menu">
-        <nav class="mobile-menu">
-            <a href="index.html" class="menu-item active">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Ingresar</span>
-            </a>
-            <a href="register.html" class="menu-item">
-                <i class="fas fa-user-plus"></i>
-                <span>Registrarse</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-info-circle"></i>
-                <span>Acerca de</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-question-circle"></i>
-                <span>Ayuda</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-headset"></i>
-                <span>Contacto</span>
-            </a>
-        </nav>
-    </div>
-
     <script src="js/register.js"></script>
     <script src="js/mobile-menu.js"></script>
 </body>
