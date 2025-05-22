@@ -28,6 +28,7 @@ const userId = getUserIdFromToken();
 
     // Event listeners para botones de actualización
     document.getElementById('refreshBalance').addEventListener('click', function () {
+        console.log("refreshBalance");
         loadBalance(userId, true);
     });
 
@@ -77,12 +78,14 @@ function fetchUserData(userId) {
     // Función para cargar el saldo
     function loadBalance(userId, isRefresh = false) {
         const balanceElement = document.getElementById('balanceAmount');
-
+        console.log("loadBalance");
         if (isRefresh) {
             balanceElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+            console.log("actualizando saldo...");
         }
 
-      fetch(`http://localhost:8080/api/accounts/user/${userId}`,
+          fetch(`http://localhost:8080/api/accounts/user/${userId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -90,14 +93,23 @@ function fetchUserData(userId) {
                         'Content-Type': 'application/json'
                     }
                 }
-            ).then(res => {
-                if (!res.ok) {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-            }).then( data => {
-                console.log(data)
+            ).then(res =>  res.json())
+                     
+            .then( data => {
+                const balance = data[0].balance;
+                console.log(balance);
+                balanceElement.innerText = balance;
             }               
-            )
+            ) .catch(error => {
+                console.error('Error al obtener los datos: ', error)
+
+            });
+
+
+    }
+
+
+
 
     // Función para cargar transacciones
     function loadTransactions(userId) {
@@ -356,4 +368,4 @@ function fetchUserData(userId) {
             dollarContainer.innerHTML = html;
         }, isRefresh ? 1500 : 0);
     }
-    }
+    

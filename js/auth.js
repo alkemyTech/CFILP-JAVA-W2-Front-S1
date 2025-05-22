@@ -8,6 +8,7 @@ function getToken() {
 
 function removeToken() {
     localStorage.removeItem("token");
+    localStorage.removeItem("data");
 }
 
 function isAuthenticated() {
