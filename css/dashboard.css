@@ -25,7 +25,13 @@
 
 .sidebar .logo-container {
     padding: 0 20px;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
+}
+
+.sidebar .logo-container h1 {
+    padding-left: 5px;
+    transform: translateY(10px);
+    
 }
 
 .sidebar-menu {
@@ -487,6 +493,18 @@
 }
 
 /* Responsive Design */
+@media (min-width: 2100px) {
+  /* Tus estilos para pantallas extra grandes */
+    body {
+    font-size: 20px;
+    }
+
+    .dashboard-container {
+    max-width: 2000px;
+    margin: 0 auto;
+    }
+}
+
 @media (max-width: 1024px) {
     .two-column {
         grid-template-columns: 1fr;
@@ -621,6 +639,9 @@
     .header-actions{
         transform : translateX(-25px);
     }
+    .client-container{
+    min-width: 70.5rem;
+}
 }
 @media (max-width: 490px) {
 
@@ -684,7 +705,6 @@
         transform : translateX(-15px);
     }
 }
-
 
 
 
