@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+
+document.addEventListener('DOMContentLoaded', async function () {
+
 
 function getUserIdFromToken() {
     const token = localStorage.getItem('token');
@@ -16,13 +18,13 @@ const userId = getUserIdFromToken();
 
 
     // Cargar datos iniciales
-    fetchUserData(userId); 
+    await fetchUserData(userId); 
     loadInitialData();    
-    
+    /*
     loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
-    loadCards(userId);
+    loadCards(userId);*/
     loadDollarRates();
     
 
@@ -38,8 +40,8 @@ const userId = getUserIdFromToken();
 
     
 // Traer nombre y rol del usuario logueado desde el back
-function fetchUserData(userId) {
-        fetch(`http://localhost:8080/api/users/${userId}`, {
+async function fetchUserData(userId) {
+        await fetch(`http://localhost:8080/api/users/${userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -68,7 +70,7 @@ function fetchUserData(userId) {
     //TODO: cargar la balanceElement.textContent = 
     function loadInitialData() {
         const userData = JSON.parse(localStorage.getItem('data'));
-       
+       console.log("user data" + userData);
         const balanceElement = document.getElementById('balanceAmount')
          balanceElement.textContent = userData.accounts[0].balance.toLocaleString();
         
@@ -76,7 +78,7 @@ function fetchUserData(userId) {
     }
 
     // Función para cargar el saldo
-    function loadBalance(userId, isRefresh = false) {
+    function loadBalance(userId, isRefresh = true) { //false
         const balanceElement = document.getElementById('balanceAmount');
         console.log("loadBalance");
         if (isRefresh) {
