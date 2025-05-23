@@ -101,6 +101,14 @@ input[type="password"]:focus {
     cursor: pointer;
     color: #777;
 }
+.toggle-password-register {
+    position: relative;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+}
 
 .remember-forgot {
     display: flex;
