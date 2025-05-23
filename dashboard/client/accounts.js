@@ -2,36 +2,7 @@
  * Módulo para gestionar las cuentas del usuario en AlkyWallet (sin lógica de modal)
  */
 (function() {
-    // Datos de ejemplo (en producción, estos vendrían de una API)
-    let userAccounts = [
-        {
-            id: "acc_123456",
-            name: "Cuenta Principal",
-            type: "savings",
-            alias: "cuenta.principal.alky",
-            currency: "ARS",
-            balance: 15750.00,
-            isDefault: true
-        },
-        {
-            id: "acc_789012",
-            name: "Cuenta en Dólares",
-            type: "investment",
-            alias: "cuenta.dolares.alky",
-            currency: "USD",
-            balance: 2500.00,
-            isDefault: false
-        },
-        {
-            id: "acc_345678",
-            name: "Cuenta Corriente",
-            type: "checking",
-            alias: "cuenta.corriente.alky",
-            currency: "ARS",
-            balance: 8200.00,
-            isDefault: false
-        }
-    ];
+    let userAccounts = [];
 
     // Mapeo de tipos de cuenta a íconos y nombres legibles
     const accountTypes = {
@@ -49,11 +20,38 @@
     };
 
     /**
-     * Carga y muestra las cuentas del usuario
+     * Carga y muestra las cuentas del usuario desde la API
+     * @param {string} userId - ID del usuario
      */
-    function loadAccounts() {
+    async function loadAccounts(userId) {
         const accountsContainer = document.getElementById("accountsContainer");
         if (!accountsContainer) return;
+
+        accountsContainer.innerHTML = `
+            <div class="account-placeholder">
+                <div class="placeholder-text">Cargando cuentas...</div>
+            </div>
+        `;
+
+        try {
+            const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!res.ok) throw new Error('No se pudieron cargar las cuentas');
+            userAccounts = await res.json();
+        } catch (error) {
+            accountsContainer.innerHTML = `
+                <div class="account-placeholder">
+                    <div class="placeholder-text">No se pudieron cargar las cuentas.</div>
+                </div>
+            `;
+            console.error(error);
+            return;
+        }
 
         accountsContainer.innerHTML = "";
 
@@ -63,6 +61,7 @@
                     <div class="placeholder-text">No tienes cuentas. ¡Agrega una para comenzar!</div>
                 </div>
             `;
+            updateBalanceDisplay();
             return;
         }
 
@@ -75,12 +74,14 @@
 
         // Crear elementos para cada cuenta
         userAccounts.forEach(account => {
+            console.log(account);
             const accountEl = createAccountElement(account);
             accountsContainer.appendChild(accountEl);
         });
 
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
+        
     }
 
     /**
@@ -218,12 +219,12 @@
     }
 
     /**
-     * Agrega una nueva cuenta
+     * Agrega una nueva cuenta (debería hacer POST a la API en un caso real)
      * @param {Object} account - La cuenta a agregar
      */
     function addAccount(account) {
         userAccounts.push(account);
-        loadAccounts();
+        updateAccountsUI();
     }
 
     /**
@@ -233,8 +234,38 @@
         return userAccounts;
     }
 
-    // Inicializar
-    loadAccounts();
+    /**
+     * Actualiza la UI de cuentas (sin recargar desde la API)
+     */
+    function updateAccountsUI() {
+        const accountsContainer = document.getElementById("accountsContainer");
+        if (!accountsContainer) return;
+
+        accountsContainer.innerHTML = "";
+
+        if (userAccounts.length === 0) {
+            accountsContainer.innerHTML = `
+                <div class="account-placeholder">
+                    <div class="placeholder-text">No tienes cuentas. ¡Agrega una para comenzar!</div>
+                </div>
+            `;
+            updateBalanceDisplay();
+            return;
+        }
+
+        userAccounts.sort((a, b) => {
+            if (a.isDefault && !b.isDefault) return -1;
+            if (!a.isDefault && b.isDefault) return 1;
+            return 0;
+        });
+
+        userAccounts.forEach(account => {
+            const accountEl = createAccountElement(account);
+            accountsContainer.appendChild(accountEl);
+        });
+
+        updateBalanceDisplay();
+    }
 
     // Exponer funciones para uso externo
     window.accountsManager = {

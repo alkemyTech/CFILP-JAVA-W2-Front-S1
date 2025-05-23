@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async function () {
 
 
@@ -13,9 +12,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     //Obtenemos el id del usuario logueado desde el token
     // y lo guardamos en una variable
-    //no borrar
+    //no borrar 
     const userId = getUserIdFromToken();
-
 
     // Cargar datos iniciales
     await fetchUserData(userId);
@@ -24,7 +22,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
-    loadCards(userId);*/
+    */
+    // loadAccounts(userId);
+    window.accountsManager.loadAccounts(userId);
+    loadCards(userId);
     loadDollarRates();
 
 
