@@ -13,10 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cargar los scripts de los manejadores de modales
     const modalScripts = [
-        "deposits/deposit.js",
-        "withdrawal/withdrawal.js",
-        "transfer/transfer.js",
-        "confirmation/confirmationModal.js",
+        "./components/modals/deposits/deposit.js",
+        "./components/modals/withdrawal/withdrawal.js",
+        "./components/modals/transfer/transfer.js",
+        "./components/modals/confirmation/confirmationModal.js",
     ]
 
     // Función para cargar un script
@@ -31,13 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Cargar todos los scripts en secuencia
     modalScripts
-        .reduce((promise, scriptSrc) => {
-            return promise.then(() => loadScript(scriptSrc))
-        }, Promise.resolve())
-        .then(() => {
-            console.log("Todos los manejadores de modales han sido cargados")
-        })
-        .catch((error) => {
-            console.error("Error al cargar los manejadores de modales:", error)
-        })
+        .reduce((promise, scriptSrc) => promise.then(() => loadScript(scriptSrc)), Promise.resolve())
+    .then(() => {
+        console.log("Todos los manejadores de modales han sido cargados")
+    })
+    .catch((error) => {
+        console.error("Error al cargar los manejadores de modales:", error)
+    })
 })
