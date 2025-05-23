@@ -73,6 +73,25 @@
                 </div>
             </header>
 
+            <!-- Accounts Section -->
+<section class="card accounts-card">
+    <div class="card-header">
+        <h3>Mis Cuentas</h3>
+        <div class="card-actions">
+            <button class="add-account-btn" id="addAccountBtn" title="Agregar nueva cuenta">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="accounts-container" id="accountsContainer">
+            <!-- Las cuentas se cargarán dinámicamente aquí -->
+            <div class="account-placeholder">
+                <div class="placeholder-text">Cargando cuentas...</div>
+            </div>
+        </div>
+    </div>
+</section>
             <!-- Balance Card -->
 
             <section class="card balance-card">
@@ -619,6 +638,62 @@
 
     <!-- Fin modal de confirmacion -->
 
+    <!-- Modal para agregar nueva cuenta -->
+<div id="addAccountModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fas fa-university"></i> Agregar Nueva Cuenta</h3>
+            <button class="modal-close" data-modal="addAccount">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <form id="addAccountForm" class="modal-form">
+                <div class="form-group">
+                    <label for="accountName">Nombre de la cuenta</label>
+                    <input type="text" id="accountName" name="accountName" 
+                           placeholder="Ej: Mi cuenta principal" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountType">Tipo de cuenta</label>
+                    <select id="accountType" name="accountType" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="savings">Caja de ahorro</option>
+                        <option value="checking">Cuenta corriente</option>
+                        <option value="investment">Cuenta de inversión</option>
+                        <option value="credit">Cuenta de crédito</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountCurrency">Moneda</label>
+                    <select id="accountCurrency" name="accountCurrency" required>
+                        <option value="">Selecciona una moneda</option>
+                        <option value="ARS">Peso Argentino (ARS)</option>
+                        <option value="USD">Dólar Estadounidense (USD)</option>
+                        <option value="EUR">Euro (EUR)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountAlias">Alias (opcional)</label>
+                    <input type="text" id="accountAlias" name="accountAlias" 
+                           placeholder="Ej: cuenta.principal.alky">
+                    <small class="helper-text">Si no ingresas un alias, se generará uno automáticamente.</small>
+                </div>
+            </form>
+        </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" data-modal="addAccount">Cancelar</button>
+            <button type="submit" form="addAccountForm" class="btn-primary">Crear Cuenta</button>
+        </div>
+    </div>
+</div>
+    <!-- Fin del modal de agregar cuenta -->
+     
 
     </div>
 
