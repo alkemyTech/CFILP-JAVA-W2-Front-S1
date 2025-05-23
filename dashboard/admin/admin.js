@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // verificar si el usuario está autenticado
+    if (!isAuthenticated()) {
+        window.location.href = "./../../index.html";
+        return;
+    }
+    // Configurar acciones para el boton de cerrar sesión
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            removeToken();
+            window.location.href = "./../../index.html";
+        });
+    }
+
     // Cargar datos iniciales
     loadUsers();
     loadRoles();
