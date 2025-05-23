@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Modal</title>
+     <link rel="stylesheet" href="/css/mobile-menu.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/client.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="../wallet_icon.png" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Modal para Retirar -->
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-minus-circle"></i> Retirar dinero</h3>
+                <button class="modal-close" data-modal="withdrawModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="balance-info">
+                    <div class="available-balance">
+                        <span>Saldo disponible:</span>
+                        <span class="balance-amount">$15,750.00</span>
+                    </div>
+                </div>
+
+                <form id="withdrawForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="withdrawMethod">Método de retiro</label>
+                        <select id="withdrawMethod" name="withdrawMethod" required>
+                            <option value="">Selecciona un método</option>
+                            <option value="bank_account">Cuenta bancaria</option>
+                            <option value="debit_card">Tarjeta de débito</option>
+                            <option value="cash">Efectivo (Red de pagos)</option>
+                        </select>
+                    </div>
+
+                    <div id="bankAccountDetails" class="bank-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="bankName">Banco</label>
+                            <select id="bankName" name="bankName">
+                                <option value="">Selecciona tu banco</option>
+                                <option value="banco_nacion">Banco Nación</option>
+                                <option value="banco_provincia">Banco Provincia</option>
+                                <option value="santander">Santander</option>
+                                <option value="bbva">BBVA</option>
+                                <option value="galicia">Banco Galicia</option>
+                                <option value="macro">Banco Macro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="accountNumber">Número de cuenta</label>
+                            <input type="text" id="accountNumber" name="accountNumber"
+                                placeholder="Ingresa tu número de cuenta">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="accountType">Tipo de cuenta</label>
+                            <select id="accountType" name="accountType">
+                                <option value="">Selecciona el tipo</option>
+                                <option value="savings">Caja de ahorro</option>
+                                <option value="checking">Cuenta corriente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withdrawAmount">Monto a retirar</label>
+                        <div class="amount-input">
+                            <span class="currency">$</span>
+                            <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="0.00" min="1"
+                                step="0.01" required>
+                        </div>
+                        <div class="amount-limits">
+                            <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withdrawDescription">Descripción (opcional)</label>
+                        <input type="text" id="withdrawDescription" name="withdrawDescription"
+                            placeholder="Ej: Retiro para gastos">
+                    </div>
+
+                    <div class="transaction-summary">
+                        <div class="summary-row">
+                            <span>Monto:</span>
+                            <span id="withdrawSummaryAmount">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Comisión:</span>
+                            <span id="withdrawFee">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total a recibir:</span>
+                            <span id="withdrawTotal">$0.00</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="withdrawModal">Cancelar</button>
+                <button type="submit" form="withdrawForm" class="btn-primary">Confirmar retiro</button>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+    <script src="/js/auth.js"></script>
+       <script src="/js/modals.js"></script>
+
+</body>
+
+</html>
