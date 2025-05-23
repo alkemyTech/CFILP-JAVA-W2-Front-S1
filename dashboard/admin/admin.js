@@ -15,64 +15,61 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Función para cargar usuarios
-function loadUsers() {
+async function loadUsers() {
     const tableBody = document.querySelector('#usersTable tbody');
     const roleFilter = document.getElementById('roleFilter').value;
     const statusFilter = document.getElementById('statusFilter').value;
 
-    // Simulación de llamada a API
-    // TODO: fetch a /api/users con los filtros correspondientes
-    const users = [
-        { id: 1, name: 'Juan Pérez', email: 'juan@example.com', role: 'user', status: 'active', registrationDate: '2023-01-15' },
-        { id: 2, name: 'María López', email: 'maria@example.com', role: 'user', status: 'active', registrationDate: '2023-02-20' },
-        { id: 3, name: 'Carlos Rodríguez', email: 'carlos@example.com', role: 'admin', status: 'active', registrationDate: '2022-11-10' },
-        { id: 4, name: 'Ana Martínez', email: 'ana@example.com', role: 'user', status: 'inactive', registrationDate: '2023-03-05' },
-        { id: 5, name: 'Pedro Gómez', email: 'pedro@example.com', role: 'user', status: 'active', registrationDate: '2023-04-12' }
-    ];
+    try {
+        const res = await fetch('http://localhost:8080/api/users', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        if (!res.ok) throw new Error('Error al obtener usuarios');
+        const users = await res.json();
 
-    // Aplicar filtros
-    let filteredUsers = users;
+        // Aplicar filtros
+        let filteredUsers = users;
 
-    if (roleFilter !== 'all') {
-        filteredUsers = filteredUsers.filter(user => user.role === roleFilter);
+        if (roleFilter !== 'all') {
+            filteredUsers = filteredUsers.filter(user => user.roles.includes(roleFilter.toUpperCase()));
+        }
+
+        if (statusFilter !== 'all') {
+            filteredUsers = filteredUsers.filter(user => user.active?.toString() === (statusFilter === 'active').toString());
+        }
+
+        let html = '';
+
+        filteredUsers.forEach(user => {
+            html += `
+                <tr>
+                    <td>#${user.id}</td>
+                    <td>${user.name} ${user.lastName}</td>
+                    <td>${user.username}</td>
+                    <td>${user.roles.join(', ')}</td>
+                    <td><span class="user-status status-active">Activo</span></td>
+                    <td>--</td>
+                    <td>
+                        <div class="user-actions">
+                            <div class="action-icon view-icon"><i class="fas fa-eye"></i></div>
+                            <div class="action-icon edit-icon"><i class="fas fa-edit"></i></div>
+                            <div class="action-icon delete-icon"><i class="fas fa-trash"></i></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = html;
+
+    } catch (err) {
+        console.error(err);
+        tableBody.innerHTML = `<tr><td colspan="7">Error al cargar usuarios</td></tr>`;
     }
-
-    if (statusFilter !== 'all') {
-        filteredUsers = filteredUsers.filter(user => user.status === statusFilter);
-    }
-
-    let html = '';
-
-    filteredUsers.forEach(user => {
-        const formattedDate = new Date(user.registrationDate).toLocaleDateString('es-AR');
-
-        html += `
-            <tr>
-                <td>#${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.email}</td>
-                <td>${user.role === 'admin' ? 'Administrador' : 'Usuario'}</td>
-                <td><span class="user-status status-${user.status}">${user.status === 'active' ? 'Activo' : 'Inactivo'}</span></td>
-                <td>${formattedDate}</td>
-                <td>
-                    <div class="user-actions">
-                        <div class="action-icon view-icon" title="Ver detalles">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <div class="action-icon edit-icon" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="action-icon delete-icon" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-
-    tableBody.innerHTML = html;
 }
+
 
 // Función para cargar roles
 function loadRoles() {
@@ -195,76 +192,72 @@ function loadAdminTransactions() {
 }
 
 // Función para cargar cuentas
-function loadAccounts() {
+async function loadAccounts() {
     const tableBody = document.querySelector('#accountsTable tbody');
     const accountStatusFilter = document.getElementById('accountStatusFilter')?.value || 'all';
     const accountTypeFilter = document.getElementById('accountTypeFilter')?.value || 'all';
 
-    // Simulación de llamada a API
-    // TODO: Fetch a /api/accounts
-    const accounts = [
-        { id: 1001, user: 'Juan Pérez', type: 'savings', number: '1234-5678-9012-3456', balance: 15750.00, status: 'active', creationDate: '2023-01-15' },
-        { id: 1002, user: 'María López', type: 'checking', number: '9876-5432-1098-7654', balance: 8320.50, status: 'active', creationDate: '2023-02-20' },
-        { id: 1003, user: 'Carlos Rodríguez', type: 'savings', number: '5678-1234-5678-1234', balance: 25100.75, status: 'inactive', creationDate: '2022-11-10' }
-    ];
-
-    // Aplicar filtros
-    let filteredAccounts = accounts;
-
-    if (accountStatusFilter !== 'all') {
-        filteredAccounts = filteredAccounts.filter(account => account.status === accountStatusFilter);
-    }
-
-    if (accountTypeFilter !== 'all') {
-        filteredAccounts = filteredAccounts.filter(account => account.type === accountTypeFilter);
-    }
-
-    let html = '';
-
-    filteredAccounts.forEach(account => {
-        const formattedDate = new Date(account.creationDate).toLocaleDateString('es-AR');
-        const formattedBalance = account.balance.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+    try {
+        const res = await fetch('http://localhost:8080/api/accounts', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
         });
 
-        let statusClass = account.status === 'active' ? 'status-active' : 'status-inactive';
-        let statusText = account.status === 'active' ? 'Activa' : 'Inactiva';
+        if (!res.ok) throw new Error('Error al obtener cuentas');
+        const accounts = await res.json();
 
-        let actionIcon = account.status === 'active' ?
-            '<i class="fas fa-ban"></i>' :
-            '<i class="fas fa-check"></i>';
+        // Filtros
+        let filteredAccounts = accounts;
+        if (accountStatusFilter !== 'all') {
+            filteredAccounts = filteredAccounts.filter(account => account.status === accountStatusFilter);
+        }
+        if (accountTypeFilter !== 'all') {
+            filteredAccounts = filteredAccounts.filter(account => account.type === accountTypeFilter);
+        }
 
-        let actionTitle = account.status === 'active' ? 'Suspender' : 'Activar';
+        let html = '';
+        filteredAccounts.forEach(account => {
+            const formattedDate = new Date(account.creationDate).toLocaleDateString('es-AR');
+            const formattedBalance = account.balance.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-        html += `
-            <tr>
-                <td>#${account.id}</td>
-                <td>${account.user}</td>
-                <td>${account.type === 'savings' ? 'Ahorro' : 'Corriente'}</td>
-                <td>${account.number}</td>
-                <td>$${formattedBalance}</td>
-                <td><span class="user-status ${statusClass}">${statusText}</span></td>
-                <td>${formattedDate}</td>
-                <td>
-                    <div class="user-actions">
-                        <div class="action-icon view-icon" title="Ver detalles">
-                            <i class="fas fa-eye"></i>
+            const statusClass = account.status === 'active' ? 'status-active' : 'status-inactive';
+            const statusText = account.status === 'active' ? 'Activa' : 'Inactiva';
+
+            const actionIcon = account.status === 'active'
+                ? '<i class="fas fa-ban"></i>'
+                : '<i class="fas fa-check"></i>';
+            const actionTitle = account.status === 'active' ? 'Suspender' : 'Activar';
+
+            html += `
+                <tr>
+                    <td>#${account.id}</td>
+                    <td>${account.userName || account.user?.name || '—'}</td>
+                    <td>${account.type === 'savings' ? 'Ahorro' : 'Corriente'}</td>
+                    <td>${account.number}</td>
+                    <td>$${formattedBalance}</td>
+                    <td><span class="user-status ${statusClass}">${statusText}</span></td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <div class="user-actions">
+                            <div class="action-icon view-icon" title="Ver detalles"><i class="fas fa-eye"></i></div>
+                            <div class="action-icon edit-icon" title="Editar"><i class="fas fa-edit"></i></div>
+                            <div class="action-icon delete-icon" title="${actionTitle}">${actionIcon}</div>
                         </div>
-                        <div class="action-icon edit-icon" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="action-icon delete-icon" title="${actionTitle}">
-                            ${actionIcon}
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
+                    </td>
+                </tr>
+            `;
+        });
 
-    tableBody.innerHTML = html;
-    setupAccountActions();
+        tableBody.innerHTML = html;
+
+    } catch (err) {
+        console.error(err);
+        tableBody.innerHTML = `<tr><td colspan="8">Error al cargar cuentas</td></tr>`;
+    }
 }
 
 // Configurar acciones para los botones de cuentas

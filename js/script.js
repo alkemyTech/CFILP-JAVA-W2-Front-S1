@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     const data = await response.json();
                     saveToken(data.token);  //savetoken en auth.js
-                    window.location.href = "../dashboard/client.html";
+                    window.location.href = "./../dashboard/client/client.html"; // Redirigir a la página de inicio después del inicio de sesión exitoso
                 } else {
                     loginError.textContent = "Credenciales inválidas";
                 }
