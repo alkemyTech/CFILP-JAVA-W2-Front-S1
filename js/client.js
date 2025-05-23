@@ -38,7 +38,12 @@ const userId = getUserIdFromToken();
         loadDollarRates(true);
     });
 
-    
+
+
+
+
+
+
 // Traer nombre y rol del usuario logueado desde el back
 async function fetchUserData(userId) {
         await fetch(`http://localhost:8080/api/users/${userId}`, {
@@ -71,6 +76,8 @@ async function fetchUserData(userId) {
     function loadInitialData() {
         const userData = JSON.parse(localStorage.getItem('data'));
        console.log("user data" + userData);
+
+
         const balanceElement = document.getElementById('balanceAmount')
          balanceElement.textContent = userData.accounts[0].balance.toLocaleString();
         

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Modal</title>
+     <link rel="stylesheet" href="/css/mobile-menu.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/client.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="../wallet_icon.png" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="modal-container confirmation-modal">
+            <div class="modal-header">
+                <h3 id="confirmationTitle"><i class="fas fa-check-circle"></i> Operación exitosa</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="confirmation-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4 id="confirmationMessage">Tu operación se ha procesado correctamente</h4>
+                    <div id="confirmationDetails" class="confirmation-details"></div>
+                    <div class="confirmation-actions">
+                        <button type="button" class="btn-outline" id="downloadReceipt">
+                            <i class="fas fa-download"></i> Descargar comprobante
+                        </button>
+                        <button type="button" class="btn-outline" id="shareReceipt">
+                            <i class="fas fa-share"></i> Compartir
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" data-modal="confirmationModal">Cerrar</button>
+            </div>  
+        </div>
+    </div>
+
+     <script src="/js/script.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/modals.js"></script>
+</body>
+
+</html>

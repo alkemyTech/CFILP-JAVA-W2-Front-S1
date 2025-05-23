@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Modal</title>
+     <link rel="stylesheet" href="/css/mobile-menu.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/client.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="../wallet_icon.png" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div id="transferModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-exchange-alt"></i> Transferir dinero</h3>
+                <button class="modal-close" data-modal="transferModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="balance-info">
+                    <div class="available-balance">
+                        <span>Saldo disponible:</span>
+                        <span class="balance-amount">$15,750.00</span>
+                    </div>
+                </div>
+
+                <form id="transferForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="transferType">Tipo de transferencia</label>
+                        <select id="transferType" name="transferType" required>
+                            <option value="">Selecciona el tipo</option>
+                            <option value="alkywallet">A otra cuenta AlkyWallet</option>
+                            <option value="bank_transfer">A cuenta bancaria</option>
+                            <option value="email">Por correo electrónico</option>
+                            <option value="phone">Por número de teléfono</option>
+                        </select>
+                    </div>
+
+                    <div id="recipientDetails" class="recipient-details">
+                        <div class="form-group" id="emailGroup" style="display: none;">
+                            <label for="recipientEmail">Correo del destinatario</label>
+                            <input type="email" id="recipientEmail" name="recipientEmail"
+                                placeholder="ejemplo@correo.com">
+                        </div>
+
+                        <div class="form-group" id="phoneGroup" style="display: none;">
+                            <label for="recipientPhone">Teléfono del destinatario</label>
+                            <input type="tel" id="recipientPhone" name="recipientPhone" placeholder="(011) 1234-5678">
+                        </div>
+
+                        <div class="form-group" id="walletGroup" style="display: none;">
+                            <label for="recipientWallet">ID de AlkyWallet</label>
+                            <input type="text" id="recipientWallet" name="recipientWallet"
+                                placeholder="@usuario o ID de cuenta">
+                        </div>
+
+                        <div id="bankTransferDetails" style="display: none;">
+                            <div class="form-group">
+                                <label for="recipientBank">Banco del destinatario</label>
+                                <select id="recipientBank" name="recipientBank">
+                                    <option value="">Selecciona el banco</option>
+                                    <option value="banco_nacion">Banco Nación</option>
+                                    <option value="banco_provincia">Banco Provincia</option>
+                                    <option value="santander">Santander</option>
+                                    <option value="bbva">BBVA</option>
+                                    <option value="galicia">Banco Galicia</option>
+                                    <option value="macro">Banco Macro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="recipientAccount">Número de cuenta</label>
+                                <input type="text" id="recipientAccount" name="recipientAccount"
+                                    placeholder="Número de cuenta del destinatario">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="recipientName">Nombre del titular</label>
+                                <input type="text" id="recipientName" name="recipientName"
+                                    placeholder="Nombre completo del destinatario">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transferAmount">Monto a transferir</label>
+                        <div class="amount-input">
+                            <span class="currency">$</span>
+                            <input type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="1"
+                                step="0.01" required>
+                        </div>
+                        <div class="amount-limits">
+                            <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transferConcept">Concepto</label>
+                        <input type="text" id="transferConcept" name="transferConcept"
+                            placeholder="Ej: Pago de servicios, Regalo, etc." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transferDescription">Mensaje (opcional)</label>
+                        <textarea id="transferDescription" name="transferDescription"
+                            placeholder="Mensaje para el destinatario" rows="3"></textarea>
+                    </div>
+
+                    <div class="transaction-summary">
+                        <div class="summary-row">
+                            <span>Monto:</span>
+                            <span id="transferSummaryAmount">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Comisión:</span>
+                            <span id="transferFee">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total a transferir:</span>
+                            <span id="transferTotal">$0.00</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="transferModal">Cancelar</button>
+                <button type="submit" form="transferForm" class="btn-primary">Confirmar transferencia</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+ <script src="/js/script.js"></script>
+    <script src="/js/auth.js"></script>
+       <script src="/js/modals.js"></script>
+</body>
+
+</html>
