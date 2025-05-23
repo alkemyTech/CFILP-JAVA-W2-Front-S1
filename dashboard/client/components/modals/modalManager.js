@@ -9,6 +9,7 @@ class ModalManager {
             withdraw: document.getElementById("withdrawModal"),
             transfer: document.getElementById("transferModal"),
             confirmation: document.getElementById("confirmationModal"),
+            addAccount: document.getElementById("addAccountModal"), // <-- CORRECTO
         }
 
         this.activeModal = null
