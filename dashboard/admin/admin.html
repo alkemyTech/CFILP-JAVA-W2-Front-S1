@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlkyWallet - Panel de Administración</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/mobile-menu.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link rel="stylesheet" href="./../../assets/css/style.css">
+    <link rel="stylesheet" href="./../../assets/css/mobile-menu.css">
+    <link rel="stylesheet" href="./../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="./../../assets/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="../../assets/img/wallet_icon.png" type="image/svg+xml">
+    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -19,7 +19,7 @@
         <!-- Sidebar -->
         <aside class="sidebar admin-sidebar">
             <div class="logo-container">
-                <img src="../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                <img src="./../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45">
                 <h1>AlkyWallet</h1>
             </div>
             <div class="admin-badge">Administrador</div>
@@ -31,11 +31,11 @@
                     <li class="menu-link"><a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
                     <li class="menu-link"><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
                     <li class="menu-link"><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
-                    <li class="menu-link"><a href="index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <li class="menu-link"><a href="./../../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </nav>
             <div class="user-info">
-                <img src="../programmer.png" alt="Foto de perfil" class="profile-pic">
+                <img src="./../../assets/img/programmer.png" alt="Foto de perfil" class="profile-pic">
                 <div>
                     <p class="user-name">Admin AlkyWallet</p>
                     <p class="user-role">Administrador</p>
@@ -392,33 +392,15 @@
             </a>
         </nav>
     </div>
-    <script src="/dashboard/admin/admin.js"></script>
-    <script src="../../assets/js/auth.js"></script>
-    <script src="../../assets/js/api.js"></script>
-    <script src="../../assets/js/menuActiveState.js"></script>
-    <script src="../../assets/js/mobile-menu.js" defer></script>
+    <script src="./../../js/auth.js"></script>
+    <script src="./../../js/api.js"></script>
+    <script src="./admin.js"></script>
+    <script src="./../../js/menuActiveState.js"></script>
+    <script src="./../../js/mobile-menu.js" defer></script>
     <script>
         document.body.classList.add('has-mobile-menu');
     </script>
-    <script>
-        if (!isAuthenticated()) {
-            window.location.href = "index.html";
-        }
-
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            removeToken();
-            window.location.href = "index.html";
-        });
-
-        // Ejemplo: obtener datos protegidos
-        fetchProtected("/api/user/me").then(data => {
-            document.getElementById("data").innerText = JSON.stringify(data, null, 2);
-        }).catch(() => {
-            alert("No autorizado");
-            removeToken();
-            window.location.href = "index.html";
-        });
-    </script>
+   
 </body>
 
 </html>

@@ -1,5 +1,17 @@
 document.addEventListener('DOMContentLoaded', async function () {
-
+      // verificar si el usuario está autenticado
+    if (!isAuthenticated()) {
+        window.location.href = "./../../index.html";
+        return;
+    }
+    // Configurar acciones para el boton de cerrar sesión
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            removeToken();
+            window.location.href = "./../../index.html";
+        });
+    }
 
     function getUserIdFromToken() {
         const token = localStorage.getItem('token');

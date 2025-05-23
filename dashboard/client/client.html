@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AlkyWallet - Dashboard Usuario</title>
-    <link rel="stylesheet" href="../../assets/css/mobile-menu.css" />
-    <link rel="stylesheet" href="../../assets/css/style.css" />
-    <link rel="stylesheet" href="../../assets/css/dashboard.css" />
-    <link rel="stylesheet" href="../../assets/css/client.css" />
+    <link rel="stylesheet" href="./../../js/mobile-menu.js" />
+    <link rel="stylesheet" href="./../../assets/css/style.css" />
+    <link rel="stylesheet" href="./../../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="./../../assets/css/client.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../../assets/css/modal.css" />
-    <link rel="icon" href="../../assets/img/wallet_icon.png" type="image/svg+xml">
+    <link rel="stylesheet" href="./../../assets/css/modal.css" />
+    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml">
 </head>
 
 <body class="dashboard">
@@ -19,7 +19,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="../../assets/img/wallet_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                <img src="./../../assets/img/wallet_icon.png" alt="icono AlkyWallet" width="45" height="45">
                 <h1>AlkyWallet</h1>
             </div>
             <nav class="sidebar-menu">
@@ -697,27 +697,18 @@
 
     </div>
 
+    <script src="./../../js/auth.js"></script>
+    <script src="./../../js/api.js"></script>
     <script src="./../client/components/modals/modalManager.js"></script>
     <script src="./../client/components/modals/index.js"></script>
     <script src="./client.js"></script>
-    <script src="../../js/auth.js"></script>
-    <script src="../../js/api.js"></script>
-    <script src="../../js/menuActiveState.js"></script>
-    <script src="../../js/mobile-menu.js"></script>
-    <script src="accounts.js"></script>
+    <script src="./../../js/menuActiveState.js"></script>
+    <script src="./../../js/mobile-menu.js"></script>
+    <script src="./accounts.js"></script>
     <script>
         document.body.classList.add('has-mobile-menu');
     </script>
-    <script>
-        if (!isAuthenticated()) {
-            window.location.href = "../../index.html";
-        }
-
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            removeToken();
-            window.location.href = "../../index.html";
-        });
-    </script>
+    
 </body>
 
 </html>
