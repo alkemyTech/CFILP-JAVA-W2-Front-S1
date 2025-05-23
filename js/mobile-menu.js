@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const userMenu = document.querySelector('.user-menu');
     const adminMenu = document.querySelector('.admin-menu');
 
-    if (isAdminPage) {
-        userMenu.style.display = 'none';
-        adminMenu.style.display = 'block';
-    } else {
-        userMenu.style.display = 'block';
-        adminMenu.style.display = 'none';
+    if (userMenu && adminMenu) {
+        if (isAdminPage) {
+            userMenu.style.display = 'none';
+            adminMenu.style.display = 'block';
+        } else {
+            userMenu.style.display = 'block';
+            adminMenu.style.display = 'none';
+        }
     }
 
     // Manejar clics en los ítems del menú
@@ -99,13 +101,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Asegurar que el menú permanezca visible incluso cuando se muestra el teclado virtual
     const originalHeight = window.innerHeight
     window.addEventListener("resize", () => {
+        const menuContainer = document.querySelector(".mobile-menu-container");
+        if (!menuContainer) return;
         // Si la altura de la ventana cambia significativamente (teclado virtual)
         if (window.innerHeight < originalHeight * 0.75) {
             // Ocultar temporalmente el menú mientras el teclado está visible
-            document.querySelector(".mobile-menu-container").style.transform = "translateY(100%)"
+            menuContainer.style.transform = "translateY(100%)"
         } else {
             // Mostrar el menú cuando el teclado se oculta
-            document.querySelector(".mobile-menu-container").style.transform = "translateY(0)"
+            menuContainer.style.transform = "translateY(0)"
         }
     })
 

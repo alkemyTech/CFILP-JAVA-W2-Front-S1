@@ -73,7 +73,7 @@ label {
     font-weight: 500;
 }
 
-input[type="email"],
+input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -83,7 +83,7 @@ input[type="password"] {
     transition: border-color 0.3s;
 }
 
-input[type="email"]:focus,
+input[type="text"]:focus,
 input[type="password"]:focus {
     border-color: #43cea2;
     outline: none;
@@ -95,6 +95,14 @@ input[type="password"]:focus {
 
 .toggle-password {
     position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+}
+.toggle-password-register {
+    position: relative;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
@@ -179,6 +187,8 @@ input[type="password"]:focus {
         align-items: flex-start;
         gap: 10px;
     }
+
+    
 }
 
 

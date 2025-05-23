@@ -258,21 +258,22 @@
     padding: 30px 20px;
 }
 .balance-amount {
-    font-size: 2.5rem;
+    font-size: 2.5rem !important;
     font-weight: 700;
-    color: #185a9d;
+    color: #185a9d!important;
     margin-bottom: 20px;
     text-align: center;
-
+    position: relative;
     display: flex;
     justify-content: center;
+    justify-items: center;  
     align-items: baseline;
     gap: 5px;
 }
 
-.currency {
-    font-size: 1.8rem;
-    margin-right: 0;
+.currency-balance {
+  display: inline-block;
+    font-size: 2.5rem !important;
     vertical-align: baseline;
 }
 
@@ -706,5 +707,485 @@
     }
 }
 
+/* Estilos para la sección de cuentas - Versión Responsive Mejorada */
+.accounts-card {
+  margin-bottom: 20px;
+}
+
+.accounts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.account-item {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 70px;
+}
+
+.account-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.account-item.selected {
+  border-color: #43cea2;
+  background: linear-gradient(135deg, rgba(67, 206, 162, 0.1) 0%, rgba(24, 90, 157, 0.05) 100%);
+}
+
+.account-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.account-details {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.account-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-info {
+  display: flex;
+  gap: 15px;
+  font-size: 13px;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.account-type,
+.account-alias {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.account-type i,
+.account-alias i {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.account-currency {
+  margin-left: auto;
+  font-weight: 700;
+  color: #185a9d;
+  font-size: 16px;
+  padding: 5px 12px;
+  background-color: rgba(24, 90, 157, 0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.account-action-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.account-action-btn:hover {
+  background-color: rgba(67, 206, 162, 0.1);
+  color: #43cea2;
+}
+
+.add-account-btn {
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-account-btn:hover {
+  transform: rotate(90deg);
+  box-shadow: 0 0 10px rgba(67, 206, 162, 0.5);
+}
+
+.account-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  color: #aaa;
+  font-style: italic;
+}
+
+.account-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  color: white;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 0 12px 0 12px;
+  font-weight: 600;
+}
+
+/* Media Queries para Responsive Design */
+
+/* Tablets y pantallas medianas (768px - 1024px) */
+@media (max-width: 1024px) {
+  .account-info {
+    gap: 10px;
+  }
+
+  .account-currency {
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+}
+
+/* Tablets pequeñas (600px - 768px) */
+@media (max-width: 768px) {
+  .account-item {
+    padding: 12px;
+  }
+
+  .account-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    margin-right: 12px;
+  }
+
+  .account-name {
+    font-size: 15px;
+  }
+
+  .account-info {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .account-currency {
+    font-size: 13px;
+    padding: 3px 8px;
+    margin-left: 10px;
+  }
+
+  .account-actions {
+    margin-left: 10px;
+    gap: 5px;
+  }
+
+  .account-action-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+/* Móviles grandes (480px - 600px) */
+@media (max-width: 600px) {
+  .accounts-container {
+    gap: 12px;
+  }
+
+  .account-item {
+    padding: 10px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    min-height: auto;
+  }
+
+  .account-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .account-details {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .account-name {
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .account-info {
+    font-size: 11px;
+    gap: 6px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 11px;
+  }
+
+  .account-currency {
+    font-size: 12px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    order: 1;
+  }
+
+  .account-actions {
+    margin-left: 8px;
+    gap: 3px;
+    order: 2;
+  }
+
+  .account-action-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .account-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+}
+
+/* Móviles pequeños (320px - 480px) */
+@media (max-width: 480px) {
+  .accounts-card {
+    margin-bottom: 15px;
+  }
+
+  .accounts-container {
+    gap: 10px;
+  }
+
+  .account-item {
+    padding: 8px;
+    border-radius: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .account-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    margin-right: 0;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+
+  .account-details {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .account-name {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .account-info {
+    font-size: 10px;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 10px;
+  }
+
+  .account-currency {
+    font-size: 11px;
+    padding: 2px 5px;
+    margin-left: 0;
+    align-self: flex-start;
+    margin-bottom: 5px;
+  }
+
+  .account-actions {
+    margin-left: 0;
+    gap: 5px;
+    align-self: flex-end;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .account-action-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .account-badge {
+    font-size: 8px;
+    padding: 1px 4px;
+    border-radius: 0 8px 0 8px;
+  }
+
+  .account-placeholder {
+    height: 80px;
+    font-size: 12px;
+  }
+
+  .add-account-btn {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Móviles muy pequeños (menos de 320px) */
+@media (max-width: 320px) {
+  .account-item {
+    padding: 6px;
+  }
+
+  .account-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .account-name {
+    font-size: 12px;
+  }
+
+  .account-info {
+    font-size: 9px;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 9px;
+  }
+
+  .account-currency {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  .account-action-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+  }
+
+  .add-account-btn {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Estilos para el modal de agregar cuenta en móviles */
+@media (max-width: 600px) {
+  .helper-text {
+    font-size: 11px;
+  }
+}
+
+/* Mejoras para accesibilidad en pantallas táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .account-item:hover {
+    transform: none;
+  }
+
+  .account-action-btn:hover {
+    background-color: rgba(67, 206, 162, 0.2);
+  }
+
+  .add-account-btn:hover {
+    transform: none;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .account-item {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+  }
+
+  .account-icon {
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+
+  .account-details {
+    margin-bottom: 0;
+  }
+
+  .account-currency {
+    margin-left: auto;
+    margin-bottom: 0;
+  }
+
+  .account-actions {
+    margin-left: 10px;
+    width: auto;
+    justify-content: flex-end;
+  }
+}
 
 
+/* Estilos para el modal de agregar cuenta */
+.helper-text {
+  color: #666;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
