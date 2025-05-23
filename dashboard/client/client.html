@@ -5,13 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AlkyWallet - Dashboard Usuario</title>
-    <link rel="stylesheet" href="/css/mobile-menu.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/dashboard.css" />
-    <link rel="stylesheet" href="/css/client.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-menu.css" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../../assets/css/client.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="icon" href="../wallet_icon.png" type="image/svg+xml">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="../../assets/img/wallet_icon.png" type="image/svg+xml">
 </head>
 
 <body class = "dashboard">
@@ -19,7 +18,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="../wallet_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                <img src="../../assets/img/wallet_icon.png" alt="icono AlkyWallet" width="45" height="45">
                 <h1>AlkyWallet</h1>
             </div>
             <nav class="sidebar-menu">
@@ -86,13 +85,13 @@
                         <span class="amount" id="balanceAmount">00.00</span>
                     </div>
                     <div class="balance-actions">
-                        <button class="action-btn" onclick="openAlkyModal('deposit')">
+                        <button class="action-btn" onclick="  openModal('depositModal')">
                             <i class="fas fa-plus"></i> Depositar
                         </button>
-                        <button class="action-btn" onclick="openAlkyModal('transfer')">
+                        <button class="action-btn" onclick="openModal('transferModal')">
                             <i class="fas fa-paper-plane"></i> Transferir
                         </button>
-                        <button class="action-btn" onclick="openAlkyModal('withdraw')">
+                        <button class="action-btn" onclick="openModal('withdrawModal')">
                             <i class="fas fa-money-bill-wave"></i> Retirar
                         </button>
                     </div>
@@ -224,6 +223,8 @@
                     </div>
                 </section>
             </div>
+            
+
             <!-- Menú móvil para Usuario -->
             <div class="mobile-menu-container user-menu">
                 <nav class="mobile-menu">
@@ -251,22 +252,24 @@
             </div>
         </main>
     </div>
-    <script src="../js/client.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/menuActiveState.js"></script>
-    <script src="../js/mobile-menu.js"></script>
+    <script src="/dashboard/client/components/modals/modalManager.js"></script>
+    <script src="/dashboard/client/components/modals/index.js"></script>
+    <script src="/dashboard/client/client.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/menuActiveState.js"></script>
+    <script src="../../js/mobile-menu.js"></script>
     <script>
         document.body.classList.add('has-mobile-menu');
     </script>
     <script>
         if (!isAuthenticated()) {
-            window.location.href = "../index.html";
+            window.location.href = "../../index.html";
         }
 
             document.getElementById("logoutBtn").addEventListener("click", () => {
             removeToken();
-            window.location.href = "../index.html";
+            window.location.href = "../../index.html";
         });
     </script>
 </body>
