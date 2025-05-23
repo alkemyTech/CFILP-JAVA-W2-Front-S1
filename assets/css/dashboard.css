@@ -706,8 +706,7 @@
     }
 }
 
-
-/* Estilos para la sección de cuentas */
+/* Estilos para la sección de cuentas - Versión Responsive Mejorada */
 .accounts-card {
   margin-bottom: 20px;
 }
@@ -730,6 +729,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  min-height: 70px;
 }
 
 .account-item:hover {
@@ -759,6 +759,7 @@
 .account-details {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 .account-name {
@@ -776,6 +777,7 @@
   gap: 15px;
   font-size: 13px;
   color: #666;
+  flex-wrap: wrap;
 }
 
 .account-type,
@@ -783,6 +785,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 .account-type i,
@@ -802,12 +805,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .account-actions {
   display: flex;
   gap: 10px;
   margin-left: 15px;
+  flex-shrink: 0;
 }
 
 .account-action-btn {
@@ -873,38 +878,308 @@
   font-weight: 600;
 }
 
-/* Estilos para dispositivos móviles */
+/* Media Queries para Responsive Design */
+
+/* Tablets y pantallas medianas (768px - 1024px) */
+@media (max-width: 1024px) {
+  .account-info {
+    gap: 10px;
+  }
+
+  .account-currency {
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+}
+
+/* Tablets pequeñas (600px - 768px) */
 @media (max-width: 768px) {
   .account-item {
-    flex-direction: column;
-    align-items: flex-start;
     padding: 12px;
   }
-  
+
   .account-icon {
-    margin-right: 0;
-    margin-bottom: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    margin-right: 12px;
   }
-  
+
+  .account-name {
+    font-size: 15px;
+  }
+
   .account-info {
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
+    font-size: 12px;
+    gap: 8px;
   }
-  
+
   .account-currency {
-    margin-left: 0;
-    margin-top: 10px;
+    font-size: 13px;
+    padding: 3px 8px;
+    margin-left: 10px;
+  }
+
+  .account-actions {
+    margin-left: 10px;
+    gap: 5px;
+  }
+
+  .account-action-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+/* Móviles grandes (480px - 600px) */
+@media (max-width: 600px) {
+  .accounts-container {
+    gap: 12px;
+  }
+
+  .account-item {
+    padding: 10px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    min-height: auto;
+  }
+
+  .account-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .account-details {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .account-name {
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .account-info {
+    font-size: 11px;
+    gap: 6px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 11px;
+  }
+
+  .account-currency {
+    font-size: 12px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    order: 1;
+  }
+
+  .account-actions {
+    margin-left: 8px;
+    gap: 3px;
+    order: 2;
+  }
+
+  .account-action-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .account-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+}
+
+/* Móviles pequeños (320px - 480px) */
+@media (max-width: 480px) {
+  .accounts-card {
+    margin-bottom: 15px;
+  }
+
+  .accounts-container {
+    gap: 10px;
+  }
+
+  .account-item {
+    padding: 8px;
+    border-radius: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .account-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    margin-right: 0;
+    margin-bottom: 8px;
     align-self: flex-start;
   }
-  
+
+  .account-details {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .account-name {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .account-info {
+    font-size: 10px;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 10px;
+  }
+
+  .account-currency {
+    font-size: 11px;
+    padding: 2px 5px;
+    margin-left: 0;
+    align-self: flex-start;
+    margin-bottom: 5px;
+  }
+
   .account-actions {
     margin-left: 0;
-    margin-top: 10px;
+    gap: 5px;
+    align-self: flex-end;
     width: 100%;
     justify-content: flex-end;
   }
+
+  .account-action-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .account-badge {
+    font-size: 8px;
+    padding: 1px 4px;
+    border-radius: 0 8px 0 8px;
+  }
+
+  .account-placeholder {
+    height: 80px;
+    font-size: 12px;
+  }
+
+  .add-account-btn {
+    width: 28px;
+    height: 28px;
+  }
 }
+
+/* Móviles muy pequeños (menos de 320px) */
+@media (max-width: 320px) {
+  .account-item {
+    padding: 6px;
+  }
+
+  .account-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .account-name {
+    font-size: 12px;
+  }
+
+  .account-info {
+    font-size: 9px;
+  }
+
+  .account-type,
+  .account-alias {
+    font-size: 9px;
+  }
+
+  .account-currency {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  .account-action-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+  }
+
+  .add-account-btn {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Estilos para el modal de agregar cuenta en móviles */
+@media (max-width: 600px) {
+  .helper-text {
+    font-size: 11px;
+  }
+}
+
+/* Mejoras para accesibilidad en pantallas táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .account-item:hover {
+    transform: none;
+  }
+
+  .account-action-btn:hover {
+    background-color: rgba(67, 206, 162, 0.2);
+  }
+
+  .add-account-btn:hover {
+    transform: none;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .account-item {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+  }
+
+  .account-icon {
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+
+  .account-details {
+    margin-bottom: 0;
+  }
+
+  .account-currency {
+    margin-left: auto;
+    margin-bottom: 0;
+  }
+
+  .account-actions {
+    margin-left: 10px;
+    width: auto;
+    justify-content: flex-end;
+  }
+}
+
 
 /* Estilos para el modal de agregar cuenta */
 .helper-text {
