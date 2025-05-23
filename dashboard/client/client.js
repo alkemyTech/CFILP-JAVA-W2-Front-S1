@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
 
-
+    
 
 
 
@@ -83,6 +83,8 @@ function loadInitialData() {
 
 
 }
+
+
 
 // Función para cargar el saldo
 function loadBalance(userId, isRefresh = true) { //false
