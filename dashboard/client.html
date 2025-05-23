@@ -56,7 +56,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="dashboard-header">
-                <h2>Dashboard</h2>
+                <h2>Bienvenido</h2>
                 <div class="header-actions">
                     <div class="search-bar">
                         <input type="text" placeholder="Buscar..." />
@@ -86,18 +86,19 @@
                         <span class="amount" id="balanceAmount">00.00</span>
                     </div>
                     <div class="balance-actions">
-                        <button class="action-btn">
+                        <button class="action-btn" onclick="openAlkyModal('deposit')">
                             <i class="fas fa-plus"></i> Depositar
                         </button>
-                        <button class="action-btn">
+                        <button class="action-btn" onclick="openAlkyModal('transfer')">
                             <i class="fas fa-paper-plane"></i> Transferir
                         </button>
-                        <button class="action-btn">
+                        <button class="action-btn" onclick="openAlkyModal('withdraw')">
                             <i class="fas fa-money-bill-wave"></i> Retirar
                         </button>
                     </div>
                 </div>
             </section>
+
 
             <!-- Recent Transactions -->
             <section class="card transactions-card">
