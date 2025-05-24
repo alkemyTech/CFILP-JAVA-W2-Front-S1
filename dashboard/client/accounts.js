@@ -48,6 +48,7 @@
                 userAccounts[0].isDefault = true;
             }
         } catch (error) {
+            
             accountsContainer.innerHTML = `
                 <div class="account-placeholder">
                     <div class="placeholder-text">No se pudieron cargar las cuentas.</div>
