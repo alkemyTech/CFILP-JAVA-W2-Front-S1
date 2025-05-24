@@ -74,24 +74,25 @@
             </header>
 
             <!-- Accounts Section -->
-<section class="card accounts-card">
-    <div class="card-header">
-        <h3>Mis Cuentas</h3>
-        <div class="card-actions">
-            <button class="add-account-btn" id="addAccountBtn" title="Agregar nueva cuenta" data-open-modal="addAccount">
-                <i class="fas fa-plus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="card-content">
-        <div class="accounts-container" id="accountsContainer">
-            <!-- Las cuentas se cargarán dinámicamente aquí -->
-            <div class="account-placeholder">
-                <div class="placeholder-text">Cargando cuentas...</div>
-            </div>
-        </div>
-    </div>
-</section>
+            <section class="card accounts-card">
+                <div class="card-header">
+                    <h3>Mis Cuentas</h3>
+                    <div class="card-actions">
+                        <button class="add-account-btn" id="addAccountBtn" title="Agregar nueva cuenta"
+                            data-open-modal="addAccount">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="accounts-container" id="accountsContainer">
+                        <!-- Las cuentas se cargarán dinámicamente aquí -->
+                        <div class="account-placeholder">
+                            <div class="placeholder-text">Cargando cuentas...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <!-- Balance Card -->
 
             <section class="card balance-card">
@@ -278,156 +279,267 @@
                 </nav>
             </div>
         </main>
-  
+
         <!-- Modals -->
 
-            <!-- Modal para Depositar -->
+        <!-- Modal para Depositar -->
 
-    <div id="depositModal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3><i class="fas fa-plus-circle"></i> Depositar dinero</h3>
-                <button class="modal-close" data-modal="depositModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form id="depositForm" class="modal-form">
-                    <div class="form-group">
-                        <label for="depositMethod">Método de depósito</label>
-                        <select id="depositMethod" name="depositMethod" required>
-                            <option value="">Selecciona un método</option>
-                            <option value="bank_transfer">Transferencia bancaria</option>
-                            <option value="debit_card">Tarjeta de débito</option>
-                            <option value="credit_card">Tarjeta de crédito</option>
-                            <option value="cash">Efectivo (Red de cobranza)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="depositAmount">Monto a depositar</label>
-                        <div class="amount-input">
-                            <span class="currency">$</span>
-                            <input type="number" id="depositAmount" name="depositAmount" placeholder="0.00" min="1"
-                                step="0.01" required>
-                        </div>
-                        <div class="amount-limits">
-                            <small>Mínimo: $1.00 - Máximo: $50,000.00</small>
-                        </div>
-                    </div>
-
-                    <div id="cardDetails" class="card-details" style="display: none;">
-                        <div class="form-group">
-                            <label for="cardNumber">Número de tarjeta</label>
-                            <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"
-                                maxlength="19">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="expiryDate">Fecha de vencimiento</label>
-                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA" maxlength="5">
-                            </div>
-                            <div class="form-group">
-                                <label for="cvv">CVV</label>
-                                <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cardName">Nombre en la tarjeta</label>
-                            <input type="text" id="cardName" name="cardName" placeholder="Nombre completo">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="depositDescription">Descripción (opcional)</label>
-                        <input type="text" id="depositDescription" name="depositDescription"
-                            placeholder="Ej: Recarga mensual">
-                    </div>
-
-                    <div class="transaction-summary">
-                        <div class="summary-row">
-                            <span>Monto:</span>
-                            <span id="depositSummaryAmount">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Comisión:</span>
-                            <span id="depositFee">$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total a pagar:</span>
-                            <span id="depositTotal">$0.00</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-modal="depositModal">Cancelar</button>
-                <button type="submit" form="depositForm" class="btn-primary">Confirmar depósito</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fin del modal de depósito -->
-
-    
-<!-- Modal para transferencias -->
-
-    <div id="transferModal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3><i class="fas fa-exchange-alt"></i> Transferir dinero</h3>
-                <button class="modal-close" data-modal="transferModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="balance-info">
-                    <div class="available-balance">
-                        <span>Saldo disponible:</span>
-                        <span class="balance-amount">$15,750.00</span>
-                    </div>
+        <div id="depositModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3><i class="fas fa-plus-circle"></i> Depositar dinero</h3>
+                    <button class="modal-close" data-modal="depositModal">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
 
-                <form id="transferForm" class="modal-form">
-                    <div class="form-group">
-                        <label for="transferType">Tipo de transferencia</label>
-                        <select id="transferType" name="transferType" required>
-                            <option value="">Selecciona el tipo</option>
-                            <option value="alkywallet">A otra cuenta AlkyWallet</option>
-                            <option value="bank_transfer">A cuenta bancaria</option>
-                            <option value="email">Por correo electrónico</option>
-                            <option value="phone">Por número de teléfono</option>
-                        </select>
+                <div class="modal-body">
+                    <form id="depositForm" class="modal-form">
+                        <div class="form-group">
+                            <label for="depositMethod">Método de depósito</label>
+                            <select id="depositMethod" name="depositMethod" required>
+                                <option value="">Selecciona un método</option>
+                                <option value="bank_transfer">Transferencia bancaria</option>
+                                <option value="debit_card">Tarjeta de débito</option>
+                                <option value="credit_card">Tarjeta de crédito</option>
+                                <option value="cash">Efectivo (Red de cobranza)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depositAmount">Monto a depositar</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="depositAmount" name="depositAmount" placeholder="0.00" min="1"
+                                    step="0.01" required>
+                            </div>
+                            <div class="amount-limits">
+                                <small>Mínimo: $1.00 - Máximo: $50,000.00</small>
+                            </div>
+                        </div>
+
+                        <div id="cardDetails" class="card-details" style="display: none;">
+                            <div class="form-group">
+                                <label for="cardNumber">Número de tarjeta</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"
+                                    maxlength="19">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Fecha de vencimiento</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA"
+                                        maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cardName">Nombre en la tarjeta</label>
+                                <input type="text" id="cardName" name="cardName" placeholder="Nombre completo">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depositDescription">Descripción (opcional)</label>
+                            <input type="text" id="depositDescription" name="depositDescription"
+                                placeholder="Ej: Recarga mensual">
+                        </div>
+
+                        <div class="transaction-summary">
+                            <div class="summary-row">
+                                <span>Monto:</span>
+                                <span id="depositSummaryAmount">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Comisión:</span>
+                                <span id="depositFee">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total a pagar:</span>
+                                <span id="depositTotal">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" data-modal="depositModal">Cancelar</button>
+                            <button type="submit" form="depositForm" class="btn-primary">Confirmar depósito</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fin del modal de depósito -->
+
+
+        <!-- Modal para transferencias -->
+
+        <div id="transferModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3><i class="fas fa-exchange-alt"></i> Transferir dinero</h3>
+                    <button class="modal-close" data-modal="transferModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="balance-info">
+                        <div class="available-balance">
+                            <span>Saldo disponible:</span>
+                            <span class="balance-amount">$15,750.00</span>
+                        </div>
                     </div>
 
-                    <div id="recipientDetails" class="recipient-details">
-                        <div class="form-group" id="emailGroup" style="display: none;">
-                            <label for="recipientEmail">Correo del destinatario</label>
-                            <input type="email" id="recipientEmail" name="recipientEmail"
-                                placeholder="ejemplo@correo.com">
+                    <form id="transferForm" class="modal-form">
+                        <div class="form-group">
+                            <label for="transferType">Tipo de transferencia</label>
+                            <select id="transferType" name="transferType" required>
+                                <option value="">Selecciona el tipo</option>
+                                <option value="alkywallet">A otra cuenta AlkyWallet</option>
+                                <option value="bank_transfer">A cuenta bancaria</option>
+                                <option value="email">Por correo electrónico</option>
+                                <option value="phone">Por número de teléfono</option>
+                            </select>
                         </div>
 
-                        <div class="form-group" id="phoneGroup" style="display: none;">
-                            <label for="recipientPhone">Teléfono del destinatario</label>
-                            <input type="tel" id="recipientPhone" name="recipientPhone" placeholder="(011) 1234-5678">
+                        <div id="recipientDetails" class="recipient-details">
+                            <div class="form-group" id="emailGroup" style="display: none;">
+                                <label for="recipientEmail">Correo del destinatario</label>
+                                <input type="email" id="recipientEmail" name="recipientEmail"
+                                    placeholder="ejemplo@correo.com">
+                            </div>
+
+                            <div class="form-group" id="phoneGroup" style="display: none;">
+                                <label for="recipientPhone">Teléfono del destinatario</label>
+                                <input type="tel" id="recipientPhone" name="recipientPhone"
+                                    placeholder="(011) 1234-5678">
+                            </div>
+
+                            <div class="form-group" id="walletGroup" style="display: none;">
+                                <label for="recipientWallet">ID de AlkyWallet</label>
+                                <input type="text" id="recipientWallet" name="recipientWallet"
+                                    placeholder="@usuario o ID de cuenta">
+                            </div>
+
+                            <div id="bankTransferDetails" style="display: none;">
+                                <div class="form-group">
+                                    <label for="recipientBank">Banco del destinatario</label>
+                                    <select id="recipientBank" name="recipientBank">
+                                        <option value="">Selecciona el banco</option>
+                                        <option value="banco_nacion">Banco Nación</option>
+                                        <option value="banco_provincia">Banco Provincia</option>
+                                        <option value="santander">Santander</option>
+                                        <option value="bbva">BBVA</option>
+                                        <option value="galicia">Banco Galicia</option>
+                                        <option value="macro">Banco Macro</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="recipientAccount">Número de cuenta</label>
+                                    <input type="text" id="recipientAccount" name="recipientAccount"
+                                        placeholder="Número de cuenta del destinatario">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="recipientName">Nombre del titular</label>
+                                    <input type="text" id="recipientName" name="recipientName"
+                                        placeholder="Nombre completo del destinatario">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group" id="walletGroup" style="display: none;">
-                            <label for="recipientWallet">ID de AlkyWallet</label>
-                            <input type="text" id="recipientWallet" name="recipientWallet"
-                                placeholder="@usuario o ID de cuenta">
+                        <div class="form-group">
+                            <label for="transferAmount">Monto a transferir</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="transferAmount" name="transferAmount" placeholder="0.00"
+                                    min="1" step="0.01" required>
+                            </div>
+                            <div class="amount-limits">
+                                <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
+                            </div>
                         </div>
 
-                        <div id="bankTransferDetails" style="display: none;">
+                        <div class="form-group">
+                            <label for="transferConcept">Concepto</label>
+                            <input type="text" id="transferConcept" name="transferConcept"
+                                placeholder="Ej: Pago de servicios, Regalo, etc." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transferDescription">Mensaje (opcional)</label>
+                            <textarea id="transferDescription" name="transferDescription"
+                                placeholder="Mensaje para el destinatario" rows="3"></textarea>
+                        </div>
+
+                        <div class="transaction-summary">
+                            <div class="summary-row">
+                                <span>Monto:</span>
+                                <span id="transferSummaryAmount">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Comisión:</span>
+                                <span id="transferFee">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total a transferir:</span>
+                                <span id="transferTotal">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" data-modal="transferModal">Cancelar</button>
+                            <button type="submit" form="transferForm" class="btn-primary">Confirmar
+                                transferencia</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fin del modal de transferencia -->
+
+
+        <!-- Modal para Retirar -->
+        <div id="withdrawModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3><i class="fas fa-minus-circle"></i> Retirar dinero</h3>
+                    <button class="modal-close" data-modal="withdrawModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="balance-info">
+                        <div class="available-balance">
+                            <span>Saldo disponible:</span>
+                            <span class="balance-amount">$15,750.00</span>
+                        </div>
+                    </div>
+
+                    <form id="withdrawForm" class="modal-form">
+                        <div class="form-group">
+                            <label for="withdrawMethod">Método de retiro</label>
+                            <select id="withdrawMethod" name="withdrawMethod" required>
+                                <option value="">Selecciona un método</option>
+                                <option value="bank_account">Cuenta bancaria</option>
+                                <option value="debit_card">Tarjeta de débito</option>
+                                <option value="cash">Efectivo (Red de pagos)</option>
+                            </select>
+                        </div>
+
+                        <div id="bankAccountDetails" class="bank-details" style="display: none;">
                             <div class="form-group">
-                                <label for="recipientBank">Banco del destinatario</label>
-                                <select id="recipientBank" name="recipientBank">
-                                    <option value="">Selecciona el banco</option>
+                                <label for="bankName">Banco</label>
+                                <select id="bankName" name="bankName">
+                                    <option value="">Selecciona tu banco</option>
                                     <option value="banco_nacion">Banco Nación</option>
                                     <option value="banco_provincia">Banco Provincia</option>
                                     <option value="santander">Santander</option>
@@ -438,261 +550,148 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="recipientAccount">Número de cuenta</label>
-                                <input type="text" id="recipientAccount" name="recipientAccount"
-                                    placeholder="Número de cuenta del destinatario">
+                                <label for="accountNumber">Número de cuenta</label>
+                                <input type="text" id="accountNumber" name="accountNumber"
+                                    placeholder="Ingresa tu número de cuenta">
                             </div>
 
                             <div class="form-group">
-                                <label for="recipientName">Nombre del titular</label>
-                                <input type="text" id="recipientName" name="recipientName"
-                                    placeholder="Nombre completo del destinatario">
+                                <label for="accountType">Tipo de cuenta</label>
+                                <select id="accountType" name="accountType">
+                                    <option value="">Selecciona el tipo</option>
+                                    <option value="savings">Caja de ahorro</option>
+                                    <option value="checking">Cuenta corriente</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="transferAmount">Monto a transferir</label>
-                        <div class="amount-input">
-                            <span class="currency">$</span>
-                            <input type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="1"
-                                step="0.01" required>
+                        <div class="form-group">
+                            <label for="withdrawAmount">Monto a retirar</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="0.00"
+                                    min="1" step="0.01" required>
+                            </div>
+                            <div class="amount-limits">
+                                <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
+                            </div>
                         </div>
-                        <div class="amount-limits">
-                            <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="transferConcept">Concepto</label>
-                        <input type="text" id="transferConcept" name="transferConcept"
-                            placeholder="Ej: Pago de servicios, Regalo, etc." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="transferDescription">Mensaje (opcional)</label>
-                        <textarea id="transferDescription" name="transferDescription"
-                            placeholder="Mensaje para el destinatario" rows="3"></textarea>
-                    </div>
-
-                    <div class="transaction-summary">
-                        <div class="summary-row">
-                            <span>Monto:</span>
-                            <span id="transferSummaryAmount">$0.00</span>
+                        <div class="form-group">
+                            <label for="withdrawDescription">Descripción (opcional)</label>
+                            <input type="text" id="withdrawDescription" name="withdrawDescription"
+                                placeholder="Ej: Retiro para gastos">
                         </div>
-                        <div class="summary-row">
-                            <span>Comisión:</span>
-                            <span id="transferFee">$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total a transferir:</span>
-                            <span id="transferTotal">$0.00</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-modal="transferModal">Cancelar</button>
-                <button type="submit" form="transferForm" class="btn-primary">Confirmar transferencia</button>
+                        <div class="transaction-summary">
+                            <div class="summary-row">
+                                <span>Monto:</span>
+                                <span id="withdrawSummaryAmount">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Comisión:</span>
+                                <span id="withdrawFee">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total a recibir:</span>
+                                <span id="withdrawTotal">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" data-modal="withdrawModal">Cancelar</button>
+                            <button type="submit" form="withdrawForm" class="btn-primary">Confirmar retiro</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+        <!-- Fin del modal de retiro -->
 
-    <!-- Fin del modal de transferencia -->
 
-    
-    <!-- Modal para Retirar -->
-    <div id="withdrawModal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3><i class="fas fa-minus-circle"></i> Retirar dinero</h3>
-                <button class="modal-close" data-modal="withdrawModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+        <!-- modal de confirmacion -->
+        <div id="confirmationModal" class="modal-overlay">
+            <div class="modal-container confirmation-modal">
+                <div class="modal-header">
+                    <h3 id="confirmationTitle"><i class="fas fa-check-circle"></i> Operación exitosa</h3>
+                </div>
 
-            <div class="modal-body">
-                <div class="balance-info">
-                    <div class="available-balance">
-                        <span>Saldo disponible:</span>
-                        <span class="balance-amount">$15,750.00</span>
+                <div class="modal-body">
+                    <div class="confirmation-content">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h4 id="confirmationMessage">Tu operación se ha procesado correctamente</h4>
+                        <div id="confirmationDetails" class="confirmation-details"></div>
+                        <div class="confirmation-actions">
+                            <button type="button" class="btn-outline" id="downloadReceipt">
+                                <i class="fas fa-download"></i> Descargar comprobante
+                            </button>
+                            <button type="button" class="btn-outline" id="shareReceipt">
+                                <i class="fas fa-share"></i> Compartir
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <form id="withdrawForm" class="modal-form">
-                    <div class="form-group">
-                        <label for="withdrawMethod">Método de retiro</label>
-                        <select id="withdrawMethod" name="withdrawMethod" required>
-                            <option value="">Selecciona un método</option>
-                            <option value="bank_account">Cuenta bancaria</option>
-                            <option value="debit_card">Tarjeta de débito</option>
-                            <option value="cash">Efectivo (Red de pagos)</option>
-                        </select>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-primary" data-modal="confirmationModal">Cerrar</button>
+                </div>  
+            </div>
+        </div>
 
-                    <div id="bankAccountDetails" class="bank-details" style="display: none;">
+        <!-- Fin modal de confirmacion -->
+
+                <!-- Modal para agregar nueva cuenta -->
+        <div id="addAccountModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3><i class="fas fa-university"></i> Agregar Nueva Cuenta</h3>
+                    <button class="modal-close" data-modal="addAccount">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAccountForm" class="modal-form">
                         <div class="form-group">
-                            <label for="bankName">Banco</label>
-                            <select id="bankName" name="bankName">
-                                <option value="">Selecciona tu banco</option>
-                                <option value="banco_nacion">Banco Nación</option>
-                                <option value="banco_provincia">Banco Provincia</option>
-                                <option value="santander">Santander</option>
-                                <option value="bbva">BBVA</option>
-                                <option value="galicia">Banco Galicia</option>
-                                <option value="macro">Banco Macro</option>
-                            </select>
+                            <label for="accountName">Nombre de la cuenta</label>
+                            <input type="text" id="accountName" name="accountName" placeholder="Ej: Mi cuenta principal"
+                                required>
                         </div>
-
-                        <div class="form-group">
-                            <label for="accountNumber">Número de cuenta</label>
-                            <input type="text" id="accountNumber" name="accountNumber"
-                                placeholder="Ingresa tu número de cuenta">
-                        </div>
-
                         <div class="form-group">
                             <label for="accountType">Tipo de cuenta</label>
-                            <select id="accountType" name="accountType">
-                                <option value="">Selecciona el tipo</option>
+                            <select id="accountType" name="accountType" required>
+                                <option value="">Selecciona un tipo</option>
                                 <option value="savings">Caja de ahorro</option>
                                 <option value="checking">Cuenta corriente</option>
+                                <option value="investment">Cuenta de inversión</option>
+                                <option value="credit">Cuenta de crédito</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="withdrawAmount">Monto a retirar</label>
-                        <div class="amount-input">
-                            <span class="currency">$</span>
-                            <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="0.00" min="1"
-                                step="0.01" required>
+                        <div class="form-group">
+                            <label for="accountCurrency">Moneda</label>
+                            <select id="accountCurrency" name="accountCurrency" required>
+                                <option value="">Selecciona una moneda</option>
+                                <option value="ARS">Peso Argentino (ARS)</option>
+                                <option value="USD">Dólar Estadounidense (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                            </select>
                         </div>
-                        <div class="amount-limits">
-                            <small>Mínimo: $1.00 - Máximo: $15,750.00</small>
+                        <div class="form-group">
+                            <label for="accountAlias">Alias (opcional)</label>
+                            <input type="text" id="accountAlias" name="accountAlias"
+                                placeholder="Ej: cuenta.principal.alky">
+                            <small class="helper-text">Si no ingresas un alias, se generará uno automáticamente.</small>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="withdrawDescription">Descripción (opcional)</label>
-                        <input type="text" id="withdrawDescription" name="withdrawDescription"
-                            placeholder="Ej: Retiro para gastos">
-                    </div>
+                        <button type="button" class="btn-secondary" data-modal="addAccount">Cancelar</button>
+                        <button id="submitAddAccountForm" type="submit" class="btn-primary">Crear Cuenta</button>
 
-                    <div class="transaction-summary">
-                        <div class="summary-row">
-                            <span>Monto:</span>
-                            <span id="withdrawSummaryAmount">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Comisión:</span>
-                            <span id="withdrawFee">$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total a recibir:</span>
-                            <span id="withdrawTotal">$0.00</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-modal="withdrawModal">Cancelar</button>
-                <button type="submit" form="withdrawForm" class="btn-primary">Confirmar retiro</button>
-            </div>
-        </div>
-    </div>
-    <!-- Fin del modal de retiro -->
-
-      
-  <!-- modal de confirmacion -->
-  <div id="confirmationModal" class="modal-overlay">
-        <div class="modal-container confirmation-modal">
-            <div class="modal-header">
-                <h3 id="confirmationTitle"><i class="fas fa-check-circle"></i> Operación exitosa</h3>
-            </div>
-
-            <div class="modal-body">
-                <div class="confirmation-content">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h4 id="confirmationMessage">Tu operación se ha procesado correctamente</h4>
-                    <div id="confirmationDetails" class="confirmation-details"></div>
-                    <div class="confirmation-actions">
-                        <button type="button" class="btn-outline" id="downloadReceipt">
-                            <i class="fas fa-download"></i> Descargar comprobante
-                        </button>
-                        <button type="button" class="btn-outline" id="shareReceipt">
-                            <i class="fas fa-share"></i> Compartir
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn-primary" data-modal="confirmationModal">Cerrar</button>
-            </div>  
         </div>
-    </div>
-
-    <!-- Fin modal de confirmacion -->
-
-    <!-- Modal para agregar nueva cuenta -->
-<div id="addAccountModal" class="modal-overlay">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3><i class="fas fa-university"></i> Agregar Nueva Cuenta</h3>
-            <button class="modal-close" data-modal="addAccount">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="modal-body">
-            <form id="addAccountForm" class="modal-form">
-                <div class="form-group">
-                    <label for="accountName">Nombre de la cuenta</label>
-                    <input type="text" id="accountName" name="accountName" 
-                           placeholder="Ej: Mi cuenta principal" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="accountType">Tipo de cuenta</label>
-                    <select id="accountType" name="accountType" required>
-                        <option value="">Selecciona un tipo</option>
-                        <option value="savings">Caja de ahorro</option>
-                        <option value="checking">Cuenta corriente</option>
-                        <option value="investment">Cuenta de inversión</option>
-                        <option value="credit">Cuenta de crédito</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="accountCurrency">Moneda</label>
-                    <select id="accountCurrency" name="accountCurrency" required>
-                        <option value="">Selecciona una moneda</option>
-                        <option value="ARS">Peso Argentino (ARS)</option>
-                        <option value="USD">Dólar Estadounidense (USD)</option>
-                        <option value="EUR">Euro (EUR)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="accountAlias">Alias (opcional)</label>
-                    <input type="text" id="accountAlias" name="accountAlias" 
-                           placeholder="Ej: cuenta.principal.alky">
-                    <small class="helper-text">Si no ingresas un alias, se generará uno automáticamente.</small>
-                </div>
-            </form>
-        </div>
-        
-        <div class="modal-footer">
-            <button type="button" class="btn-secondary" data-modal="addAccount">Cancelar</button>
-            <button type="submit" form="addAccountForm" class="btn-primary">Crear Cuenta</button>
-        </div>
-    </div>
-</div>
-    <!-- Fin del modal de agregar cuenta -->
+        <!-- Fin del modal de agregar cuenta -->
 
 
     </div>
@@ -708,7 +707,7 @@
     <script>
         document.body.classList.add('has-mobile-menu');
     </script>
-    
+
 </body>
 
 </html>

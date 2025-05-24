@@ -14,9 +14,11 @@ class AccountModalHandler {
         if (!this.form) return;
 
         this.form.addEventListener("submit", (e) => {
+            console.log("Form submitted");
             e.preventDefault();
 
             const formData = new FormData(this.form);
+
             const newAccount = {
                 id: "acc_" + Math.random().toString(36).substr(2, 9),
                 name: formData.get("accountName"),
@@ -24,22 +26,18 @@ class AccountModalHandler {
                 alias: formData.get("accountAlias") || this.generateRandomAlias(),
                 currency: formData.get("accountCurrency"),
                 balance: 0.00,
-                isDefault: window.accountsManager && window.accountsManager.getAccounts().length === 0
+                //isDefault: window.accountsManager && window.accountsManager.getAccounts().length === 0
             };
+            console.log("New account data:", newAccount);
+            // Validación básica
 
-            // Agregar la nueva cuenta usando accountsManager
+            // Aquí puedes continuar con la lógica:
             if (window.accountsManager) {
                 window.accountsManager.addAccount(newAccount);
             }
-
-            // Cerrar el modal
             this.modalManager.closeModal("addAccount");
-
-            // Limpiar el formulario
-            this.form.reset();
-
-            // Mostrar confirmación
-            this.showAccountCreatedConfirmation(newAccount);
+            //this.form.reset();
+            //this.showAccountCreatedConfirmation(newAccount);
         });
     }
 
