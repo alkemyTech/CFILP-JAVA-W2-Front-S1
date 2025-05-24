@@ -1,7 +1,7 @@
 /**
  * Módulo para gestionar las cuentas del usuario en AlkyWallet (sin lógica de modal)
  */
-(function() {
+(function () {
     let userAccounts = [];
 
     // Mapeo de tipos de cuenta a íconos y nombres legibles
@@ -43,6 +43,10 @@
             });
             if (!res.ok) throw new Error('No se pudieron cargar las cuentas');
             userAccounts = await res.json();
+            // NUEVO: asegurarse de que al menos una esté seleccionada
+            if (!userAccounts.some(acc => acc.isDefault)) {
+                userAccounts[0].isDefault = true;
+            }
         } catch (error) {
             accountsContainer.innerHTML = `
                 <div class="account-placeholder">
@@ -81,20 +85,41 @@
 
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
-        
+
     }
 
     /**
      * Crea un elemento HTML para una cuenta
      * @param {Object} account - Datos de la cuenta
      * @returns {HTMLElement} - Elemento de la cuenta
+     * 
      */
+
+    function getAccountTypeKey(accountTypeString) {
+        switch (accountTypeString.toLowerCase()) {
+            case "caja de ahorro": return "savings";
+            case "cuenta corriente": return "checking";
+            case "cuenta de inversión": return "investment";
+            case "cuenta de crédito": return "credit";
+            default: return "";
+        }
+    }
+
+
     function createAccountElement(account) {
         const accountEl = document.createElement("div");
         accountEl.className = `account-item ${account.isDefault ? "selected" : ""}`;
         accountEl.dataset.accountId = account.id;
 
-        const typeInfo = accountTypes[account.type] || { icon: "fa-university", name: "Cuenta" };
+        const typeKey = getAccountTypeKey(account.accountType);
+        const typeInfo = accountTypes[typeKey] || {
+            icon: "fa-university",
+            name: account.accountType
+        };
+
+        // Obtener el nombre del usuario desde localStorage
+        const userData = JSON.parse(localStorage.getItem('data'));
+        const userName = userData?.name || "";
 
         accountEl.innerHTML = `
             ${account.isDefault ? '<div class="account-badge">Principal</div>' : ''}
@@ -102,7 +127,7 @@
                 <i class="fas ${typeInfo.icon}"></i>
             </div>
             <div class="account-details">
-                <div class="account-name">${account.name}</div>
+                <div class="account-name">${userName}</div>
                 <div class="account-info">
                     <div class="account-type">
                         <i class="fas ${typeInfo.icon}"></i>
@@ -126,7 +151,7 @@
         `;
 
         // Evento para seleccionar la cuenta
-        accountEl.addEventListener("click", function(e) {
+        accountEl.addEventListener("click", function (e) {
             if (e.target.closest(".account-action-btn")) return;
             selectAccount(account.id);
         });
@@ -135,11 +160,11 @@
         const viewBtn = accountEl.querySelector(".account-action-btn:first-child");
         const editBtn = accountEl.querySelector(".account-action-btn:last-child");
 
-        viewBtn.addEventListener("click", function() {
+        viewBtn.addEventListener("click", function () {
             viewAccountDetails(account.id);
         });
 
-        editBtn.addEventListener("click", function() {
+        editBtn.addEventListener("click", function () {
             editAccount(account.id);
         });
 
