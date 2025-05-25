@@ -157,8 +157,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
         method: method,         // Ej: "bank_transfer"
         sourceEntity: sourceEntity, // Ej: "Banco Nación"
         description: description, // Agregar descripción para el backend
-        transactionType: "deposit" // Agregar tipo de transacción para el backend
-    };
+       };
     console.log("Body a enviar:", body);
 
     try {
@@ -228,7 +227,6 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
         method: method,
         branch: branch,
         description: description, // Agregar descripción para el backend
-        transactionType: "withdrawal" // Agregar tipo de transacción para el backend
     };
 
     console.log("Retiro - accountId:", account.id, "Body:", body);
