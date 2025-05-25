@@ -283,62 +283,80 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
 }
 
 
+
+
+
+//FUNCIONES PARA CARGAR DATOS EN EL DASHBOARD
 // Función para cargar transacciones
 
-function loadTransactions(userId) {
+async function loadTransactions(userId) {
     const tableBody = document.querySelector('#transactionsTable tbody');
+    tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
 
-    // Simulación de llamada a API
-    // TODO: Fetch a /api/transactions/user/{id}
-    const transactions = [
-        { date: '2023-05-15', description: 'Depósito en efectivo', type: 'deposit', amount: 5000.00 },
-        { date: '2023-05-12', description: 'Transferencia a Juan Gómez', type: 'transfer', amount: -1200.00 },
-        { date: '2023-05-10', description: 'Pago de servicios', type: 'withdrawal', amount: -850.00 },
-        { date: '2023-05-05', description: 'Transferencia recibida', type: 'deposit', amount: 3000.00 },
-        { date: '2023-05-01', description: 'Retiro en cajero', type: 'withdrawal', amount: -2000.00 }
-    ];
-
-    let html = '';
-
-    transactions.forEach(transaction => {
-        const formattedDate = new Date(transaction.date).toLocaleDateString('es-AR');
-        const isPositive = transaction.amount > 0;
-        const formattedAmount = Math.abs(transaction.amount).toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+    try {
+        const res = await fetch(`http://localhost:8080/api/transactions/user/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
         });
 
-        let typeClass = '';
-        let typeText = '';
+        if (!res.ok) throw new Error("No se pudieron obtener las transacciones");
 
-        switch (transaction.type) {
-            case 'deposit':
-                typeClass = 'type-deposit';
-                typeText = 'Depósito';
-                break;
-            case 'withdrawal':
-                typeClass = 'type-withdrawal';
-                typeText = 'Retiro';
-                break;
-            case 'transfer':
-                typeClass = 'type-transfer';
-                typeText = 'Transferencia';
-                break;
-        }
+        const transactions = await res.json();
 
-        html += `
-            <tr>
-                <td>${formattedDate}</td>
-                <td>${transaction.description}</td>
-                <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
-                <td class="${isPositive ? 'amount-positive' : 'amount-negative'}">
-                    ${isPositive ? '+' : '-'}$${formattedAmount}
-                </td>
-            </tr>
-        `;
-    });
+        let html = '';
 
-    tableBody.innerHTML = html;
+        transactions.forEach(transaction => {
+            console.log("Transacción:", transaction);
+            // Formatear fecha, monto y tipo de transacción
+            const formattedDate = new Date(transaction.transactionDate).toLocaleDateString('es-AR');
+            const isPositive = transaction.transactionAmount > 0;
+            const formattedAmount = Math.abs(transaction.transactionAmount).toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            let typeClass = '';
+            let typeText = '';
+
+            switch (transaction.transactionType) {
+                case 'DEPOSIT':
+                    typeClass = 'type-deposit';
+                    typeText = 'Depósito';
+                    break;
+                case 'WITHDRAWAL':
+                    typeClass = 'type-withdrawal';
+                    typeText = 'Retiro';
+                    break;
+                case 'TRANSFER':
+                    typeClass = 'type-transfer';
+                    typeText = 'Transferencia';
+                    break;
+                default:
+                    typeClass = '';
+                    typeText = transaction.type;
+            }
+
+            html += `
+                <tr>
+                    <td>${formattedDate}</td>
+                    <td>${transaction.description || '-'}</td>
+                    <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
+                    <td class="${isPositive ? 'amount-positive' : 'amount-negative'}">
+                        ${isPositive ? '+' : '-'}$${formattedAmount}
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = html || '<tr><td colspan="4">No hay transacciones.</td></tr>';
+
+    } catch (error) {
+        console.error(error);
+        tableBody.innerHTML = `<tr><td colspan="4">Error al cargar transacciones.</td></tr>`;
+    }
 }
 
 // Función para cargar transferencias
