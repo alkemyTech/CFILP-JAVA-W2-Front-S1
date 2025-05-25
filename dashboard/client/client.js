@@ -264,6 +264,20 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
     }
 });
 
+// Actualizar resumen de retiro en tiempo real
+const withdrawAmountInput = document.getElementById('withdrawAmount');
+const withdrawSummaryAmount = document.getElementById('withdrawSummaryAmount');
+const withdrawTotal = document.getElementById('withdrawTotal');
+
+if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
+    withdrawAmountInput.addEventListener('input', function () {
+        const amount = parseFloat(withdrawAmountInput.value) || 0;
+        const formattedAmount = amount.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        withdrawSummaryAmount.textContent = `$${formattedAmount}`;
+        withdrawTotal.textContent = `$${formattedAmount}`; // Si no hay comisión, es igual al monto
+    });
+}
 
 
 // Función para cargar transacciones
