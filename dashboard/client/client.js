@@ -131,6 +131,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
     const method = document.getElementById('depositMethod').value;
     const sourceEntity = document.getElementById('depositSource').value;
 
+
     // Obtener la cuenta seleccionada actualmente
     let selectedAccountId = null;
     if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
@@ -154,7 +155,9 @@ document.getElementById('depositForm').addEventListener('submit', async function
         accountId: account.id,
         transactionAmount: amount,
         method: method,         // Ej: "bank_transfer"
-        sourceEntity: sourceEntity // Ej: "Banco Nación"
+        sourceEntity: sourceEntity, // Ej: "Banco Nación"
+        description: description, // Agregar descripción para el backend
+        transactionType: "deposit" // Agregar tipo de transacción para el backend
     };
     console.log("Body a enviar:", body);
 
