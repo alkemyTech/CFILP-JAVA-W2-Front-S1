@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     await fetchUserData(userId);
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
-    //hasta aca viene desde el servidor 
+    //loadTransactions(); 
+    // //hasta aca viene desde el servidor 
 
     //datos simulados 
-    loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
     loadCards(userId);
@@ -287,14 +287,14 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
 
 
 //FUNCIONES PARA CARGAR DATOS EN EL DASHBOARD
-// Función para cargar transacciones
 
-async function loadTransactions(userId) {
+// Función para cargar transacciones por cuenta
+async function loadTransactions(accountId) {
     const tableBody = document.querySelector('#transactionsTable tbody');
     tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
 
     try {
-        const res = await fetch(`http://localhost:8080/api/transactions/user/${userId}`, {
+        const res = await fetch(`http://localhost:8080/api/transactions/account/${accountId}`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
