@@ -47,7 +47,7 @@
                 userAccounts[0].isDefault = true;
             }
         } catch (error) {
-            
+
             accountsContainer.innerHTML = `
                 <div class="account-placeholder">
                     <div class="placeholder-text">No se pudieron cargar las cuentas.</div>
@@ -118,7 +118,7 @@
         const userData = JSON.parse(localStorage.getItem('data'));
         const userName = userData?.name || "";
         const accountName = account.accountName ? account.accountName : "Cuenta sin nombre";
-        
+
         accountEl.innerHTML = `
             ${account.isDefault ? '<div class="account-badge">Principal</div>' : ''}
             <div class="account-icon">
@@ -209,14 +209,22 @@
      */
     function updateBalanceDisplay() {
         const balanceElement = document.getElementById("balanceAmount");
+        const withdrawBalance = document.getElementById("withdrawAvailableBalance");
         if (!balanceElement) return;
 
         const defaultAccount = userAccounts.find(acc => acc.isDefault);
         if (defaultAccount) {
-            balanceElement.textContent = defaultAccount.balance.toLocaleString('es-AR', {
+            const saldoFormateado = defaultAccount.balance.toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+
+            balanceElement.textContent = saldoFormateado;
+
+            // Actualiza el saldo en el modal de retiro
+            if (withdrawBalance) {
+                withdrawBalance.textContent = `$${saldoFormateado}`;
+            }
 
             const currencyElement = document.getElementById("currencySymbol");
             if (currencyElement) {
@@ -224,6 +232,9 @@
             }
         } else {
             balanceElement.textContent = "0.00";
+            if (withdrawBalance) {
+                withdrawBalance.textContent = "$0.00";
+            }
         }
     }
 
@@ -296,12 +307,19 @@
         updateBalanceDisplay();
     }
 
+    // Función para obtener el ID de la cuenta seleccionada
+    function getSelectedAccountId() {
+        const selected = userAccounts.find(acc => acc.isDefault);
+        return selected ? selected.id : null;
+    }
+
     // Exponer funciones para uso externo
     window.accountsManager = {
         loadAccounts,
         selectAccount,
         updateBalanceDisplay,
         addAccount,
-        getAccounts
+        getAccounts,
+        getSelectedAccountId
     };
 })();
