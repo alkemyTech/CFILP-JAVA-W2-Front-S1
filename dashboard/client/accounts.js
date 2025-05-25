@@ -218,7 +218,7 @@
                 maximumFractionDigits: 2
             });
 
-            const currencyElement = document.querySelector(".balance-amount .currency");
+            const currencyElement = document.getElementById("currencySymbol");
             if (currencyElement) {
                 currencyElement.textContent = currencySymbols[defaultAccount.currency] || '$';
             }
