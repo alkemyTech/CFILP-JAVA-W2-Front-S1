@@ -6,20 +6,15 @@ class AccountModalHandler {
         this.modalManager = modalManager;
         this.modal = document.getElementById("addAccountModal");
         this.form = document.getElementById("addAccountForm");
-        
+
         this.initEvents();
-        console.log("AccountModalHandler inicializado");
-        console.log("Modal:", this.modal);
-        console.log("Formulario:", this.form);
     }
 
     initEvents() {
-        console.log("Formulario detectado:", this.form);
         if (!this.form) return;
 
         this.form.addEventListener("submit", async (e) => {
             e.preventDefault();
-
 
             const formData = new FormData(this.form);
             const userData = JSON.parse(localStorage.getItem('data'));
@@ -30,25 +25,27 @@ class AccountModalHandler {
                 return;
             }
 
+            // Mapeo de tipos de cuenta a los nombres del backend
             const accountTypeMap = {
                 savings: "Caja de ahorro",
                 checking: "Cuenta Corriente",
                 investment: "Cuenta de inversión"
             };
+            let accounTypeMapped = accountTypeMap[formData.get("accountType")]
+
+
 
             const accountDTO = {
                 id: 0, // el backend probablemente lo ignore o lo genere
                 userId: userId, // debe existir en localStorage
+                accountName: formData.get("accountName") || "Cuenta sin nombre", // si no se proporciona, usar un nombre por defecto
                 cbu: this.generateRandomCBU(), // generá uno o dejalo en blanco si lo genera el backend
                 balance: 0.00,
                 alias: formData.get("accountAlias") || this.generateRandomAlias(),
                 currency: formData.get("accountCurrency"),
-                accountType: accountTypeMap[formData.get("accountType")] //mapea a  los tipos de cuenta del backend
+                accountType: accounTypeMapped
             };
-
-            console.log("Datos de la cuenta a crear:", accountDTO);
-
-
+        
             try {
                 const response = await fetch('http://localhost:8080/api/accounts', {
                     method: 'POST',
@@ -103,25 +100,21 @@ class AccountModalHandler {
         return randomWords.join(".");
     }
 
+
     showAccountCreatedConfirmation(account) {
-        const accountTypes = {
-            savings: { name: "Caja de ahorro" },
-            checking: { name: "Cuenta corriente" },
-            investment: { name: "Cuenta de inversión" },
-            credit: { name: "Cuenta de crédito" }
-        };
+    
         if (window.modalManager) {
             const confirmationData = {
                 title: "Cuenta creada exitosamente",
-                message: `Tu nueva cuenta "${account.name}" ha sido creada.`,
+                message: `Tu nueva cuenta "${account.alias}" ha sido creada.`,
                 details: `
                     <div class="summary-row">
                         <span>Nombre:</span>
-                        <span>${account.name}</span>
+                        <span>${account.alias}</span>
                     </div>
                     <div class="summary-row">
                         <span>Tipo:</span>
-                        <span>${accountTypes[account.type]?.name || account.type}</span>
+                        <span>${account.accountType}</span>
                     </div>
                     <div class="summary-row">
                         <span>Alias:</span>
@@ -140,15 +133,10 @@ class AccountModalHandler {
 
 // Registrar el manejador en el ModalManager cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM completamente cargado, inicializando AccountModalHandler");
     if (window.modalManager) {
         //si el modalmanager ya está inicializado, registrar el manejador
-        console.log("ModalManager ya inicializado, registrando manejador de cuenta");
         window.modalManager.modals.addAccount = document.getElementById("addAccountModal");
         const accountHandler = new AccountModalHandler(window.modalManager);
-        
         window.modalManager.registerModalHandler("addAccount", accountHandler);
-
-
     }
 });
