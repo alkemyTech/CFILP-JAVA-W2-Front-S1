@@ -209,14 +209,22 @@
      */
     function updateBalanceDisplay() {
         const balanceElement = document.getElementById("balanceAmount");
+        const withdrawBalance = document.getElementById("withdrawAvailableBalance");
         if (!balanceElement) return;
 
         const defaultAccount = userAccounts.find(acc => acc.isDefault);
         if (defaultAccount) {
-            balanceElement.textContent = defaultAccount.balance.toLocaleString('es-AR', {
+            const saldoFormateado = defaultAccount.balance.toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+
+            balanceElement.textContent = saldoFormateado;
+
+            // Actualiza el saldo en el modal de retiro
+            if (withdrawBalance) {
+                withdrawBalance.textContent = `$${saldoFormateado}`;
+            }
 
             const currencyElement = document.getElementById("currencySymbol");
             if (currencyElement) {
@@ -224,6 +232,9 @@
             }
         } else {
             balanceElement.textContent = "0.00";
+            if (withdrawBalance) {
+                withdrawBalance.textContent = "$0.00";
+            }
         }
     }
 

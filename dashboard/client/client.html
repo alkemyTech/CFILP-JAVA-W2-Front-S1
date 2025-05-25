@@ -529,18 +529,19 @@
                     <div class="balance-info">
                         <div class="available-balance">
                             <span>Saldo disponible:</span>
-                            <span class="balance-amount">$15,750.00</span>
+                            <span class="balance-amount" id="withdrawAvailableBalance">$0.00</span>
                         </div>
                     </div>
 
                     <form id="withdrawForm" class="modal-form">
                         <div class="form-group">
                             <label for="withdrawMethod">Método de retiro</label>
+                            <!-- Solo opciones válidas para retiro -->
                             <select id="withdrawMethod" name="withdrawMethod" required>
                                 <option value="">Selecciona un método</option>
-                                <option value="bank_account">Cuenta bancaria</option>
-                                <option value="debit_card">Tarjeta de débito</option>
-                                <option value="cash">Efectivo (Red de pagos)</option>
+                                <option value="EFECTIVO">Efectivo</option>
+                                <option value="CAJERO">Cajero automático</option>
+                                <option value="VENTANILLA">Ventanilla</option>
                             </select>
                         </div>
 
@@ -592,14 +593,15 @@
                                 placeholder="Ej: Retiro para gastos" />
                         </div>
 
+                        <div class="form-group">
+                            <label for="withdrawBranch">Sucursal o entidad</label>
+                            <input type="text" id="withdrawBranch" name="withdrawBranch" placeholder="Ej: Banco Nación, Sucursal 123" required />
+                        </div>
+
                         <div class="transaction-summary">
                             <div class="summary-row">
                                 <span>Monto:</span>
                                 <span id="withdrawSummaryAmount">$0.00</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Comisión:</span>
-                                <span id="withdrawFee">$0.00</span>
                             </div>
                             <div class="summary-row total">
                                 <span>Total a recibir:</span>

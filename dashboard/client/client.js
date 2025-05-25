@@ -178,7 +178,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
         document.querySelector('[data-modal="deposit"]').click();
 
         // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active'); 
+        document.getElementById('confirmationModal').classList.add('active');
 
         // Mostrar detalles del depósito en el modal de confirmación
         document.getElementById('confirmationDetails').innerHTML = `
@@ -194,7 +194,75 @@ document.getElementById('depositForm').addEventListener('submit', async function
     }
 });
 
+// Retirar dinero de la cuenta seleccionada actualmente
+document.getElementById('withdrawForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const description = document.getElementById('withdrawDescription').value || 'Retiro desde cliente';
+    const method = document.getElementById('withdrawMethod').value;
+    const branch = document.getElementById('withdrawBranch').value; // <-- Nuevo
+
+    // Obtener la cuenta seleccionada actualmente
+    let selectedAccountId = null;
+    if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+        selectedAccountId = window.accountsManager.getSelectedAccountId();
+    }
+    if (!selectedAccountId) {
+        const defaultAccount = getDefaultAccount();
+        selectedAccountId = defaultAccount ? defaultAccount.id : null;
+    }
+    const account = window.accountsManager.getAccounts().find(acc => acc.id === selectedAccountId);
+
+    if (!account) {
+        alert("No se encontró una cuenta seleccionada.");
+        return;
+    }
+
+    const body = {
+        accountId: account.id,
+        transactionAmount: amount,
+        method: method,
+        branch: branch 
+    };
+
+    console.log("Retiro - accountId:", account.id, "Body:", body);
+
+    try {
+        const res = await fetch('http://localhost:8080/api/withdrawals', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error("Error al retirar");
+
+        const result = await res.json();
+        console.log("Retiro realizado:", result);
+
+        // Actualizar cuentas y cerrar modal
+        await window.accountsManager.loadAccounts(account.userId);
+        document.querySelector('[data-modal="withdraw"]').click();
+
+        // Abrir el modal de confirmación
+        document.getElementById('confirmationModal').classList.add('active');
+
+        // Mostrar detalles del retiro en el modal de confirmación
+        document.getElementById('confirmationDetails').innerHTML = `
+    <p>Monto: $${result.transactionAmount}</p>
+    <p>Método: ${result.method}</p>
+    <p>Sucursal/Entidad: ${result.branch}</p>
+    <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+`;
+
+    } catch (error) {
+        console.error(error);
+        alert("No se pudo realizar el retiro.");
+    }
+});
 
 
 
