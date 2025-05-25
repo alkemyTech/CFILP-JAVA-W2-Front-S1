@@ -33,19 +33,17 @@ class AccountModalHandler {
             };
             let accounTypeMapped = accountTypeMap[formData.get("accountType")]
 
-
-
             const accountDTO = {
                 id: 0, // el backend probablemente lo ignore o lo genere
                 userId: userId, // debe existir en localStorage
-                accountName: formData.get("accountName") || "Cuenta sin nombre", // si no se proporciona, usar un nombre por defecto
+                accountName: formData.get("accountName") || this.generateDefaultAccountName(accounTypeMapped, formData.get("accountCurrency")),
                 cbu: this.generateRandomCBU(), // generá uno o dejalo en blanco si lo genera el backend
                 balance: 0.00,
                 alias: formData.get("accountAlias") || this.generateRandomAlias(),
                 currency: formData.get("accountCurrency"),
                 accountType: accounTypeMapped
             };
-        
+
             try {
                 const response = await fetch('http://localhost:8080/api/accounts', {
                     method: 'POST',
@@ -81,6 +79,10 @@ class AccountModalHandler {
         if (this.form) this.form.reset();
     }
 
+    generateDefaultAccountName(accountType, currency) {
+        return `${accountType} en ${currency}`;
+    }
+
     generateRandomCBU() {
         // Generate a random 22-digit CBU as a string
         let cbu = '';
@@ -91,13 +93,13 @@ class AccountModalHandler {
     }
 
     generateRandomAlias() {
-        
-           const words = [
-        "cuenta", "alky", "wallet", "banco", "dinero", "ahorro", "futuro", "meta",
-        "digital", "segura", "clave", "virtual", "alk", "alkywallet", "movil",
-        "moneda", "net", "fast", "nube", "cash", "click", "simple", "pro", "global",
-        "argent", "solidez", "flow", "pago", "transfer", "online"
-    ];
+
+        const words = [
+            "cuenta", "alky", "wallet", "banco", "dinero", "ahorro", "futuro", "meta",
+            "digital", "segura", "clave", "virtual", "alk", "alkywallet", "movil",
+            "moneda", "net", "fast", "nube", "cash", "click", "simple", "pro", "global",
+            "argent", "solidez", "flow", "pago", "transfer", "online"
+        ];
         const randomWords = [];
         for (let i = 0; i < 3; i++) {
             const randomIndex = Math.floor(Math.random() * words.length);
@@ -108,15 +110,15 @@ class AccountModalHandler {
 
 
     showAccountCreatedConfirmation(account) {
-    
+
         if (window.modalManager) {
             const confirmationData = {
                 title: "Cuenta creada exitosamente",
-                message: `Tu nueva cuenta "${account.alias}" ha sido creada.`,
+                message: `Tu nueva cuenta "${account.accountName}" ha sido creada.`,
                 details: `
                     <div class="summary-row">
                         <span>Nombre:</span>
-                        <span>${account.alias}</span>
+                        <span>${account.accountName}</span>
                     </div>
                     <div class="summary-row">
                         <span>Tipo:</span>

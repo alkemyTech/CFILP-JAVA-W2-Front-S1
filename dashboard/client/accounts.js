@@ -9,7 +9,6 @@
         savings: { icon: "fa-piggy-bank", name: "Caja de ahorro" },
         checking: { icon: "fa-money-check-alt", name: "Cuenta corriente" },
         investment: { icon: "fa-chart-line", name: "Cuenta de inversión" },
-        credit: { icon: "fa-credit-card", name: "Cuenta de crédito" }
     };
 
     // Mapeo de monedas a símbolos
@@ -79,14 +78,12 @@
 
         // Crear elementos para cada cuenta
         userAccounts.forEach(account => {
-            console.log(account);
             const accountEl = createAccountElement(account);
             accountsContainer.appendChild(accountEl);
         });
 
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
-
     }
 
     /**
@@ -101,7 +98,6 @@
             case "caja de ahorro": return "savings";
             case "cuenta corriente": return "checking";
             case "cuenta de inversión": return "investment";
-            case "cuenta de crédito": return "credit";
             default: return "";
         }
     }
@@ -121,14 +117,15 @@
         // Obtener el nombre del usuario desde localStorage
         const userData = JSON.parse(localStorage.getItem('data'));
         const userName = userData?.name || "";
-
+        const accountName = account.accountName ? account.accountName : "Cuenta sin nombre";
+        
         accountEl.innerHTML = `
             ${account.isDefault ? '<div class="account-badge">Principal</div>' : ''}
             <div class="account-icon">
                 <i class="fas ${typeInfo.icon}"></i>
             </div>
             <div class="account-details">
-                <div class="account-name">${userName}</div>
+                <div class="account-name">${accountName}</div>
                 <div class="account-info">
                     <div class="account-type">
                         <i class="fas ${typeInfo.icon}"></i>
@@ -136,7 +133,13 @@
                     </div>
                     <div class="account-alias">
                         <i class="fas fa-at"></i>
+                        <p>Alias:</p>
                         <span>${account.alias}</span>
+                    </div>
+                    <div class="account-alias">
+                        <i class="fas fa-landmark"></i>
+                        <p>CBU:</p>
+                        <span>${account.cbu}</span>
                     </div>
                 </div>
             </div>
