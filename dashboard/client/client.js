@@ -226,7 +226,9 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
         accountId: account.id,
         transactionAmount: amount,
         method: method,
-        branch: branch 
+        branch: branch,
+        description: description, // Agregar descripción para el backend
+        transactionType: "withdrawal" // Agregar tipo de transacción para el backend
     };
 
     console.log("Retiro - accountId:", account.id, "Body:", body);
