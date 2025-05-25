@@ -47,7 +47,7 @@
                 userAccounts[0].isDefault = true;
             }
         } catch (error) {
-            
+
             accountsContainer.innerHTML = `
                 <div class="account-placeholder">
                     <div class="placeholder-text">No se pudieron cargar las cuentas.</div>
@@ -118,7 +118,7 @@
         const userData = JSON.parse(localStorage.getItem('data'));
         const userName = userData?.name || "";
         const accountName = account.accountName ? account.accountName : "Cuenta sin nombre";
-        
+
         accountEl.innerHTML = `
             ${account.isDefault ? '<div class="account-badge">Principal</div>' : ''}
             <div class="account-icon">
@@ -296,12 +296,19 @@
         updateBalanceDisplay();
     }
 
+    // Función para obtener el ID de la cuenta seleccionada
+    function getSelectedAccountId() {
+        const selected = userAccounts.find(acc => acc.isDefault);
+        return selected ? selected.id : null;
+    }
+
     // Exponer funciones para uso externo
     window.accountsManager = {
         loadAccounts,
         selectAccount,
         updateBalanceDisplay,
         addAccount,
-        getAccounts
+        getAccounts,
+        getSelectedAccountId
     };
 })();

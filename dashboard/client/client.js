@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-      // verificar si el usuario está autenticado
+    // verificar si el usuario está autenticado
     if (!isAuthenticated()) {
         window.location.href = "./../../index.html";
         return;
@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
     //hasta aca viene desde el servidor 
-    
+
     //datos simulados 
     loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
     loadCards(userId);
-    
+
 
 
     // Event listeners para botones de actualización
@@ -112,6 +112,78 @@ function loadBalance(userId, isRefresh = true) { //false
 
 
 }
+
+//FUNCIONES PARA HACER DEPOSITOS, RETIROS Y TRANSFERENCIAS
+
+const getDefaultAccount = () => {
+    const accounts = window.accountsManager.getAccounts();
+    return accounts.find(acc => acc.isDefault);
+};
+// Depositar dinero en la cuenta seleccionada actualmente
+document.getElementById('depositForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+    const description = document.getElementById('depositDescription').value || 'Depósito desde cliente';
+
+    // NUEVO: obtener método y entidad de los inputs
+    const method = document.getElementById('depositMethod').value;
+    const sourceEntity = document.getElementById('depositSource').value;
+
+    // Obtener la cuenta seleccionada actualmente
+    let selectedAccountId = null;
+    if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+        selectedAccountId = window.accountsManager.getSelectedAccountId();
+    }
+    // Si no hay seleccionada, usar la cuenta por defecto
+    if (!selectedAccountId) {
+        const defaultAccount = getDefaultAccount();
+        selectedAccountId = defaultAccount ? defaultAccount.id : null;
+    }
+    const account = window.accountsManager.getAccounts().find(acc => acc.id === selectedAccountId);
+
+    if (!account) {
+        alert("No se encontró una cuenta seleccionada.");
+        return;
+    }
+
+    console.log("Depositando en la cuenta:", account); // <-- Agrega esto
+
+    const body = {
+        accountId: account.id,
+        transactionAmount: amount,
+        method: method,         // Ej: "bank_transfer"
+        sourceEntity: sourceEntity // Ej: "Banco Nación"
+    };
+    console.log("Body a enviar:", body);
+
+    try {
+        const res = await fetch('http://localhost:8080/api/deposits', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error("Error al depositar");
+
+        const result = await res.json();
+        console.log("Depósito realizado:", result);
+
+        // Actualizar cuentas y cerrar modal
+        await window.accountsManager.loadAccounts(account.userId);
+        document.querySelector('[data-modal="deposit"]').click();
+
+    } catch (error) {
+        console.error(error);
+        alert("No se pudo realizar el depósito.");
+    }
+});
+
+
+
 
 
 // Función para cargar transacciones
