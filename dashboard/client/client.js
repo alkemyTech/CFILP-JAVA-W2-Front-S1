@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Cargar datos iniciales
     await fetchUserData(userId);
-    loadInitialData(userData);
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
     //hasta aca viene desde el servidor 
@@ -79,17 +78,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
     }
 });
-
-//CARgar la data desde el localStorage
-//TODO: cargar la balanceElement.textContent = 
-function loadInitialData(userData) {
-
-    const balanceElement = document.getElementById('balanceAmount')
-    balanceElement.textContent = userData.accounts[0].balance.toLocaleString();
-
-}
-
-
 
 // // Función para cargar el saldo // esta funcion no esta funcionando bien .
 // ahora el saldo se actualiza desde el accountsManager
