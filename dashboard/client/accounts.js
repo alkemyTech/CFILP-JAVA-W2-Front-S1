@@ -85,6 +85,7 @@
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
         loadTransactions(userAccounts[0].id); // Cargar transacciones de la primera cuenta
+        loadWithdrawals(userAccounts[0].id); // Cargar retiros de la primera cuenta
     }
 
     /**
@@ -204,6 +205,7 @@
 
         updateBalanceDisplay();
         loadTransactions(accountId); // Cargar transacciones de la cuenta seleccionada
+        loadWithdrawals(accountId); // Cargar retiros de la cuenta seleccionada
     }
 
     /**

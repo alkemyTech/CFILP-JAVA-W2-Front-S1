@@ -32,12 +32,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     await fetchUserData(userId);
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
-    //loadTransactions(); 
     // //hasta aca viene desde el servidor 
 
     //datos simulados 
     loadTransfers(userId);
-    loadWithdrawals(userId);
     loadCards(userId);
 
 
@@ -398,41 +396,52 @@ function loadTransfers(userId) {
 }
 
 // Función para cargar retiros
-function loadWithdrawals(userId) {
+async function loadWithdrawals(accountId) {
     const withdrawalsContainer = document.getElementById('withdrawalsContent');
+    withdrawalsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
-    // Simulación de llamada a API
-    // todo: fetch a /api/withdrawals/user/{id}
-    const withdrawals = [
-        { id: 1, description: 'Retiro en cajero', date: '2023-05-14', amount: 1000.00 },
-        { id: 2, description: 'Pago de servicios', date: '2023-05-10', amount: 850.00 },
-        { id: 3, description: 'Retiro en cajero', date: '2023-05-01', amount: 2000.00 }
-    ];
-
-    let html = '';
-
-    withdrawals.forEach(withdrawal => {
-        const formattedDate = new Date(withdrawal.date).toLocaleDateString('es-AR');
-        const formattedAmount = withdrawal.amount.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+    try {
+        const res = await fetch(`http://localhost:8080/api/withdrawals/account/${accountId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
         });
 
-        html += `
-            <div class="withdrawal-item">
-                <div class="withdrawal-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div class="withdrawal-details">
-                    <p class="withdrawal-name">${withdrawal.description}</p>
-                    <p class="withdrawal-date">${formattedDate}</p>
-                </div>
-                <div class="withdrawal-amount amount-negative">-$${formattedAmount}</div>
-            </div>
-        `;
-    });
+        if (!res.ok) throw new Error("No se pudieron obtener los retiros");
 
-    withdrawalsContainer.innerHTML = html;
+        const withdrawals = await res.json();
+
+        let html = '';
+
+        withdrawals.forEach(withdrawal => {
+            const formattedDate = new Date(withdrawal.transactionDate || withdrawal.transactionDate).toLocaleDateString('es-AR');
+            const formattedAmount = (withdrawal.amount || withdrawal.transactionAmount).toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            html += `
+                <div class="withdrawal-item">
+                    <div class="withdrawal-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="withdrawal-details">
+                        <p class="withdrawal-name">${withdrawal.description || 'Retiro'}</p>
+                        <p class="withdrawal-date">${formattedDate}</p>
+                    </div>
+                    <div class="withdrawal-amount amount-negative">-$${formattedAmount}</div>
+                </div>
+            `;
+        });
+
+        withdrawalsContainer.innerHTML = html || '<div>No hay retiros.</div>';
+
+    } catch (error) {
+        console.error(error);
+        withdrawalsContainer.innerHTML = '<div>Error al cargar retiros.</div>';
+    }
 }
 
 // Función para cargar tarjetas
