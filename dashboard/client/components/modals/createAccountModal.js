@@ -6,8 +6,11 @@ class AccountModalHandler {
         this.modalManager = modalManager;
         this.modal = document.getElementById("addAccountModal");
         this.form = document.getElementById("addAccountForm");
-
+        
         this.initEvents();
+        console.log("AccountModalHandler inicializado");
+        console.log("Modal:", this.modal);
+        console.log("Formulario:", this.form);
     }
 
     initEvents() {
@@ -16,6 +19,7 @@ class AccountModalHandler {
 
         this.form.addEventListener("submit", async (e) => {
             e.preventDefault();
+
 
             const formData = new FormData(this.form);
             const userData = JSON.parse(localStorage.getItem('data'));
@@ -26,6 +30,12 @@ class AccountModalHandler {
                 return;
             }
 
+            const accountTypeMap = {
+                savings: "Caja de ahorro",
+                checking: "Cuenta Corriente",
+                investment: "Cuenta de inversión"
+            };
+
             const accountDTO = {
                 id: 0, // el backend probablemente lo ignore o lo genere
                 userId: userId, // debe existir en localStorage
@@ -33,8 +43,11 @@ class AccountModalHandler {
                 balance: 0.00,
                 alias: formData.get("accountAlias") || this.generateRandomAlias(),
                 currency: formData.get("accountCurrency"),
-                accountType: formData.get("accountType")
+                accountType: accountTypeMap[formData.get("accountType")] //mapea a  los tipos de cuenta del backend
             };
+
+            console.log("Datos de la cuenta a crear:", accountDTO);
+
 
             try {
                 const response = await fetch('http://localhost:8080/api/accounts', {
@@ -127,10 +140,13 @@ class AccountModalHandler {
 
 // Registrar el manejador en el ModalManager cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado, inicializando AccountModalHandler");
     if (window.modalManager) {
         //si el modalmanager ya está inicializado, registrar el manejador
+        console.log("ModalManager ya inicializado, registrando manejador de cuenta");
         window.modalManager.modals.addAccount = document.getElementById("addAccountModal");
         const accountHandler = new AccountModalHandler(window.modalManager);
+        
         window.modalManager.registerModalHandler("addAccount", accountHandler);
 
 

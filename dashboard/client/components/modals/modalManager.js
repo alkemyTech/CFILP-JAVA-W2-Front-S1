@@ -93,6 +93,8 @@ class ModalManager {
             const beforeOpenEvent = new CustomEvent("modal:beforeOpen", {
                 detail: { modalId, data },
             })
+            console.log(`Abriendo modal: ${modalId}`)
+            console.log(`Datos:`, data)
             document.dispatchEvent(beforeOpenEvent)
 
             // Abrir el modal
@@ -110,7 +112,7 @@ class ModalManager {
                 detail: { modalId, data },
             })
             document.dispatchEvent(afterOpenEvent)
-
+            console.log(afterOpenEvent)
             return true
         }
 

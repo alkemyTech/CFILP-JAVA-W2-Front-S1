@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Cargar los scripts de los manejadores de modales
     //todo: agregar el modal "./components/modals/account.js",
     const modalScripts = [
-       "./components/modals/createAccountModal.js",
+      // "./components/modals/createAccountModal.js",
         "./components/modals/deposit.js",
         "./components/modals/withdrawal.js",
         "./components/modals/transfer.js",
