@@ -26,35 +26,31 @@ document.addEventListener('DOMContentLoaded', async function () {
     // y lo guardamos en una variable
     //no borrar 
     const userId = getUserIdFromToken();
+    let userData; // Variable para almacenar los datos del usuario
 
     // Cargar datos iniciales
     await fetchUserData(userId);
-    loadInitialData();
-    /*
+    loadInitialData(userData);
+    window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
+    loadDollarRates();
+    //hasta aca viene desde el servidor 
+    
+    //datos simulados 
     loadTransactions(userId);
     loadTransfers(userId);
     loadWithdrawals(userId);
-    */
-    // loadAccounts(userId);
-    window.accountsManager.loadAccounts(userId);
     loadCards(userId);
-    loadDollarRates();
+    
 
 
     // Event listeners para botones de actualización
     document.getElementById('refreshBalance').addEventListener('click', function () {
-        console.log("refreshBalance");
         loadBalance(userId, true);
     });
 
     document.getElementById('refreshDollar').addEventListener('click', function () {
         loadDollarRates(true);
     });
-
-
-    
-
-
 
 
     // Traer nombre y rol del usuario logueado desde el back
@@ -74,9 +70,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             })
             .then(data => {
 
-
+                userData = data; // Guardar los datos del usuario en la variable
                 localStorage.setItem('data', JSON.stringify(data));
-
+                console.log("Datos del usuario:", userData);
             })
             .catch(error => {
                 console.error('Error al obtener datos del usuario:', error);
@@ -86,20 +82,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 //CARgar la data desde el localStorage
 //TODO: cargar la balanceElement.textContent = 
-function loadInitialData() {
-    const userData = JSON.parse(localStorage.getItem('data'));
-    console.log("user data :" + JSON.stringify(userData));
-
+function loadInitialData(userData) {
 
     const balanceElement = document.getElementById('balanceAmount')
     balanceElement.textContent = userData.accounts[0].balance.toLocaleString();
-
 
 }
 
 
 
-// Función para cargar el saldo
+// // Función para cargar el saldo // esta funcion no esta funcionando bien .
+// ahora el saldo se actualiza desde el accountsManager
 function loadBalance(userId, isRefresh = true) { //false
     const balanceElement = document.getElementById('balanceAmount');
     console.log("loadBalance");
@@ -133,9 +126,8 @@ function loadBalance(userId, isRefresh = true) { //false
 }
 
 
-
-
 // Función para cargar transacciones
+
 function loadTransactions(userId) {
     const tableBody = document.querySelector('#transactionsTable tbody');
 
@@ -335,12 +327,10 @@ function loadDollarRates(isRefresh = true) { //false
                 if (index === 0) {
                     compraOficial = dolar.compra;
                     ventaOficial = dolar.venta;
-                    console.log("Dolar: ", dolar);
                 }
                 if (index === 1) {
                     compraBlue = dolar.compra;
                     ventaBlue = dolar.venta;
-                    console.log("Dolar: ", dolar);
                 };
             }
             )
