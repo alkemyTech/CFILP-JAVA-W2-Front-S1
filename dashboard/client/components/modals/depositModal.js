@@ -5,6 +5,7 @@ class DepositModalHandler {
     constructor(modalManager) {
         this.modalManager = modalManager
         this.modal = document.getElementById("depositModal")
+        this.form = document.getElementById("depositForm")
 
         // Inicializar eventos específicos del modal de depósito
         this.initEvents()
@@ -14,6 +15,18 @@ class DepositModalHandler {
      * Inicializa eventos específicos para el modal de depósito
      */
     initEvents() {
+        if (!this.modal) return
+
+        console.log("DepositModalHandler initialized")
+
+        this.defaultAccount = window.accountsManager.getAccounts();
+
+        this.form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await this.processTransaction();
+
+        });
+
         // Manejar cambio en el método de depósito
         const depositMethod = document.getElementById("depositMethod")
         const cardDetails = document.getElementById("cardDetails")
@@ -127,45 +140,74 @@ class DepositModalHandler {
     /**
      * Procesa una transacción de depósito
      */
-    processTransaction() {
-        // Obtener datos del formulario
-        const form = document.getElementById("depositForm")
-        if (!form) return
+    async processTransaction() {
+        const form = document.getElementById("depositForm");
+        if (!form) return;
+        
+        // Obtén la cuenta default justo antes de enviar el depósito
+        const defaultAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
+        const accountId = defaultAccount ? defaultAccount.id : null;
+        
+        const formData = new FormData(form);
+        const amount = parseFloat(formData.get("depositAmount"));
+        const method = formData.get("depositMethod");
+        const sourceEntity = formData.get("bankName") || formData.get("cardNumber") || "N/A";
 
-        const formData = new FormData(form)
-        const amount = formData.get("depositAmount")
-        const method = formData.get("depositMethod")
+        const depositDTO = {
+            transactionDate: null, // El backend lo puede setear automáticamente
+            transactionAmount: amount,
+            accountId: accountId,
+            method: method,
+            sourceEntity: sourceEntity
+        };
 
-        // Simular procesamiento (aquí iría la lógica real de procesamiento)
-        setTimeout(() => {
-            this.modalManager.closeModal("deposit")
+        console.log("Processing deposit:", depositDTO);
 
-            // Crear datos para la confirmación
+        try {
+            const response = await fetch('http://localhost:8080/api/deposits', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(depositDTO)
+            });
+
+            if (!response.ok) throw new Error("Error al realizar el depósito");
+
+            const depositResult = await response.json();
+
+            this.modalManager.closeModal("deposit");
+
+            // Mostrar confirmación
             const confirmationData = {
                 title: "Depósito realizado exitosamente",
                 message: "Tu operación se ha procesado correctamente",
                 details: `
-        <div class="summary-row">
-            <span>Monto:</span>
-            <span>$${amount}</span>
-        </div>
-        <div class="summary-row">
-            <span>Método:</span>
-            <span>${this.getMethodName(method)}</span>
-        </div>
-        <div class="summary-row">
-            <span>Fecha:</span>
-            <span>${new Date().toLocaleDateString()}</span>
-    </div>
-        <div class="summary-row">
-            <span>ID de transacción:</span>
-            <span>#${Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
-        </div>
-        `,
-            }
+                    <div class="summary-row">
+                        <span>Monto:</span>
+                        <span>$${depositResult.transactionAmount}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Método:</span>
+                        <span>${this.getMethodName(depositResult.method)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Fecha:</span>
+                        <span>${new Date(depositResult.transactionDate).toLocaleDateString()}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>ID de transacción:</span>
+                        <span>#${depositResult.id}</span>
+                    </div>
+                `,
+            };
 
-            this.modalManager.showConfirmation(confirmationData)
-        }, 1000)
+            this.modalManager.showConfirmation(confirmationData);
+
+        } catch (error) {
+            alert("Ocurrió un error al realizar el depósito: " + error.message);
+        }
     }
 
     /**
@@ -192,3 +234,4 @@ document.addEventListener("DOMContentLoaded", () => {
         window.modalManager.registerModalHandler("deposit", depositHandler)
     }
 })
+
