@@ -91,7 +91,13 @@ class AccountModalHandler {
     }
 
     generateRandomAlias() {
-        const words = ["cuenta", "alky", "wallet", "banco", "dinero", "ahorro", "futuro", "meta"];
+        
+           const words = [
+        "cuenta", "alky", "wallet", "banco", "dinero", "ahorro", "futuro", "meta",
+        "digital", "segura", "clave", "virtual", "alk", "alkywallet", "movil",
+        "moneda", "net", "fast", "nube", "cash", "click", "simple", "pro", "global",
+        "argent", "solidez", "flow", "pago", "transfer", "online"
+    ];
         const randomWords = [];
         for (let i = 0; i < 3; i++) {
             const randomIndex = Math.floor(Math.random() * words.length);
