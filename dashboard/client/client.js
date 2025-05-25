@@ -119,6 +119,7 @@ const getDefaultAccount = () => {
     const accounts = window.accountsManager.getAccounts();
     return accounts.find(acc => acc.isDefault);
 };
+
 // Depositar dinero en la cuenta seleccionada actualmente
 document.getElementById('depositForm').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -175,6 +176,17 @@ document.getElementById('depositForm').addEventListener('submit', async function
         // Actualizar cuentas y cerrar modal
         await window.accountsManager.loadAccounts(account.userId);
         document.querySelector('[data-modal="deposit"]').click();
+
+        // Abrir el modal de confirmación
+        document.getElementById('confirmationModal').classList.add('active'); 
+
+        // Mostrar detalles del depósito en el modal de confirmación
+        document.getElementById('confirmationDetails').innerHTML = `
+    <p>Monto: $${result.transactionAmount}</p>
+    <p>Método: ${result.method}</p>
+    <p>Entidad: ${result.sourceEntity}</p>
+    <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+`;
 
     } catch (error) {
         console.error(error);
