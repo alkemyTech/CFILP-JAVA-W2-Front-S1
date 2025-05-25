@@ -32,97 +32,95 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Validar nombre completo
         const username = document.getElementById('username').value.trim();
-        // const usernameError = document.getElementById('usernameError');
+        const usernameError = document.getElementById('usernameError');
 
-        // console.log('Validando nombre de usuario:', username);
+        if (username === '') {
+            usernameError.textContent = 'Por favor, ingresa tu nombre completo';
+            isValid = false;
+        } else if (username.length < 3) {
+            usernameError.textContent = 'El nombre debe tener al menos 3 caracteres';
+            isValid = false;
+        } else {
+            usernameError.textContent = '';
+        }
 
-        // if (username === '') {
-        //     usernameError.textContent = 'Por favor, ingresa tu nombre completo';
-        //     isValid = false;
-        // } else if (username.length < 3) {
-        //     usernameError.textContent = 'El nombre debe tener al menos 3 caracteres';
-        //     isValid = false;
-        // } else {
-        //     usernameError.textContent = '';
-        // }
+        // Validar email
+        const email = document.getElementById('email').value.trim();
+        const emailError = document.getElementById('emailError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // // // Validar email
-        // const email = document.getElementById('email').value.trim();
-        // const emailError = document.getElementById('emailError');
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '') {
+            emailError.textContent = 'Por favor, ingresa tu correo electrónico';
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            emailError.textContent = 'Por favor, ingresa un correo electrónico válido';
+            isValid = false;
+        } else {
+            emailError.textContent = '';
+        }
 
-        // if (email === '') {
-        //     emailError.textContent = 'Por favor, ingresa tu correo electrónico';
-        //     isValid = false;
-        // } else if (!emailRegex.test(email)) {
-        //     emailError.textContent = 'Por favor, ingresa un correo electrónico válido';
-        //     isValid = false;
-        // } else {
-        //     emailError.textContent = '';
-        // }
+        // Validar teléfono
+        const phone = document.getElementById('phoneNumber').value.trim();
+        const phoneNumberError = document.getElementById('phoneNumberError');
+        const phoneRegex = /^[0-9]{10,15}$/;
 
-        // // Validar teléfono
-        // const phone = document.getElementById('phone').value.trim();
-        // const phoneError = document.getElementById('phoneError');
-        // const phoneRegex = /^[0-9]{10,15}$/;
-
-        // if (phone === '') {
-        //     phoneError.textContent = 'Por favor, ingresa tu número de teléfono';
-        //     isValid = false;
-        // } else if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
-        //     phoneError.textContent = 'Por favor, ingresa un número de teléfono válido';
-        //     isValid = false;
-        // } else {
-        //     phoneError.textContent = '';
-        // }
+        if (phone === '') {
+            phoneNumberError.textContent = 'Por favor, ingresa tu número de teléfono';
+            isValid = false;
+        } else if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
+            phoneNumberError.textContent = 'Por favor, ingresa un número de teléfono válido';
+            isValid = false;
+        } else {
+            phoneNumberError.textContent = '';
+        }
 
         // Validar contraseña
         const password = passwordInput.value;
-        // const passwordError = document.getElementById('passwordError');
-        // console.log(password)
-        // if (password === '') {
-        //     passwordError.textContent = 'Por favor, ingresa una contraseña';
-        //     isValid = false;
-        // } else if (password.length < 8) {
-        //     passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres';
-        //     isValid = false;
-        // } else if (!/[A-Z]/.test(password)) {
-        //     passwordError.textContent = 'La contraseña debe incluir al menos una letra mayúscula';
-        //     isValid = false;
-        // } else if (!/[0-9]/.test(password)) {
-        //     passwordError.textContent = 'La contraseña debe incluir al menos un número';
-        //     isValid = false;
-        // } else if (!/[!@#$%^&*]/.test(password)) {
-        //     passwordError.textContent = 'La contraseña debe incluir al menos un carácter especial (!@#$%^&*)';
-        //     isValid = false;
-        // } else {
-        //     passwordError.textContent = '';
-        // }
+        const passwordError = document.getElementById('passwordError');
+        console.log(password)
+        if (password === '') {
+            passwordError.textContent = 'Por favor, ingresa una contraseña';
+            isValid = false;
+        } else if (password.length < 8) {
+            passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres';
+            isValid = false;
+        } else if (!/[A-Z]/.test(password)) {
+            passwordError.textContent = 'La contraseña debe incluir al menos una letra mayúscula';
+            isValid = false;
+        } else if (!/[0-9]/.test(password)) {
+            passwordError.textContent = 'La contraseña debe incluir al menos un número';
+            isValid = false;
+        } else if (!/[!@#$%^&*]/.test(password)) {
+            passwordError.textContent = 'La contraseña debe incluir al menos un carácter especial (!@#$%^&*)';
+            isValid = false;
+        } else {
+            passwordError.textContent = '';
+        }
 
-        // // Validar confirmación de contraseña
-        // const confirmPassword = confirmPasswordInput.value;
-        // const confirmPasswordError = document.getElementById('confirmPasswordError');
+        // Validar confirmación de contraseña
+        const confirmPassword = confirmPasswordInput.value;
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
 
-        // if (confirmPassword === '') {
-        //     confirmPasswordError.textContent = 'Por favor, confirma tu contraseña';
-        //     isValid = false;
-        // } else if (confirmPassword !== password) {
-        //     confirmPasswordError.textContent = 'Las contraseñas no coinciden';
-        //     isValid = false;
-        // } else {
-        //     confirmPasswordError.textContent = '';
-        // }
+        if (confirmPassword === '') {
+            confirmPasswordError.textContent = 'Por favor, confirma tu contraseña';
+            isValid = false;
+        } else if (confirmPassword !== password) {
+            confirmPasswordError.textContent = 'Las contraseñas no coinciden';
+            isValid = false;
+        } else {
+            confirmPasswordError.textContent = '';
+        }
 
-        // // Validar términos y condiciones
-        // const terms = document.getElementById('terms');
-        // const termsError = document.getElementById('termsError');
+        // Validar términos y condiciones
+        const terms = document.getElementById('terms');
+        const termsError = document.getElementById('termsError');
 
-        // if (!terms.checked) {
-        //     termsError.textContent = 'Debes aceptar los términos y condiciones';
-        //     isValid = false;
-        // } else {
-        //     termsError.textContent = '';
-        // }
+        if (!terms.checked) {
+            termsError.textContent = 'Debes aceptar los términos y condiciones';
+            isValid = false;
+        } else {
+            termsError.textContent = '';
+        }
 
         // Si todo es válido, enviar el formulario
         if (isValid) {
@@ -264,29 +262,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // // Formateo de número de teléfono
-    // const phoneInput = document.getElementById('phone');
-    // phoneInput.addEventListener('input', function(e) {
-    //     let value = e.target.value.replace(/\D/g, '');
+    // Formateo de número de teléfono
+    const phoneInput = document.getElementById('phoneNumber');
+    phoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
 
-    //     if (value.length > 0) {
-    //         // Formato: (XXX) XXX-XXXX para números de 10 dígitos
-    //         if (value.length <= 10) {
-    //             if (value.length > 6) {
-    //                 value = `(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}`;
-    //             } else if (value.length > 3) {
-    //                 value = `(${value.substring(0, 3)}) ${value.substring(3)}`;
-    //             } else if (value.length > 0) {
-    //                 value = `(${value}`;
-    //             }
-    //         } else {
-    //             // Para números internacionales más largos
-    //             value = `+${value.substring(0, value.length)}`;
-    //         }
-    //     }
+        if (value.length > 0) {
+            // Formato: (XXX) XXX-XXXX para números de 10 dígitos
+            if (value.length <= 10) {
+                if (value.length > 6) {
+                    value = `(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}`;
+                } else if (value.length > 3) {
+                    value = `(${value.substring(0, 3)}) ${value.substring(3)}`;
+                }
+            } else {
+                // Para números internacionales más largos
+                value = `+${value.substring(0, value.length)}`;
+            }
+        }
 
-    //     e.target.value = value;
-    // });
+        e.target.value = value;
+    })
 });
 
 
