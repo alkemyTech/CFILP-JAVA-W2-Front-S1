@@ -280,7 +280,78 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
     });
 }
 
+// Transferir dinero entre cuentas
+document.getElementById('transferForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
+    // Obtener datos del formulario
+    const amount = parseFloat(document.getElementById('transferAmount').value);
+    const concept = document.getElementById('transferConcept').value;
+    const description = document.getElementById('transferDescription').value;
+    const recipientCBU = document.getElementById('recipientCBU') ? document.getElementById('recipientCBU').value : '';
+    const recipientAlias = document.getElementById('recipientAlias') ? document.getElementById('recipientAlias').value : '';
+
+    // Obtener la cuenta seleccionada actualmente
+    let selectedAccountId = null;
+    if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+        selectedAccountId = window.accountsManager.getSelectedAccountId();
+    }
+    if (!selectedAccountId) {
+        const defaultAccount = getDefaultAccount();
+        selectedAccountId = defaultAccount ? defaultAccount.id : null;
+    }
+    const account = window.accountsManager.getAccounts().find(acc => acc.id === selectedAccountId);
+
+    if (!account) {
+        alert("No se encontró una cuenta seleccionada.");
+        return;
+    }
+
+    // Construir el body para el backend
+    const body = {
+        accountId: account.id,
+        transactionAmount: amount,
+        concept: concept,
+        description: description,
+        recipientCBU: recipientCBU,
+        recipientAlias: recipientAlias
+    };
+
+    try {
+        const res = await fetch('http://localhost:8080/api/transfers', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error("Error al transferir");
+
+        const result = await res.json();
+        console.log("Transferencia realizada:", result);
+
+        // Actualizar cuentas y cerrar modal
+        await window.accountsManager.loadAccounts(account.userId);
+        document.querySelector('[data-modal="transfer"]').click();
+
+        // Abrir el modal de confirmación
+        document.getElementById('confirmationModal').classList.add('active');
+
+        // Mostrar detalles de la transferencia en el modal de confirmación
+        document.getElementById('confirmationDetails').innerHTML = `
+            <p>Monto: $${result.transactionAmount}</p>
+            <p>CBU/CVU: ${result.recipientCBU || '-'}</p>
+            <p>Alias: ${result.recipientAlias || '-'}</p>
+            <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+        `;
+
+    } catch (error) {
+        console.error(error);
+        alert("No se pudo realizar la transferencia.");
+    }
+});
 
 
 
@@ -566,4 +637,89 @@ function loadDollarRates(isRefresh = true) { //false
         dollarContainer.innerHTML = html;
     }, isRefresh ? 1500 : 0);
 }
+
+//ABRE Y CIERRA MODALES GENERALES
+document.querySelectorAll('[data-modal]').forEach(trigger => {
+    trigger.addEventListener('click', function () {
+        const modalId = this.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+            modal.classList.toggle('active');
+            document.body.classList.toggle('modal-active');
+        }
+    });
+});
+
+// Cerrar modales al hacer clic en el fondo oscuro
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function (e) {
+        if (e.target === this) {
+            this.classList.remove('active');
+            document.body.classList.remove('modal-active');
+        }
+    });
+});
+
+// Evitar el cierre del modal al hacer clic en el contenido
+document.querySelectorAll('.modal-content').forEach(content => {
+    content.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+});
+
+// Deshabilitar envío de formularios con Enter
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+});
+
+// Validar formulario de transferencia entre cuentas
+document.getElementById('transferForm').addEventListener('submit', function (e) {
+    const recipientCBU = document.getElementById('recipientCBU').value.trim();
+    const recipientAlias = document.getElementById('recipientAlias').value.trim();
+
+    if (!recipientCBU && !recipientAlias) {
+        e.preventDefault();
+        alert("Ingrese al menos un CBU o Alias del destinatario.");
+        return;
+    }
+
+    // Si se ingresa un CBU, validar su formato (solo números y longitud de 22)
+    if (recipientCBU && (!/^\d+$/.test(recipientCBU) || recipientCBU.length !== 22)) {
+        e.preventDefault();
+        alert("El CBU debe tener 22 dígitos y contener solo números.");
+        return;
+    }
+
+    // Si se ingresa un Alias, validar su formato (alfanumérico, 3 a 20 caracteres)
+    if (recipientAlias && (!/^[a-zA-Z0-9]{3,20}$/.test(recipientAlias))) {
+        e.preventDefault();
+        alert("El Alias debe tener entre 3 y 20 caracteres y contener solo letras y números.");
+        return;
+    }
+});
+
+// Deshabilitar campos mutuamente exclusivos en el formulario de transferencia
+const cbuInput = document.getElementById('recipientCBU');
+const aliasInput = document.getElementById('recipientAlias');
+
+cbuInput.addEventListener('input', function() {
+    if (cbuInput.value.trim()) {
+        aliasInput.disabled = true;
+    } else {
+        aliasInput.disabled = false;
+    }
+});
+
+aliasInput.addEventListener('input', function() {
+    if (aliasInput.value.trim()) {
+        cbuInput.disabled = true;
+    } else {
+        cbuInput.disabled = false;
+    }
+});
 
