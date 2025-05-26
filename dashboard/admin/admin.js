@@ -83,11 +83,11 @@ async function loadUsers(page = 1) {
                     <td>${user.roles.join(', ')}</td>
                     <td><span class="user-status status-active">Activo</span></td>
                     <td>
-                        <div class="user-actions">
-                            <div class="action-icon view-icon"><i class="fas fa-eye"></i></div>
-                            <div class="action-icon edit-icon"><i class="fas fa-edit"></i></div>
-                            <div class="action-icon delete-icon"><i class="fas fa-trash"></i></div>
-                        </div>
+            <div class="user-actions">
+<div class="action-icon view-icon" data-open-modal="userDetailsModal" data-user-id="${user.id}" title="Ver detalles"><i class="fas fa-eye"></i></div>
+<div class="action-icon edit-icon" data-open-modal="editUserModal" data-user-id="${user.id}" title="Editar"><i class="fas fa-edit"></i></div>
+<div class="action-icon delete-icon" data-open-modal="deleteUserModal" data-user-id="${user.id}" title="Eliminar"><i class="fas fa-trash"></i></div>
+            </div>
                     </td>
                 </tr>
             `;
@@ -131,104 +131,113 @@ function renderUsersPagination(totalPages) {
 }
 
 // Función para cargar roles
-function loadRoles() {
+async function loadRoles() {
     const tableBody = document.querySelector('#rolesTable tbody');
 
     // Simulación de llamada a API
+    // TODO: Traer roles desde backend y renderizar tabla
     // todo: fetch a /api/roles
-    const roles = [
-        { id: 1, name: 'Administrador', description: 'Acceso completo al sistema', permissions: 'Todos', userCount: 2 },
-        { id: 2, name: 'Usuario', description: 'Acceso limitado a funciones básicas', permissions: 'Lectura, Transferencias', userCount: 1250 },
-        { id: 3, name: 'Auditor', description: 'Acceso de solo lectura para auditoría', permissions: 'Lectura', userCount: 2 }
-    ];
+    try {
+        const response = await fetch('http://localhost:8080/api/roles', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        if (!response.ok) throw new Error('Error al obtener roles');
+        const roles = await response.json();
 
-    let html = '';
-
-    roles.forEach(role => {
-        html += `
-            <tr>
-                <td>#${role.id}</td>
-                <td>${role.name}</td>
-                <td>${role.description}</td>
-                <td>${role.permissions}</td>
-                <td>${role.userCount}</td>
-                <td>
-                    <div class="role-actions">
-                        <div class="action-icon edit-icon" title="Editar">
-                            <i class="fas fa-edit"></i>
+        let html = '';
+        roles.forEach(role => {
+            html += `
+                <tr>
+                    <td>#${role.id}</td>
+                    <td>${role.name}</td>
+                    <td>${role.description}</td>
+                    <td>${role.permissions}</td>
+                    <td>${role.userCount}</td>
+                    <td>
+                        <div class="role-actions">
+                            <div class="action-icon edit-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-icon delete-icon" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </div>
                         </div>
-                        <div class="action-icon delete-icon" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-
-    tableBody.innerHTML = html;
+                    </td>
+                </tr>
+            `;
+        });
+        tableBody.innerHTML = html;
+    } catch (error) {
+        console.error(error);
+        tableBody.innerHTML = `<tr><td colspan="6">Error al cargar roles</td></tr>`;
+    }
 }
 
 // Función para cargar transacciones de administrador
-function loadAdminTransactions() {
+async function loadAdminTransactions() {
     const tableBody = document.querySelector('#adminTransactionsTable tbody');
 
-    // Simulación de llamada a API
+    // TODO: Traer transacciones desde backend y renderizar tabla
     // TODO: Fetch a /api/transactions
-    const transactions = [
-        { id: 1, user: 'Juan Pérez', type: 'deposit', amount: 5000.00, date: '2023-05-15', status: 'completed' },
-        { id: 2, user: 'María López', type: 'transfer', amount: 1200.00, date: '2023-05-12', status: 'completed' },
-        { id: 3, user: 'Pedro Gómez', type: 'withdrawal', amount: 3000.00, date: '2023-05-10', status: 'pending' },
-        { id: 4, user: 'Ana Martínez', type: 'deposit', amount: 2000.00, date: '2023-05-08', status: 'completed' },
-        { id: 5, user: 'Carlos Rodríguez', type: 'withdrawal', amount: 1500.00, date: '2023-05-05', status: 'failed' }
-    ];
-
-    let html = '';
-
-    transactions.forEach(transaction => {
-        const formattedDate = new Date(transaction.date).toLocaleDateString('es-AR');
-        const formattedAmount = transaction.amount.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+    try {
+        const response = await fetch('http://localhost:8080/api/transactions', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
         });
+        if (!response.ok) throw new Error('Error al obtener transacciones');
+        const transactions = await response.json();
 
-        let typeClass = '';
-        let typeText = '';
+        let html = '';
 
-        switch (transaction.type) {
-            case 'deposit':
-                typeClass = 'type-deposit';
-                typeText = 'Depósito';
-                break;
-            case 'withdrawal':
-                typeClass = 'type-withdrawal';
-                typeText = 'Retiro';
-                break;
-            case 'transfer':
-                typeClass = 'type-transfer';
-                typeText = 'Transferencia';
-                break;
-        }
+        transactions.forEach(transaction => {
+            const formattedDate = new Date(transaction.date).toLocaleDateString('es-AR');
+            const formattedAmount = (typeof transaction.amount === "number" && !isNaN(transaction.amount))
+                ? transaction.amount.toLocaleString('es-AR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+                : "0.00";
 
-        let statusClass = '';
-        let statusText = '';
+            let typeClass = '';
+            let typeText = '';
 
-        switch (transaction.status) {
-            case 'completed':
-                statusClass = 'status-active';
-                statusText = 'Completada';
-                break;
-            case 'pending':
-                statusClass = 'transaction-type';
-                statusText = 'Pendiente';
-                break;
-            case 'failed':
-                statusClass = 'status-inactive';
-                statusText = 'Fallida';
-                break;
-        }
+            switch (transaction.type) {
+                case 'deposit':
+                    typeClass = 'type-deposit';
+                    typeText = 'Depósito';
+                    break;
+                case 'withdrawal':
+                    typeClass = 'type-withdrawal';
+                    typeText = 'Retiro';
+                    break;
+                case 'transfer':
+                    typeClass = 'type-transfer';
+                    typeText = 'Transferencia';
+                    break;
+            }
 
-        html += `
+            let statusClass = '';
+            let statusText = '';
+
+            switch (transaction.status) {
+                case 'completed':
+                    statusClass = 'status-active';
+                    statusText = 'Completada';
+                    break;
+                case 'pending':
+                    statusClass = 'transaction-type';
+                    statusText = 'Pendiente';
+                    break;
+                case 'failed':
+                    statusClass = 'status-inactive';
+                    statusText = 'Fallida';
+                    break;
+            }
+
+            html += `
             <tr>
                 <td>#${transaction.id}</td>
                 <td>${transaction.user}</td>
@@ -245,9 +254,13 @@ function loadAdminTransactions() {
                 </td>
             </tr>
         `;
-    });
+        });
 
-    tableBody.innerHTML = html;
+        tableBody.innerHTML = html;
+    } catch (error) {
+        console.error(error);
+        tableBody.innerHTML = `<tr><td colspan="7">Error al cargar transacciones</td></tr>`;
+    }
 }
 
 // Función para cargar cuentas
@@ -309,13 +322,11 @@ async function loadAccounts(page = 1) {
                     <td><span class="user-status ${statusClass}">${statusText}</span></td>
                     <td>${formattedDate}</td>
                     <td>
-                        <div class="user-actions">
-                            <div class="action-icon view-icon" title="Ver detalles"><i class="fas fa-eye"></i></div>
-                            <div class="action-icon edit-icon" title="Editar"><i class="fas fa-edit"></i></div>
-                            <div class="action-icon delete-icon" title="${statusText === 'Activa' ? 'Suspender' : 'Activar'}">
-                                ${statusText === 'Activa' ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-check"></i>'}
-                            </div>
-                        </div>
+            <div class="user-actions">
+            <div class="action-icon view-icon" data-open-modal="accountDetailsModal" data-account-id="${account.id}" title="Ver detalles"><i class="fas fa-eye"></i></div>
+<div class="action-icon edit-icon" data-open-modal="editAccountModal" data-account-id="${account.id}" title="Editar"><i class="fas fa-edit"></i></div>
+<div class="action-icon delete-icon" data-open-modal="toggleAccountModal" data-account-id="${account.id}" title="Suspender/Activar"><i class="fas fa-ban"></i></div>
+            </div>
                     </td>
                 </tr>
             `;
@@ -358,73 +369,15 @@ function renderAccountsPagination(totalPages) {
     });
 }
 
-// Configurar acciones para los botones de cuentas
-function setupAccountActions() {
-    document.querySelectorAll('#accountsTable .view-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            const accountId = this.closest('tr').querySelector('td:first-child').textContent.replace('#', '');
-            viewAccountDetails(accountId);
-        });
-    });
-
-    document.querySelectorAll('#accountsTable .edit-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            const accountId = this.closest('tr').querySelector('td:first-child').textContent.replace('#', '');
-            editAccount(accountId);
-        });
-    });
-
-    document.querySelectorAll('#accountsTable .delete-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            const accountId = this.closest('tr').querySelector('td:first-child').textContent.replace('#', '');
-            const status = this.closest('tr').querySelector('.user-status').textContent;
-
-            if (status === 'Activa') {
-                suspendAccount(accountId);
-            } else {
-                activateAccount(accountId);
-            }
-        });
-    });
-}
-
-// Funciones para manejar acciones de cuentas
-function viewAccountDetails(accountId) {
-    console.log(`Ver detalles de la cuenta #${accountId}`);
-    alert(`Ver detalles de la cuenta #${accountId}`);
-    // TODO: Mostrar un modal con los detalles
-}
-
-function editAccount(accountId) {
-    console.log(`Editar cuenta #${accountId}`);
-    alert(`Editar cuenta #${accountId}`);
-    // TODO: Mostrar un formulario para editar
-}
-
-function suspendAccount(accountId) {
-    console.log(`Suspender cuenta #${accountId}`);
-    if (confirm(`¿Estás seguro de que deseas suspender la cuenta #${accountId}?`)) {
-        alert(`Cuenta #${accountId} suspendida correctamente`);
-        // TODO: fetch para actualizar el estado y luego recargar los datos
-        loadAccounts();
-    }
-}
-
-function activateAccount(accountId) {
-    console.log(`Activar cuenta #${accountId}`);
-    if (confirm(`¿Estás seguro de que deseas activar la cuenta #${accountId}?`)) {
-        alert(`Cuenta #${accountId} activada correctamente`);
-        // TODO: fetch para actualizar el estado y luego recargar los datos
-        loadAccounts();
-    }
-}
 
 // Función para inicializar gráficos
+// TODO: Inicializar gráficos de transacciones y usuarios
 function initCharts() {
     initTransactionsChart();
     initUsersChart();
 }
 
+// TODO: Inicializar gráfico de transacciones mensuales
 // Gráfico de transacciones mensuales
 function initTransactionsChart() {
     const ctx = document.getElementById('transactionsChart').getContext('2d');
@@ -477,6 +430,7 @@ function initTransactionsChart() {
 
 // Función para actualizar el gráfico de transacciones
 function updateTransactionsChart() {
+    // TODO: Actualizar datos del gráfico de transacciones según el período seleccionado
     const period = document.getElementById('chartPeriod').value;
 
     // Simulación de datos diferentes según el período seleccionado
@@ -515,6 +469,7 @@ function updateTransactionsChart() {
 
 // Gráfico de distribución de usuarios
 function initUsersChart() {
+    // TODO: Inicializar gráfico de distribución de usuarios
     const ctx = document.getElementById('usersChart').getContext('2d');
 
     // Datos de ejemplo para el gráfico
@@ -549,4 +504,26 @@ function initUsersChart() {
             }
         }
     });
+
+    // Funciones para que los modales puedan recargar datos
+    function clearDataCache() {
+        // TODO: Limpiar caché de usuarios y cuentas
+        usersData = [];
+        accountsData = [];
+    }
+
+    function refreshData() {
+        // TODO: Limpiar caché y recargar usuarios y cuentas
+        clearDataCache();
+        loadUsers(usersCurrentPage);
+        loadAccounts(accountsCurrentPage);
+    }
+
+    // Exponer funciones globalmente para uso de los modales
+    window.refreshData = refreshData;
+    window.clearDataCache = clearDataCache;
+    window.usersData = usersData;
+    window.accountsData = accountsData;
+    window.loadUsers = loadUsers;
+    window.loadAccounts = loadAccounts;
 }

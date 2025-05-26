@@ -1,0 +1,595 @@
+/* Estilos para los modales de administración */
+
+/* Extensiones para modales de admin */
+.modal-header.danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.confirmation-modal {
+    max-width: 450px;
+}
+
+/* Avatar de usuario */
+.user-avatar {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    color: white;
+    font-size: 32px;
+}
+
+.user-status-badge,
+.account-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #e8f5e8;
+    color: #2ecc71;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2ecc71;
+}
+
+/* Estados de usuario/cuenta */
+.user-status-badge.inactive,
+.account-status-badge.inactive {
+    background-color: #fef2e8;
+    color: #f39c12;
+}
+
+.user-status-badge.inactive .status-indicator,
+.account-status-badge.inactive .status-indicator {
+    background-color: #f39c12;
+}
+
+.user-status-badge.suspended,
+.account-status-badge.suspended {
+    background-color: #fdeaea;
+    color: #e74c3c;
+}
+
+.user-status-badge.suspended .status-indicator,
+.account-status-badge.suspended .status-indicator {
+    background-color: #e74c3c;
+}
+
+/* Grid de detalles */
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail-item label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-item span {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.balance-amount {
+    color: #43cea2;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Actividad de usuario */
+.user-activity {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.user-activity h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 16px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.activity-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.activity-item span {
+    flex: 1;
+    font-size: 14px;
+}
+
+.activity-item small {
+    color: #666;
+    font-size: 12px;
+}
+
+.text-success {
+    color: #2ecc71;
+}
+
+.text-info {
+    color: #3498db;
+}
+
+.text-warning {
+    color: #f39c12;
+}
+
+/* Permisos y configuraciones */
+.permissions-section,
+.account-settings {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.permissions-section h4,
+.account-settings h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 16px;
+}
+
+.permissions-grid,
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.permission-item,
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.permission-item:hover,
+.setting-item:hover {
+    background-color: #f8f9fa;
+}
+
+.permission-item input,
+.setting-item input {
+    margin: 0;
+}
+
+.permission-item span,
+.setting-item span {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Modal de confirmación de eliminación */
+.warning-content {
+    text-align: center;
+}
+
+.warning-icon {
+    font-size: 60px;
+    color: #f39c12;
+    margin-bottom: 20px;
+}
+
+.warning-content h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.warning-content p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.user-summary,
+.account-summary {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.summary-item:last-child {
+    margin-bottom: 0;
+}
+
+.warning-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #856404;
+}
+
+.confirmation-input {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.confirmation-input label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.confirmation-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Botones de acción */
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: "Mulish", sans-serif;
+}
+
+.btn-danger:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: "Mulish", sans-serif;
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+/* Detalles de cuenta específicos */
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+}
+
+.account-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+.account-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+    font-family: "Courier New", monospace;
+}
+
+.account-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Estadísticas de cuenta */
+.account-stats {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #43cea2;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Transacciones recientes */
+.recent-transactions {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.transaction-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.transaction-icon.income {
+    background-color: #2ecc71;
+}
+
+.transaction-icon.expense {
+    background-color: #e74c3c;
+}
+
+.transaction-icon.transfer {
+    background-color: #3498db;
+}
+
+.transaction-details {
+    flex: 1;
+}
+
+.transaction-description {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.transaction-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.transaction-amount {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.transaction-amount.income {
+    color: #2ecc71;
+}
+
+.transaction-amount.expense {
+    color: #e74c3c;
+}
+
+.transaction-amount.transfer {
+    color: #3498db;
+}
+
+/* Modal de toggle cuenta */
+.toggle-content {
+    text-align: center;
+}
+
+.action-icon {
+    background: #f5f5f5;
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.action-icon:hover {
+    background: #e0e0e0;
+    color: #007bff;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+/* Overlay de modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .permissions-grid,
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .account-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .avatar-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .account-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+.modal-container {
+    background: #fff;
+    /* Fondo blanco sólido */
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    padding: 2rem 1.5rem;
+    min-width: 320px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}

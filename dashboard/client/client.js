@@ -400,11 +400,11 @@ async function loadTransactions(accountId) {
                     typeText = 'Retiro';
                     break;
                 case 'TRANSFER_IN':
-                    typeClass = 'type-transfer';
+                    typeClass = 'type-transfer-in';
                     typeText = 'Transferencia Entrante';
                     break;
                 case 'TRANSFER_OUT':
-                    typeClass = 'type-transfer';
+                    typeClass = 'type-transfer-out';
                     typeText = 'Transferencia Enviada';
                     break;
                 default:

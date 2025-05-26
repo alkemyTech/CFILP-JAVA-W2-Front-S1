@@ -350,9 +350,14 @@
     color: #e74c3c;
 }
 
-.type-transfer {
-    background-color: rgba(52, 152, 219, 0.1);
+.type-transfer-in{
+    background-color: rgba(176, 198, 245, 0.486);
     color: #3498db;
+}
+
+.type-transfer-out{
+    background: #f3d26657;
+    color: #e0921c; 
 }
 
 .amount-positive {
