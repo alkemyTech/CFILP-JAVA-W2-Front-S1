@@ -432,42 +432,55 @@ async function loadTransactions(accountId) {
     }
 }
 
-// Función para cargar transferencias
-function loadTransfers(userId) {
+// Función para cargar transferencias reales del usuario
+async function loadTransfers(accountId) {
     const transfersContainer = document.getElementById('transfersContent');
+    transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
-    // Simulación de llamada a API
-    // todo: Fetch a /api/transfers/user/{id}
-    const transfers = [
-        { id: 1, recipient: 'María López', date: '2023-05-12', amount: 1200.00 },
-        { id: 2, recipient: 'Carlos Rodríguez', date: '2023-05-08', amount: 500.00 },
-        { id: 3, recipient: 'Ana Martínez', date: '2023-05-03', amount: 2000.00 }
-    ];
-
-    let html = '';
-
-    transfers.forEach(transfer => {
-        const formattedDate = new Date(transfer.date).toLocaleDateString('es-AR');
-        const formattedAmount = transfer.amount.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+    try {
+        const res = await fetch(`http://localhost:8080/api/transfers/account/${accountId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
         });
 
-        html += `
-            <div class="transfer-item">
-                <div class="transfer-icon">
-                    <i class="fas fa-paper-plane"></i>
-                </div>
-                <div class="transfer-details">
-                    <p class="transfer-name">${transfer.recipient}</p>
-                    <p class="transfer-date">${formattedDate}</p>
-                </div>
-                <div class="transfer-amount amount-negative">-$${formattedAmount}</div>
-            </div>
-        `;
-    });
+        if (!res.ok) throw new Error("No se pudieron obtener las transferencias");
 
-    transfersContainer.innerHTML = html;
+        const transfers = await res.json();
+
+        let html = '';
+
+        transfers.forEach(transfer => {
+            // Mostrar el alias, CBU o nombre 
+            const destinationOwner =  `Transferencia a ${transfer.destinationAccountOwner}`;
+            const formattedDate = new Date(transfer.transactionDate).toLocaleDateString('es-AR');
+            const formattedAmount = transfer.transactionAmount.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            html += `
+                <div class="transfer-item">
+                    <div class="transfer-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="transfer-details">
+                        <p class="transfer-name">${destinationOwner}</p>
+                        <p class="transfer-date">${formattedDate}</p>
+                    </div>
+                    <div class="transfer-amount amount-negative">-$${formattedAmount}</div>
+                </div>
+            `;
+        });
+
+        transfersContainer.innerHTML = html || '<div>No hay transferencias.</div>';
+
+    } catch (error) {
+        console.error(error);
+        transfersContainer.innerHTML = '<div>Error al cargar transferencias.</div>';
+    }
 }
 
 // Función para cargar retiros
