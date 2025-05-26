@@ -1,3 +1,12 @@
+//Variables globales para paginación
+let usersData = [];
+let usersCurrentPage = 1;
+const usersPerPage = 10;
+
+let accountsData = [];
+let accountsCurrentPage = 1;
+const accountsPerPage = 10;
+
 document.addEventListener('DOMContentLoaded', function () {
     // verificar si el usuario está autenticado
     if (!isAuthenticated()) {
@@ -29,34 +38,43 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Función para cargar usuarios
-async function loadUsers() {
+async function loadUsers(page = 1) {
     const tableBody = document.querySelector('#usersTable tbody');
+    // Mostrar mensaje de carga
+    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Cargando usuarios...</td></tr>`;
+
     const roleFilter = document.getElementById('roleFilter').value;
     const statusFilter = document.getElementById('statusFilter').value;
 
     try {
-        const res = await fetch('http://localhost:8080/api/users', {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        });
-        if (!res.ok) throw new Error('Error al obtener usuarios');
-        const users = await res.json();
+        if (usersData.length === 0) {
+            const res = await fetch('http://localhost:8080/api/users', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (!res.ok) throw new Error('Error al obtener usuarios');
+            usersData = await res.json();
+        }
 
         // Aplicar filtros
-        let filteredUsers = users;
-
+        let filteredUsers = usersData;
         if (roleFilter !== 'all') {
             filteredUsers = filteredUsers.filter(user => user.roles.includes(roleFilter.toUpperCase()));
         }
-
         if (statusFilter !== 'all') {
             filteredUsers = filteredUsers.filter(user => user.active?.toString() === (statusFilter === 'active').toString());
         }
 
-        let html = '';
+        // Paginación
+        const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+        usersCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (usersCurrentPage - 1) * usersPerPage;
+        const end = start + usersPerPage;
+        const usersToShow = filteredUsers.slice(start, end);
 
-        filteredUsers.forEach(user => {
+        let html = '';
+        usersToShow.forEach(user => {
             html += `
                 <tr>
                     <td>#${user.id}</td>
@@ -77,12 +95,40 @@ async function loadUsers() {
 
         tableBody.innerHTML = html;
 
+        renderUsersPagination(totalPages);
+
     } catch (err) {
         console.error(err);
         tableBody.innerHTML = `<tr><td colspan="7">Error al cargar usuarios</td></tr>`;
     }
 }
 
+function renderUsersPagination(totalPages) {
+    const paginationDiv = document.getElementById('usersPagination');
+    let html = '';
+
+    html += `<button class="pagination-btn" ${usersCurrentPage === 1 ? 'disabled' : ''} data-page="${usersCurrentPage - 1}">
+        <i class="fas fa-chevron-left"></i>
+    </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === usersCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${usersCurrentPage === totalPages ? 'disabled' : ''} data-page="${usersCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    // Eventos
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadUsers(page);
+        });
+    });
+}
 
 // Función para cargar roles
 function loadRoles() {
@@ -205,7 +251,7 @@ function loadAdminTransactions() {
 }
 
 // Función para cargar cuentas
-async function loadAccounts() {
+async function loadAccounts(page = 1) {
     const tableBody = document.querySelector('#accountsTable tbody');
     // Mostrar mensaje de carga
     tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Cargando cuentas...</td></tr>`;
@@ -214,17 +260,19 @@ async function loadAccounts() {
     const accountTypeFilter = document.getElementById('accountTypeFilter')?.value || 'all';
 
     try {
-        const res = await fetch('http://localhost:8080/api/accounts', {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        });
+        if (accountsData.length === 0) {
+            const res = await fetch('http://localhost:8080/api/accounts', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
 
-        if (!res.ok) throw new Error('Error al obtener cuentas');
-        const accounts = await res.json();
+            if (!res.ok) throw new Error('Error al obtener cuentas');
+            accountsData = await res.json();
+        }
 
         // Filtros
-        let filteredAccounts = accounts;
+        let filteredAccounts = accountsData;
         if (accountStatusFilter !== 'all') {
             filteredAccounts = filteredAccounts.filter(account => account.status === accountStatusFilter);
         }
@@ -232,8 +280,15 @@ async function loadAccounts() {
             filteredAccounts = filteredAccounts.filter(account => account.type === accountTypeFilter);
         }
 
+        // Paginación
+        const totalPages = Math.ceil(filteredAccounts.length / accountsPerPage);
+        accountsCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (accountsCurrentPage - 1) * accountsPerPage;
+        const end = start + accountsPerPage;
+        const accountsToShow = filteredAccounts.slice(start, end);
+
         let html = '';
-        filteredAccounts.forEach(account => {
+        accountsToShow.forEach(account => {
             const formattedDate = account.creationDate
                 ? new Date(account.creationDate).toLocaleDateString('es-AR')
                 : '—';
@@ -242,7 +297,6 @@ async function loadAccounts() {
                 maximumFractionDigits: 2
             });
 
-            // Estado y clase visual
             const statusClass = account.status === 'active' ? 'status-active' : 'status-inactive';
             const statusText = account.status === 'active' ? 'Activa' : 'Inactiva';
 
@@ -269,10 +323,39 @@ async function loadAccounts() {
 
         tableBody.innerHTML = html;
 
+        renderAccountsPagination(totalPages);
+
     } catch (err) {
         console.error(err);
         tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Error al cargar cuentas</td></tr>`;
     }
+}
+
+function renderAccountsPagination(totalPages) {
+    const paginationDiv = document.getElementById('accountsPagination');
+    let html = '';
+
+    html += `<button class="pagination-btn" ${accountsCurrentPage === 1 ? 'disabled' : ''} data-page="${accountsCurrentPage - 1}">
+        <i class="fas fa-chevron-left"></i>
+    </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === accountsCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${accountsCurrentPage === totalPages ? 'disabled' : ''} data-page="${accountsCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    // Eventos
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadAccounts(page);
+        });
+    });
 }
 
 // Configurar acciones para los botones de cuentas
