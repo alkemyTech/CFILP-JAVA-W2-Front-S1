@@ -2,40 +2,55 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AlkyWallet - Panel de Administración</title>
-    <link rel="stylesheet" href="./../../assets/css/style.css">
-    <link rel="stylesheet" href="./../../assets/css/mobile-menu.css">
-    <link rel="stylesheet" href="./../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="./../../assets/css/admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml">
+    <link rel="stylesheet" href="./../../assets/css/style.css" />
+    <link rel="stylesheet" href="./../../assets/css/mobile-menu.css" />
+    <link rel="stylesheet" href="./../../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="./../../assets/css/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class = "dashboard">
+<body class="dashboard">
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar admin-sidebar">
             <div class="logo-container">
-                <img src="./../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                <img src="./../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45" />
                 <h1>AlkyWallet</h1>
             </div>
             <div class="admin-badge">Administrador</div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="active menu-link"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="menu-link"><a href="#users"><i class="fas fa-users"></i> Usuarios</a></li>
-                    <li class="menu-link"><a href="#roles"><i class="fas fa-user-tag"></i> Roles</a></li>
-                    <li class="menu-link"><a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
-                    <li class="menu-link"><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
-                    <li class="menu-link"><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
-                    <li class="menu-link"><a href="./../../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <li class="active menu-link">
+                        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#users"><i class="fas fa-users"></i> Usuarios</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#roles"><i class="fas fa-user-tag"></i> Roles</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="./../../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar
+                            Sesión</a>
+                    </li>
                 </ul>
             </nav>
             <div class="user-info">
-                <img src="./../../assets/img/programmer.png" alt="Foto de perfil" class="profile-pic">
+                <img src="./../../assets/img/programmer.png" alt="Foto de perfil" class="profile-pic" />
                 <div>
                     <p class="user-name">Admin AlkyWallet</p>
                     <p class="user-role">Administrador</p>
@@ -49,7 +64,7 @@
                 <h2>Panel de Administración</h2>
                 <div class="header-actions">
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar...">
+                        <input type="text" placeholder="Buscar..." />
                         <i class="fas fa-search"></i>
                     </div>
                     <div class="notifications">
@@ -68,7 +83,9 @@
                     <div class="stat-info">
                         <h3>Usuarios Totales</h3>
                         <p class="stat-value">1,254</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 12% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 12% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -78,7 +95,9 @@
                     <div class="stat-info">
                         <h3>Transacciones</h3>
                         <p class="stat-value">8,549</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 8% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 8% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -88,7 +107,9 @@
                     <div class="stat-info">
                         <h3>Ingresos</h3>
                         <p class="stat-value">$125,430</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 15% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 15% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -98,7 +119,9 @@
                     <div class="stat-info">
                         <h3>Usuarios Activos</h3>
                         <p class="stat-value">876</p>
-                        <p class="stat-change negative"><i class="fas fa-arrow-down"></i> 3% este mes</p>
+                        <p class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i> 3% este mes
+                        </p>
                     </div>
                 </div>
             </div>
@@ -136,8 +159,12 @@
                 <div class="card-header">
                     <h3>Lista de Usuarios</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-user-plus"></i> Nuevo Usuario</button>
-                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                        <button class="add-btn">
+                            <i class="fas fa-user-plus"></i> Nuevo Usuario
+                        </button>
+                        <button class="export-btn">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -167,7 +194,6 @@
                                 <th>Email</th>
                                 <th>Rol</th>
                                 <th>Estado</th>
-                                <th>Fecha Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -176,13 +202,17 @@
                         </tbody>
                     </table>
                     <div class="pagination">
-                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
                         <button class="pagination-btn active">1</button>
                         <button class="pagination-btn">2</button>
                         <button class="pagination-btn">3</button>
                         <span class="pagination-ellipsis">...</span>
                         <button class="pagination-btn">10</button>
-                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -192,7 +222,9 @@
                 <div class="card-header">
                     <h3>Gestión de Roles</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-plus"></i> Nuevo Rol</button>
+                        <button class="add-btn">
+                            <i class="fas fa-plus"></i> Nuevo Rol
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -242,14 +274,17 @@
                 </div>
             </section>
 
-
             <!-- Accounts Management -->
             <section id="accounts" class="card accounts-card">
                 <div class="card-header">
                     <h3>Administración de Cuentas</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-plus"></i> Nueva Cuenta</button>
-                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                        <button class="add-btn">
+                            <i class="fas fa-plus"></i> Nueva Cuenta
+                        </button>
+                        <button class="export-btn">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -275,93 +310,29 @@
                     <table class="accounts-table" id="accountsTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>Usuario</th>
                                 <th>Tipo</th>
-                                <th>Número</th>
                                 <th>Saldo</th>
                                 <th>Estado</th>
-                                <th>Fecha Creación</th>
+                                <th>Fecha de creación</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>Juan Pérez</td>
-                                <td>Ahorro</td>
-                                <td>1234-5678-9012-3456</td>
-                                <td>$15,750.00</td>
-                                <td><span class="user-status status-active">Activa</span></td>
-                                <td>15/01/2023</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Suspender">
-                                            <i class="fas fa-ban"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1002</td>
-                                <td>María López</td>
-                                <td>Corriente</td>
-                                <td>9876-5432-1098-7654</td>
-                                <td>$8,320.50</td>
-                                <td><span class="user-status status-active">Activa</span></td>
-                                <td>20/02/2023</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Suspender">
-                                            <i class="fas fa-ban"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1003</td>
-                                <td>Carlos Rodríguez</td>
-                                <td>Ahorro</td>
-                                <td>5678-1234-5678-1234</td>
-                                <td>$25,100.75</td>
-                                <td><span class="user-status status-inactive">Inactiva</span></td>
-                                <td>10/11/2022</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Activar">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     <div class="pagination">
-                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
                         <button class="pagination-btn active">1</button>
                         <button class="pagination-btn">2</button>
                         <button class="pagination-btn">3</button>
                         <span class="pagination-ellipsis">...</span>
                         <button class="pagination-btn">10</button>
-                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -398,9 +369,8 @@
     <script src="./../../js/menuActiveState.js"></script>
     <script src="./../../js/mobile-menu.js" defer></script>
     <script>
-        document.body.classList.add('has-mobile-menu');
+        document.body.classList.add("has-mobile-menu");
     </script>
-   
 </body>
 
 </html>

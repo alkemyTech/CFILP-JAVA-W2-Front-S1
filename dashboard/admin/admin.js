@@ -64,7 +64,6 @@ async function loadUsers() {
                     <td>${user.username}</td>
                     <td>${user.roles.join(', ')}</td>
                     <td><span class="user-status status-active">Activo</span></td>
-                    <td>--</td>
                     <td>
                         <div class="user-actions">
                             <div class="action-icon view-icon"><i class="fas fa-eye"></i></div>
@@ -208,6 +207,9 @@ function loadAdminTransactions() {
 // Función para cargar cuentas
 async function loadAccounts() {
     const tableBody = document.querySelector('#accountsTable tbody');
+    // Mostrar mensaje de carga
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Cargando cuentas...</td></tr>`;
+
     const accountStatusFilter = document.getElementById('accountStatusFilter')?.value || 'all';
     const accountTypeFilter = document.getElementById('accountTypeFilter')?.value || 'all';
 
@@ -232,26 +234,23 @@ async function loadAccounts() {
 
         let html = '';
         filteredAccounts.forEach(account => {
-            const formattedDate = new Date(account.creationDate).toLocaleDateString('es-AR');
+            const formattedDate = account.creationDate
+                ? new Date(account.creationDate).toLocaleDateString('es-AR')
+                : '—';
             const formattedBalance = account.balance.toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
 
+            // Estado y clase visual
             const statusClass = account.status === 'active' ? 'status-active' : 'status-inactive';
             const statusText = account.status === 'active' ? 'Activa' : 'Inactiva';
-
-            const actionIcon = account.status === 'active'
-                ? '<i class="fas fa-ban"></i>'
-                : '<i class="fas fa-check"></i>';
-            const actionTitle = account.status === 'active' ? 'Suspender' : 'Activar';
 
             html += `
                 <tr>
                     <td>#${account.id}</td>
-                    <td>${account.userName || account.user?.name || '—'}</td>
-                    <td>${account.type === 'savings' ? 'Ahorro' : 'Corriente'}</td>
-                    <td>${account.number}</td>
+                    <td>${account.userName || '—'}</td>
+                    <td>${account.accountType || '—'}</td>
                     <td>$${formattedBalance}</td>
                     <td><span class="user-status ${statusClass}">${statusText}</span></td>
                     <td>${formattedDate}</td>
@@ -259,7 +258,9 @@ async function loadAccounts() {
                         <div class="user-actions">
                             <div class="action-icon view-icon" title="Ver detalles"><i class="fas fa-eye"></i></div>
                             <div class="action-icon edit-icon" title="Editar"><i class="fas fa-edit"></i></div>
-                            <div class="action-icon delete-icon" title="${actionTitle}">${actionIcon}</div>
+                            <div class="action-icon delete-icon" title="${statusText === 'Activa' ? 'Suspender' : 'Activar'}">
+                                ${statusText === 'Activa' ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-check"></i>'}
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -270,7 +271,7 @@ async function loadAccounts() {
 
     } catch (err) {
         console.error(err);
-        tableBody.innerHTML = `<tr><td colspan="8">Error al cargar cuentas</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Error al cargar cuentas</td></tr>`;
     }
 }
 
