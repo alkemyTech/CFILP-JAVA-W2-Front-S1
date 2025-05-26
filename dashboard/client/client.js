@@ -399,9 +399,13 @@ async function loadTransactions(accountId) {
                     typeClass = 'type-withdrawal';
                     typeText = 'Retiro';
                     break;
-                case 'TRANSFER':
+                case 'TRANSFER_IN':
                     typeClass = 'type-transfer';
-                    typeText = 'Transferencia';
+                    typeText = 'Transferencia Entrante';
+                    break;
+                case 'TRANSFER_OUT':
+                    typeClass = 'type-transfer';
+                    typeText = 'Transferencia Enviada';
                     break;
                 default:
                     typeClass = '';
