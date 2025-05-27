@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     // Configurar acciones para el boton de cerrar sesión
     const logoutBtn = document.getElementById("logoutBtn");
+    const name   = document.getElementById("user-name");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             removeToken();
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadTransfers(userId);
     loadCards(userId);
 
-
+    name.innerText = userData.name; // Mostrar nombre del usuario en el header    
 
     // Event listeners para botones de actualización
     document.getElementById('refreshBalance').addEventListener('click', function () {
