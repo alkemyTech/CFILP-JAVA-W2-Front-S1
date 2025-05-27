@@ -34,10 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
     // //hasta aca viene desde el servidor 
-
-    //datos simulados 
-    loadTransfers(userId);
-    loadCards(userId);
+    //loadCards(userId); todavia no esta implementado el endpoint de tarjetas
 
     name.innerText = userData.name; // Mostrar nombre del usuario en el header    
 
@@ -219,7 +216,9 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
         alert("No se encontró una cuenta seleccionada.");
         return;
     }
-
+     // Asegurarse de que la cuenta esté seleccionada
+    console.log("Retirando de la cuenta:", account.currency); // <-- Agrega esto
+ 
     const body = {
         accountId: account.id,
         transactionAmount: amount,
@@ -240,25 +239,29 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
             body: JSON.stringify(body)
         });
 
-        if (!res.ok) throw new Error("Error al retirar");
+        if (res.status !== 200 && res.status !== 201) throw new Error("Error al retirar");
 
         const result = await res.json();
         console.log("Retiro realizado:", result);
 
         // Actualizar cuentas y cerrar modal
-        await window.accountsManager.loadAccounts(account.userId);
         document.querySelector('[data-modal="withdraw"]').click();
-
-        // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active');
-
-        // Mostrar detalles del retiro en el modal de confirmación
-        document.getElementById('confirmationDetails').innerHTML = `
-    <p>Monto: $${result.transactionAmount}</p>
-    <p>Método: ${result.method}</p>
-    <p>Sucursal/Entidad: ${result.branch}</p>
-    <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
-`;
+        
+        const confirmationData = {
+            title: 'Retiro realizado',
+            icon: 'fas fa-check-circle',
+            message: `Retiraste ${account.currency}${result.transactionAmount} exitosamente.`,
+            details: `
+            <p>Monto: $${result.transactionAmount}</p>
+            <p>Método: ${result.method}</p>
+            <p>Sucursal/Entidad: ${result.branch}</p>
+            <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+            `
+        }
+        
+        window.modalManager.showConfirmation(confirmationData);
+        window.accountsManager.selectAccount(account.id);
+     
 
     } catch (error) {
         console.error(error);
