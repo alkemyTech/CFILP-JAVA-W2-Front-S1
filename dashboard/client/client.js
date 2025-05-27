@@ -395,7 +395,7 @@ async function loadTransactions(accountId) {
         transactions.forEach(transaction => {
             // Formatear fecha, monto y tipo de transacción
             const formattedDate = new Date(transaction.transactionDate).toLocaleDateString('es-AR');
-            const isPositive = transaction.transactionAmount > 0;
+            const isPositive = transaction.transactionType === 'DEPOSIT' || transaction.transactionType === 'TRANSFER_IN';
             const formattedAmount = Math.abs(transaction.transactionAmount).toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -432,7 +432,7 @@ async function loadTransactions(accountId) {
                     <td>${transaction.description || '-'}</td>
                     <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
                     <td class="${isPositive ? 'amount-positive' : 'amount-negative'}">
-                        ${isPositive ? '+' : '-'}$${formattedAmount}
+                        ${isPositive ? '+ ' : '- '}$${formattedAmount}
                     </td>
                 </tr>
             `;
@@ -472,6 +472,7 @@ async function loadTransfers(accountId) {
         let html = '';
 
         transfers.forEach(transfer => {
+            console.log("Transferencia:", transfer);
             // Mostrar el alias, CBU o nombre 
             const destinationOwner =  `Transferencia a ${transfer.destinationAccountOwner}`;
             const formattedDate = new Date(transfer.transactionDate).toLocaleDateString('es-AR');
