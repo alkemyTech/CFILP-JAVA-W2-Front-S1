@@ -1,7 +1,7 @@
 /**
  * Módulo para gestionar las cuentas del usuario en AlkyWallet (sin lógica de modal)
  */
-(function() {
+(function () {
     let userAccounts = [];
 
     // Mapeo de tipos de cuenta a íconos y nombres legibles
@@ -9,7 +9,6 @@
         savings: { icon: "fa-piggy-bank", name: "Caja de ahorro" },
         checking: { icon: "fa-money-check-alt", name: "Cuenta corriente" },
         investment: { icon: "fa-chart-line", name: "Cuenta de inversión" },
-        credit: { icon: "fa-credit-card", name: "Cuenta de crédito" }
     };
 
     // Mapeo de monedas a símbolos
@@ -43,7 +42,12 @@
             });
             if (!res.ok) throw new Error('No se pudieron cargar las cuentas');
             userAccounts = await res.json();
+            // NUEVO: asegurarse de que al menos una esté seleccionada
+            if (!userAccounts.some(acc => acc.isDefault)) {
+                userAccounts[0].isDefault = true;
+            }
         } catch (error) {
+
             accountsContainer.innerHTML = `
                 <div class="account-placeholder">
                     <div class="placeholder-text">No se pudieron cargar las cuentas.</div>
@@ -74,27 +78,49 @@
 
         // Crear elementos para cada cuenta
         userAccounts.forEach(account => {
-            console.log(account);
             const accountEl = createAccountElement(account);
             accountsContainer.appendChild(accountEl);
         });
 
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
-        
+        loadTransactions(userAccounts[0].id); // Cargar transacciones de la primera cuenta
+        loadWithdrawals(userAccounts[0].id); // Cargar retiros de la primera cuenta
+        loadTransfers(userAccounts[0].id); // Cargar transferencias de la primera cuenta
     }
 
     /**
      * Crea un elemento HTML para una cuenta
      * @param {Object} account - Datos de la cuenta
      * @returns {HTMLElement} - Elemento de la cuenta
+     * 
      */
+
+    function getAccountTypeKey(accountTypeString) {
+        switch (accountTypeString.toLowerCase()) {
+            case "caja de ahorro": return "savings";
+            case "cuenta corriente": return "checking";
+            case "cuenta de inversión": return "investment";
+            default: return "";
+        }
+    }
+
+
     function createAccountElement(account) {
         const accountEl = document.createElement("div");
         accountEl.className = `account-item ${account.isDefault ? "selected" : ""}`;
         accountEl.dataset.accountId = account.id;
 
-        const typeInfo = accountTypes[account.type] || { icon: "fa-university", name: "Cuenta" };
+        const typeKey = getAccountTypeKey(account.accountType);
+        const typeInfo = accountTypes[typeKey] || {
+            icon: "fa-university",
+            name: account.accountType
+        };
+
+        // Obtener el nombre del usuario desde localStorage
+        const userData = JSON.parse(localStorage.getItem('data'));
+        const userName = userData?.name || "";
+        const accountName = account.accountName ? account.accountName : "Cuenta sin nombre";
 
         accountEl.innerHTML = `
             ${account.isDefault ? '<div class="account-badge">Principal</div>' : ''}
@@ -102,7 +128,7 @@
                 <i class="fas ${typeInfo.icon}"></i>
             </div>
             <div class="account-details">
-                <div class="account-name">${account.name}</div>
+                <div class="account-name">${accountName}</div>
                 <div class="account-info">
                     <div class="account-type">
                         <i class="fas ${typeInfo.icon}"></i>
@@ -110,7 +136,13 @@
                     </div>
                     <div class="account-alias">
                         <i class="fas fa-at"></i>
+                        <p>Alias:</p>
                         <span>${account.alias}</span>
+                    </div>
+                    <div class="account-alias">
+                        <i class="fas fa-landmark"></i>
+                        <p>CBU:</p>
+                        <span>${account.cbu}</span>
                     </div>
                 </div>
             </div>
@@ -126,7 +158,7 @@
         `;
 
         // Evento para seleccionar la cuenta
-        accountEl.addEventListener("click", function(e) {
+        accountEl.addEventListener("click", function (e) {
             if (e.target.closest(".account-action-btn")) return;
             selectAccount(account.id);
         });
@@ -135,11 +167,11 @@
         const viewBtn = accountEl.querySelector(".account-action-btn:first-child");
         const editBtn = accountEl.querySelector(".account-action-btn:last-child");
 
-        viewBtn.addEventListener("click", function() {
+        viewBtn.addEventListener("click", function () {
             viewAccountDetails(account.id);
         });
 
-        editBtn.addEventListener("click", function() {
+        editBtn.addEventListener("click", function () {
             editAccount(account.id);
         });
 
@@ -173,6 +205,9 @@
         }
 
         updateBalanceDisplay();
+        loadTransactions(accountId); // Cargar transacciones de la cuenta seleccionada
+        loadWithdrawals(accountId); // Cargar retiros de la cuenta seleccionada
+        loadTransfers(accountId); // Cargar transferencias de la cuenta seleccionada
     }
 
     /**
@@ -180,21 +215,32 @@
      */
     function updateBalanceDisplay() {
         const balanceElement = document.getElementById("balanceAmount");
+        const withdrawBalance = document.getElementById("withdrawAvailableBalance");
         if (!balanceElement) return;
 
         const defaultAccount = userAccounts.find(acc => acc.isDefault);
         if (defaultAccount) {
-            balanceElement.textContent = defaultAccount.balance.toLocaleString('es-AR', {
+            const saldoFormateado = defaultAccount.balance.toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
 
-            const currencyElement = document.querySelector(".balance-amount .currency");
+            balanceElement.textContent = saldoFormateado;
+
+            // Actualiza el saldo en el modal de retiro
+            if (withdrawBalance) {
+                withdrawBalance.textContent = `$${saldoFormateado}`;
+            }
+
+            const currencyElement = document.getElementById("currencySymbol");
             if (currencyElement) {
                 currencyElement.textContent = currencySymbols[defaultAccount.currency] || '$';
             }
         } else {
             balanceElement.textContent = "0.00";
+            if (withdrawBalance) {
+                withdrawBalance.textContent = "$0.00";
+            }
         }
     }
 
@@ -267,12 +313,19 @@
         updateBalanceDisplay();
     }
 
+    // Función para obtener el ID de la cuenta seleccionada
+    function getSelectedAccountId() {
+        const selected = userAccounts.find(acc => acc.isDefault);
+        return selected ? selected.id : null;
+    }
+
     // Exponer funciones para uso externo
     window.accountsManager = {
         loadAccounts,
         selectAccount,
         updateBalanceDisplay,
         addAccount,
-        getAccounts
+        getAccounts,
+        getSelectedAccountId
     };
 })();
