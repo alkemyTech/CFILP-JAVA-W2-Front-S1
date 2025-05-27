@@ -375,7 +375,15 @@ async function loadTransactions(accountId) {
             }
         });
 
+        // Verificar si la respuesta es exitosa
         if (!res.ok) throw new Error("No se pudieron obtener las transacciones");
+
+        // Verificar si la respuesta es un array
+        if (res.status === 204) {
+            tableBody.innerHTML = '<tr><td colspan="4">No se hicieron transacciones en esta cuenta.</td></tr>';
+            return;
+        }
+
 
         const transactions = await res.json();
 
@@ -449,8 +457,14 @@ async function loadTransfers(accountId) {
                 'Content-Type': 'application/json'
             }
         });
-
+        // Verificar si la respuesta es exitosa
         if (!res.ok) throw new Error("No se pudieron obtener las transferencias");
+
+        // Verificar si la respuesta es un array
+        if (res.status === 204) {
+            transfersContainer.innerHTML = '<div>No se hicieron transferencias en esta cuenta.</div>';
+            return;
+        }
 
         const transfers = await res.json();
 
