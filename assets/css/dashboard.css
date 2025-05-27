@@ -119,7 +119,15 @@
 
 .dashboard-header h2 {
     margin: 0;
+    font-size: 1.75rem;
     color: #333;
+}
+
+.dashboard-header p{
+    font-size: 1.2rem;
+    
+
+    color: #777;
 }
 
 .header-actions {

@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     // Configurar acciones para el boton de cerrar sesión
     const logoutBtn = document.getElementById("logoutBtn");
-    const name   = document.getElementById("user-name");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             removeToken();
@@ -14,6 +13,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
+    
+    
+    //Obtenemos el id del usuario logueado desde el token
+    // y lo guardamos en una variable
+    //no borrar 
     function getUserIdFromToken() {
         const token = localStorage.getItem('token');
         if (!token) return null;
@@ -22,10 +26,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const payload = JSON.parse(atob(payloadBase64));
         return payload.userId;
     }
-
-    //Obtenemos el id del usuario logueado desde el token
-    // y lo guardamos en una variable
-    //no borrar 
     const userId = getUserIdFromToken();
     let userData; // Variable para almacenar los datos del usuario
 
@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     // //hasta aca viene desde el servidor 
     //loadCards(userId); todavia no esta implementado el endpoint de tarjetas
 
-    name.innerText = userData.name; // Mostrar nombre del usuario en el header    
+    const username   = document.getElementById("user-name");
+    const saludo = document.getElementById("saludo");
+    saludo.innerText = `¡Hola, ${userData.name}!`; // Mostrar saludo personalizado
+    username.innerText = `@${userData.username}`; // Mostrar nombre del usuario en el header    
 
     // Event listeners para botones de actualización
     document.getElementById('refreshBalance').addEventListener('click', function () {
@@ -109,7 +112,7 @@ function loadBalance(userId, isRefresh = true) { //false
 
 }
 
-//FUNCIONES PARA HACER DEPOSITOS, RETIROS Y TRANSFERENCIAS
+
 
 const getDefaultAccount = () => {
     const accounts = window.accountsManager.getAccounts();
@@ -359,9 +362,9 @@ document.getElementById('transferForm').addEventListener('submit', async functio
 
 
 
-//FUNCIONES PARA CARGAR DATOS EN EL DASHBOARD
+//FUNCIONES PARA CARGAR TRANSACCIONES, TRANSFERENCIAS Y RETIROS EN EL DASHBOARD
 
-// Función para cargar transacciones por cuenta
+
 async function loadTransactions(accountId) {
     const tableBody = document.querySelector('#transactionsTable tbody');
     tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
@@ -390,7 +393,6 @@ async function loadTransactions(accountId) {
         let html = '';
 
         transactions.forEach(transaction => {
-            console.log("Transacción:", transaction);
             // Formatear fecha, monto y tipo de transacción
             const formattedDate = new Date(transaction.transactionDate).toLocaleDateString('es-AR');
             const isPositive = transaction.transactionAmount > 0;
@@ -444,7 +446,6 @@ async function loadTransactions(accountId) {
     }
 }
 
-// Función para cargar transferencias reales del usuario
 async function loadTransfers(accountId) {
     const transfersContainer = document.getElementById('transfersContent');
     transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
@@ -501,7 +502,6 @@ async function loadTransfers(accountId) {
     }
 }
 
-// Función para cargar retiros
 async function loadWithdrawals(accountId) {
     const withdrawalsContainer = document.getElementById('withdrawalsContent');
     withdrawalsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
@@ -515,7 +515,15 @@ async function loadWithdrawals(accountId) {
             }
         });
 
+        // Verificar si la respuesta es exitosa
         if (!res.ok) throw new Error("No se pudieron obtener los retiros");
+
+        // Verificar si la respuesta es un array
+        if (res.status === 204) {
+            withdrawalsContainer.innerHTML = '<div>No se hicieron retiros en esta cuenta.</div>';
+            return;
+        }
+
 
         const withdrawals = await res.json();
 
@@ -550,7 +558,6 @@ async function loadWithdrawals(accountId) {
     }
 }
 
-// Función para cargar tarjetas
 function loadCards(userId) {
     const cardsContainer = document.getElementById('cardsContent');
 
