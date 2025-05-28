@@ -84,6 +84,7 @@ async function loadUsers(page = 1) {
                     <td>#${user.id}</td>
                     <td>${user.name} ${user.lastName}</td>
                     <td>${user.username}</td>
+                    <td>${user.email}</td>
                     <td>${user.roles.join(', ')}</td>
                     <td><span class="user-status status-active">Activo</span></td>
                     <td>
