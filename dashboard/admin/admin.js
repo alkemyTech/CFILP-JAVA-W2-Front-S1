@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-       // Verificar que el usuario sea ADMIN
+    // Verificar que el usuario sea ADMIN
     const userData = JSON.parse(localStorage.getItem('data'));
     if (!userData || !userData.roles || !userData.roles.includes("Administrativo")) {
         alert("Acceso denegado. No tienes permisos de administrador.");
@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Cargar datos iniciales
+  // Cargar datos iniciales
     loadUsers();
     loadRoles();
     loadAdminTransactions();
     initCharts();
     loadAccounts();
 
-    // Event listeners para filtros
+   // Event listeners para filtros
     document.getElementById('roleFilter').addEventListener('change', loadUsers);
     document.getElementById('statusFilter').addEventListener('change', loadUsers);
     document.getElementById('chartPeriod').addEventListener('change', updateTransactionsChart);
@@ -429,69 +429,89 @@ function renderAccountsPagination(totalPages) {
 
 
 // Función para inicializar gráficos
-// TODO: Inicializar gráficos de transacciones y usuarios
 function initCharts() {
     initTransactionsChart();
     initUsersChart();
 }
 
-// TODO: Inicializar gráfico de transacciones mensuales
 // Gráfico de transacciones mensuales
-function initTransactionsChart() {
+async function initTransactionsChart() {
     const ctx = document.getElementById('transactionsChart').getContext('2d');
 
-    // Datos de ejemplo para el gráfico
-    const data = {
-        labels: ['1 Mayo', '5 Mayo', '10 Mayo', '15 Mayo', '20 Mayo', '25 Mayo', '30 Mayo'],
-        datasets: [
-            {
-                label: 'Depósitos',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                borderColor: 'rgba(46, 204, 113, 1)',
-                borderWidth: 2,
-                tension: 0.4
-            },
-            {
-                label: 'Retiros',
-                data: [28, 48, 40, 19, 86, 27, 90],
-                backgroundColor: 'rgba(231, 76, 60, 0.2)',
-                borderColor: 'rgba(231, 76, 60, 1)',
-                borderWidth: 2,
-                tension: 0.4
-            },
-            {
-                label: 'Transferencias',
-                data: [45, 25, 50, 30, 65, 40, 70],
-                backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                borderColor: 'rgba(52, 152, 219, 1)',
-                borderWidth: 2,
-                tension: 0.4
+    try {
+        const response = await fetch('http://localhost:8080/api/transactions', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        ]
-    };
+        });
 
-    window.transactionsChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('No autorizado. Por favor, inicia sesión.');
+            } else {
+                throw new Error('Error al obtener transacciones: ' + response.statusText);
             }
         }
-    });
+
+        const data = await response.json();
+
+        const labels = data.map(item => item.date);
+        const depositData = data.map(item => item.deposits);
+        const withdrawalData = data.map(item => item.withdrawals);
+        const transferData = data.map(item => item.transfers);
+
+        const chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Depósitos',
+                    data: depositData,
+                    backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                },
+                {
+                    label: 'Retiros',
+                    data: withdrawalData,
+                    backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                    borderColor: 'rgba(231, 76, 60, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                },
+                {
+                    label: 'Transferencias',
+                    data: transferData,
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }
+            ]
+        };
+
+        window.transactionsChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener los datos de transacciones:', error);
+    }
 }
 
-// Función para actualizar el gráfico de transacciones
+// Función para actualizar el gráfico de transacciones (si usás esta funcionalidad)
 function updateTransactionsChart() {
-    // TODO: Actualizar datos del gráfico de transacciones según el período seleccionado
     const period = document.getElementById('chartPeriod').value;
 
-    // Simulación de datos diferentes según el período seleccionado
     let labels = [];
     let depositData = [];
     let withdrawalData = [];
@@ -526,62 +546,84 @@ function updateTransactionsChart() {
 }
 
 // Gráfico de distribución de usuarios
-function initUsersChart() {
-    // TODO: Inicializar gráfico de distribución de usuarios
+async function initUsersChart() {
     const ctx = document.getElementById('usersChart').getContext('2d');
 
-    // Datos de ejemplo para el gráfico
-    const data = {
-        labels: ['Usuarios Activos', 'Usuarios Inactivos', 'Administradores'],
-        datasets: [{
-            data: [876, 378, 5],
-            backgroundColor: [
-                'rgba(52, 152, 219, 0.8)',
-                'rgba(231, 76, 60, 0.8)',
-                'rgba(155, 89, 182, 0.8)'
-            ],
-            borderColor: [
-                'rgba(52, 152, 219, 1)',
-                'rgba(231, 76, 60, 1)',
-                'rgba(155, 89, 182, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
+    try {
+        const response = await fetch('http://localhost:8080/api/users', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
 
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('No autorizado. Por favor, inicia sesión.');
+            } else {
+                throw new Error('Error al obtener usuarios: ' + response.statusText);
             }
         }
-    });
 
-    // Funciones para que los modales puedan recargar datos
-    function clearDataCache() {
-        // TODO: Limpiar caché de usuarios y cuentas
-        usersData = [];
-        accountsData = [];
+        const data = await response.json();
+
+        const activeUsers = data.filter(user => user.active).length;
+        const inactiveUsers = data.filter(user => !user.active).length;
+        const adminUsers = data.filter(user => user.roles.includes('Administrativo')).length;
+
+        const chartData = {
+            labels: ['Usuarios Activos', 'Usuarios Inactivos', 'Administradores'],
+            datasets: [{
+                data: [activeUsers, inactiveUsers, adminUsers],
+                backgroundColor: [
+                    'rgba(52, 152, 219, 0.8)',
+                    'rgba(231, 76, 60, 0.8)',
+                    'rgba(155, 89, 182, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(52, 152, 219, 1)',
+                    'rgba(231, 76, 60, 1)',
+                    'rgba(155, 89, 182, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        window.usersChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener los datos de usuarios:', error);
     }
-
-    function refreshData() {
-        // TODO: Limpiar caché y recargar usuarios y cuentas
-        clearDataCache();
-        loadUsers(usersCurrentPage);
-        loadAccounts(accountsCurrentPage);
-    }
-
-    // Exponer funciones globalmente para uso de los modales
-    window.refreshData = refreshData;
-    window.clearDataCache = clearDataCache;
-    window.usersData = usersData;
-    window.accountsData = accountsData;
-    window.loadUsers = loadUsers;
-    window.loadAccounts = loadAccounts;
 }
+
+// Funciones para que los modales puedan recargar datos
+function clearDataCache() {
+    // Limpiar caché de usuarios y cuentas
+    usersData = [];
+    accountsData = [];
+}
+
+function refreshData() {
+    // Limpiar caché y recargar usuarios y cuentas
+    clearDataCache();
+    loadUsers(usersCurrentPage);
+    loadAccounts(accountsCurrentPage);
+}
+
+// Exponer funciones y variables globalmente para uso de los modales
+window.refreshData = refreshData;
+window.clearDataCache = clearDataCache;
+window.usersData = usersData;
+window.accountsData = accountsData;
+window.loadUsers = loadUsers;
+window.loadAccounts = loadAccounts;
