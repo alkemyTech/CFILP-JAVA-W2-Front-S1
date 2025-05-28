@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Redirigir al panel de admin solo si es admin
     adminBtn.addEventListener("click", function () {
-        if (userDataLS && userDataLS.roles && userDataLS.roles.includes("ADMIN")) {
+        if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
+       
             window.location.href = "/dashboard/admin/admin.html";
         } else {
             alert("No tienes permisos para acceder al panel de administración.");
