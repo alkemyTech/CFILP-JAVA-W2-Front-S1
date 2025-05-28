@@ -33,8 +33,28 @@ document.addEventListener('DOMContentLoaded', async function () {
     await fetchUserData(userId);
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
-    // //hasta aca viene desde el servidor 
-    //loadCards(userId); todavia no esta implementado el endpoint de tarjetas
+
+
+    // Mostrar/ocultar botón de admin según el rol
+    const adminBtn = document.getElementById("btn-administrador");
+    const userDataLS = JSON.parse(localStorage.getItem('data'));
+    if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
+        adminBtn.style.display = "block";
+    } else {
+        adminBtn.style.display = "none";
+    }
+
+    // Redirigir al panel de admin solo si es admin
+    adminBtn.addEventListener("click", function () {
+        if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
+       
+            window.location.href = "/dashboard/admin/admin.html";
+        } else {
+            alert("No tienes permisos para acceder al panel de administración.");
+        }
+    });
+
+
 
     const username   = document.getElementById("user-name");
     const saludo = document.getElementById("saludo");

@@ -17,6 +17,16 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = "./../../index.html";
         return;
     }
+
+       // Verificar que el usuario sea ADMIN
+    const userData = JSON.parse(localStorage.getItem('data'));
+    (!userData || !userData.roles || !userData.roles.includes("Administrativo")) {
+        alert("Acceso denegado. No tienes permisos de administrador.");
+        window.location.href = "./../../index.html";
+        return;
+    }
+
+
     // Configurar acciones para el boton de cerrar sesión
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
