@@ -138,10 +138,8 @@ function renderUsersPagination(totalPages) {
 // Función para cargar roles
 async function loadRoles() {
     const tableBody = document.querySelector('#rolesTable tbody');
+    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Cargando roles...</td></tr>`;
 
-    // Simulación de llamada a API
-    // TODO: Traer roles desde backend y renderizar tabla
-    // todo: fetch a /api/roles
     try {
         const response = await fetch('http://localhost:8080/api/roles', {
             headers: {
@@ -156,7 +154,7 @@ async function loadRoles() {
             html += `
                 <tr>
                     <td>#${role.id}</td>
-                    <td>${role.name}</td>
+                    <td>${role.roleName}</td>
                     <td>${role.description}</td>
                     <td>${role.permissions}</td>
                     <td>${role.userCount}</td>
