@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
        // Verificar que el usuario sea ADMIN
     const userData = JSON.parse(localStorage.getItem('data'));
-    (!userData || !userData.roles || !userData.roles.includes("Administrativo")) {
+    if (!userData || !userData.roles || !userData.roles.includes("Administrativo")) {
         alert("Acceso denegado. No tienes permisos de administrador.");
         window.location.href = "./../../index.html";
         return;
