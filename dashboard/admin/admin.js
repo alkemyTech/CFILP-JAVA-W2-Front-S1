@@ -254,8 +254,8 @@ async function loadAdminTransactions(page = 1) {
 
             html += `
                 <tr>
-                    <td>${transaction.transactionId}</td>
-                    <td>${transaction.description || '-'}</td>
+                    <td>${transaction.id}</td>
+                    <td>${transaction.username || '-'}</td>
                     <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
                     <td class="${isPositive ? 'amount-positive' : 'amount-negative'}">
                         ${isPositive ? '+ ' : '- '}$${formattedAmount}
