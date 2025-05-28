@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Mostrar/ocultar botón de admin según el rol
     const adminBtn = document.getElementById("btn-administrador");
     const userDataLS = JSON.parse(localStorage.getItem('data'));
-    if (userDataLS && userDataLS.roles && userDataLS.roles.includes("ADMIN")) {
+    if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
         adminBtn.style.display = "block";
     } else {
         adminBtn.style.display = "none";
