@@ -7,6 +7,10 @@ let accountsData = [];
 let accountsCurrentPage = 1;
 const accountsPerPage = 10;
 
+let transactionsData = [];
+let transactionsCurrentPage = 1;
+const transactionsPerPage = 10;
+
 document.addEventListener('DOMContentLoaded', function () {
     // verificar si el usuario está autenticado
     if (!isAuthenticated()) {
@@ -175,93 +179,138 @@ async function loadRoles() {
     }
 }
 
-// Función para cargar transacciones de administrador
-async function loadAdminTransactions() {
+// Función para cargar transacciones de administrador con paginación
+async function loadAdminTransactions(page = 1) {
     const tableBody = document.querySelector('#adminTransactionsTable tbody');
+    if (!tableBody) {
+        console.warn("No se encontró la tabla de transacciones (adminTransactionsTable)");
+        return;
+    }
 
-    // TODO: Traer transacciones desde backend y renderizar tabla
-    // TODO: Fetch a /api/transactions
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Cargando transacciones...</td></tr>`;
+
     try {
-        const response = await fetch('http://localhost:8080/api/transactions', {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        });
-        if (!response.ok) throw new Error('Error al obtener transacciones');
-        const transactions = await response.json();
+        if (transactionsData.length === 0) {
+            const response = await fetch('http://localhost:8080/api/transactions', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (!response.ok) throw new Error('Error al obtener transacciones');
+            transactionsData = await response.json();
+        }
+
+        if (!Array.isArray(transactionsData) || transactionsData.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No hay transacciones disponibles</td></tr>`;
+            return;
+        }
+
+        // Paginación
+        const totalPages = Math.ceil(transactionsData.length / transactionsPerPage);
+        transactionsCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (transactionsCurrentPage - 1) * transactionsPerPage;
+        const end = start + transactionsPerPage;
+        const transactionsToShow = transactionsData.slice(start, end);
 
         let html = '';
-
-        transactions.forEach(transaction => {
-            const formattedDate = new Date(transaction.date).toLocaleDateString('es-AR');
-            const formattedAmount = (typeof transaction.amount === "number" && !isNaN(transaction.amount))
-                ? transaction.amount.toLocaleString('es-AR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-                : "0.00";
+        transactionsToShow.forEach(transaction => {
+            const formattedDate = new Date(transaction.transactionDate).toLocaleDateString('es-AR');
+            const isPositive = transaction.transactionType === 'DEPOSIT' || transaction.transactionType === 'TRANSFER_IN';
+            const formattedAmount = Math.abs(transaction.transactionAmount).toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
             let typeClass = '';
             let typeText = '';
+            let transactionState = '';
 
-            switch (transaction.type) {
-                case 'deposit':
+            switch (transaction.transactionType) {
+                case 'DEPOSIT':
                     typeClass = 'type-deposit';
                     typeText = 'Depósito';
+                    transactionState = 'Realizado';
                     break;
-                case 'withdrawal':
+                case 'WITHDRAWAL':
                     typeClass = 'type-withdrawal';
                     typeText = 'Retiro';
+                    transactionState = 'Retirado';
                     break;
-                case 'transfer':
-                    typeClass = 'type-transfer';
-                    typeText = 'Transferencia';
+                case 'TRANSFER_IN':
+                    typeClass = 'type-transfer-in';
+                    typeText = 'Transferencia Entrante';
+                    transactionState = 'Recibido';
                     break;
-            }
-
-            let statusClass = '';
-            let statusText = '';
-
-            switch (transaction.status) {
-                case 'completed':
-                    statusClass = 'status-active';
-                    statusText = 'Completada';
+                case 'TRANSFER_OUT':
+                    typeClass = 'type-transfer-out';
+                    typeText = 'Transferencia Enviada';
+                    transactionState = 'Enviado';
                     break;
-                case 'pending':
-                    statusClass = 'transaction-type';
-                    statusText = 'Pendiente';
-                    break;
-                case 'failed':
-                    statusClass = 'status-inactive';
-                    statusText = 'Fallida';
-                    break;
+                default:
+                    typeClass = '';
+                    typeText = transaction.transactionType;
+                    transactionState = 'Desconocido';
             }
 
             html += `
-            <tr>
-                <td>#${transaction.id}</td>
-                <td>${transaction.user}</td>
-                <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
-                <td>$${formattedAmount}</td>
-                <td>${formattedDate}</td>
-                <td><span class="user-status ${statusClass}">${statusText}</span></td>
-                <td>
-                    <div class="user-actions">
-                        <div class="action-icon view-icon" title="Ver detalles">
-                            <i class="fas fa-eye"></i>
+                <tr>
+                    <td>${transaction.transactionId}</td>
+                    <td>${transaction.description || '-'}</td>
+                    <td><span class="transaction-type ${typeClass}">${typeText}</span></td>
+                    <td class="${isPositive ? 'amount-positive' : 'amount-negative'}">
+                        ${isPositive ? '+ ' : '- '}$${formattedAmount}
+                    </td>
+                    <td>${formattedDate}</td>
+                    <td>${transactionState}</td>
+                    <td>
+                        <div class="user-actions">
+                            <div class="action-icon view-icon" title="Ver detalles">
+                                <i class="fas fa-eye"></i>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        `;
+                    </td>
+                </tr>
+            `;
         });
 
         tableBody.innerHTML = html;
+        renderAdminTransactionsPagination(totalPages);
+
     } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = `<tr><td colspan="7">Error al cargar transacciones</td></tr>`;
+        console.error("Error al cargar transacciones:", error.message);
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Error al cargar transacciones</td></tr>`;
     }
 }
+
+// Renderiza la paginación para transacciones
+function renderAdminTransactionsPagination(totalPages) {
+    const paginationDiv = document.getElementById('adminTransactionsPagination');
+    if (!paginationDiv) return;
+
+    let html = '';
+
+    html += `<button class="pagination-btn" ${transactionsCurrentPage === 1 ? 'disabled' : ''} data-page="${transactionsCurrentPage - 1}">
+        <i class="fas fa-chevron-left"></i>
+    </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === transactionsCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${transactionsCurrentPage === totalPages ? 'disabled' : ''} data-page="${transactionsCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadAdminTransactions(page);
+        });
+    });
+}
+
 
 // Función para cargar cuentas
 async function loadAccounts(page = 1) {
