@@ -1,3 +1,7 @@
+let transactionsData = [];
+let transactionsCurrentPage = 1;
+const transactionsPerPage = 5; // o el número que prefieras
+
 document.addEventListener('DOMContentLoaded', async function () {
     // verificar si el usuario está autenticado
     if (!isAuthenticated()) {
@@ -13,8 +17,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    
-    
+
+
     //Obtenemos el id del usuario logueado desde el token
     // y lo guardamos en una variable
     //no borrar 
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Redirigir al panel de admin solo si es admin
     adminBtn.addEventListener("click", function () {
         if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
-       
+
             window.location.href = "/dashboard/admin/admin.html";
         } else {
             alert("No tienes permisos para acceder al panel de administración.");
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 
-    const username   = document.getElementById("user-name");
+    const username = document.getElementById("user-name");
     const saludo = document.getElementById("saludo");
     saludo.innerText = `¡Hola, ${userData.name}!`; // Mostrar saludo personalizado
     username.innerText = `@${userData.username}`; // Mostrar nombre del usuario en el header    
@@ -176,7 +180,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
         method: method,         // Ej: "bank_transfer"
         sourceEntity: sourceEntity, // Ej: "Banco Nación"
         description: description, // Agregar descripción para el backend
-       };
+    };
     console.log("Body a enviar:", body);
 
     try {
@@ -239,9 +243,9 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
         alert("No se encontró una cuenta seleccionada.");
         return;
     }
-     // Asegurarse de que la cuenta esté seleccionada
+    // Asegurarse de que la cuenta esté seleccionada
     console.log("Retirando de la cuenta:", account.currency); // <-- Agrega esto
- 
+
     const body = {
         accountId: account.id,
         transactionAmount: amount,
@@ -269,7 +273,7 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
 
         // Actualizar cuentas y cerrar modal
         document.querySelector('[data-modal="withdraw"]').click();
-        
+
         const confirmationData = {
             title: 'Retiro realizado',
             icon: 'fas fa-check-circle',
@@ -281,10 +285,10 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
             <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
             `
         }
-        
+
         window.modalManager.showConfirmation(confirmationData);
         window.accountsManager.selectAccount(account.id);
-     
+
 
     } catch (error) {
         console.error(error);
@@ -384,36 +388,43 @@ document.getElementById('transferForm').addEventListener('submit', async functio
 
 //FUNCIONES PARA CARGAR TRANSACCIONES, TRANSFERENCIAS Y RETIROS EN EL DASHBOARD
 
-
-async function loadTransactions(accountId) {
+async function loadTransactions(accountId, page = 1) {
     const tableBody = document.querySelector('#transactionsTable tbody');
     tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
 
     try {
-        const res = await fetch(`http://localhost:8080/api/transactions/account/${accountId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
+        if (transactionsData.length === 0) {
+            const res = await fetch(`http://localhost:8080/api/transactions/account/${accountId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!res.ok) throw new Error("No se pudieron obtener las transacciones");
+
+            if (res.status === 204) {
+                tableBody.innerHTML = '<tr><td colspan="4">No se hicieron transacciones en esta cuenta.</td></tr>';
+                return;
             }
-        });
 
-        // Verificar si la respuesta es exitosa
-        if (!res.ok) throw new Error("No se pudieron obtener las transacciones");
+            transactionsData = await res.json();
 
-        // Verificar si la respuesta es un array
-        if (res.status === 204) {
-            tableBody.innerHTML = '<tr><td colspan="4">No se hicieron transacciones en esta cuenta.</td></tr>';
-            return;
+            // Ordenar de más recientes a más antiguas
+            transactionsData.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
         }
 
-
-        const transactions = await res.json();
+        // Paginación
+        const totalPages = Math.ceil(transactionsData.length / transactionsPerPage);
+        transactionsCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (transactionsCurrentPage - 1) * transactionsPerPage;
+        const end = start + transactionsPerPage;
+        const transactionsToShow = transactionsData.slice(start, end);
 
         let html = '';
 
-        transactions.forEach(transaction => {
-            // Formatear fecha, monto y tipo de transacción
+        transactionsToShow.forEach(transaction => {
             const formattedDate = new Date(transaction.transactionDate).toLocaleDateString('es-AR');
             const isPositive = transaction.transactionType === 'DEPOSIT' || transaction.transactionType === 'TRANSFER_IN';
             const formattedAmount = Math.abs(transaction.transactionAmount).toLocaleString('es-AR', {
@@ -443,7 +454,7 @@ async function loadTransactions(accountId) {
                     break;
                 default:
                     typeClass = '';
-                    typeText = transaction.type;
+                    typeText = transaction.transactionType;
             }
 
             html += `
@@ -460,11 +471,40 @@ async function loadTransactions(accountId) {
 
         tableBody.innerHTML = html || '<tr><td colspan="4">No hay transacciones.</td></tr>';
 
+        renderTransactionsPagination(totalPages, accountId);
+
     } catch (error) {
         console.error(error);
         tableBody.innerHTML = `<tr><td colspan="4">Error al cargar transacciones.</td></tr>`;
     }
 }
+
+function renderTransactionsPagination(totalPages, accountId) {
+    const paginationDiv = document.getElementById('transactionsPagination');
+    let html = '';
+
+    html += `<button class="pagination-btn" ${transactionsCurrentPage === 1 ? 'disabled' : ''} data-page="${transactionsCurrentPage - 1}">
+        <i class="fas fa-chevron-left"></i>
+    </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === transactionsCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${transactionsCurrentPage === totalPages ? 'disabled' : ''} data-page="${transactionsCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadTransactions(accountId, page);
+        });
+    });
+}
+
 
 async function loadTransfers(accountId) {
     const transfersContainer = document.getElementById('transfersContent');
@@ -488,13 +528,15 @@ async function loadTransfers(accountId) {
         }
 
         const transfers = await res.json();
+        transfers.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+
 
         let html = '';
 
         transfers.forEach(transfer => {
             console.log("Transferencia:", transfer);
             // Mostrar el alias, CBU o nombre 
-            const destinationOwner =  `Transferencia a ${transfer.destinationAccountOwner}`;
+            const destinationOwner = `Transferencia a ${transfer.destinationAccountOwner}`;
             const formattedDate = new Date(transfer.transactionDate).toLocaleDateString('es-AR');
             const formattedAmount = transfer.transactionAmount.toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
@@ -547,6 +589,8 @@ async function loadWithdrawals(accountId) {
 
 
         const withdrawals = await res.json();
+        withdrawals.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+
 
         let html = '';
 
@@ -770,7 +814,7 @@ document.getElementById('transferForm').addEventListener('submit', function (e) 
 const cbuInput = document.getElementById('recipientCBU');
 const aliasInput = document.getElementById('recipientAlias');
 
-cbuInput.addEventListener('input', function() {
+cbuInput.addEventListener('input', function () {
     if (cbuInput.value.trim()) {
         aliasInput.disabled = true;
     } else {
@@ -778,7 +822,7 @@ cbuInput.addEventListener('input', function() {
     }
 });
 
-aliasInput.addEventListener('input', function() {
+aliasInput.addEventListener('input', function () {
     if (aliasInput.value.trim()) {
         cbuInput.disabled = true;
     } else {
