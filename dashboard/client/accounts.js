@@ -84,9 +84,14 @@
 
         // Actualizar el saldo mostrado en la tarjeta de balance
         updateBalanceDisplay();
-        loadTransactions(userAccounts[0].id); // Cargar transacciones de la primera cuenta
-        loadWithdrawals(userAccounts[0].id); // Cargar retiros de la primera cuenta
-        loadTransfers(userAccounts[0].id); // Cargar transferencias de la primera cuenta
+
+        // Cargar movimientos de la cuenta seleccionada (default)
+        const defaultAccount = userAccounts.find(acc => acc.isDefault) || userAccounts[0];
+        if (defaultAccount) {
+            loadTransactions(defaultAccount.id);
+            loadWithdrawals(defaultAccount.id);
+            loadTransfers(defaultAccount.id);
+        }
     }
 
     /**
@@ -204,10 +209,15 @@
             }
         }
 
-        updateBalanceDisplay();
-        loadTransactions(accountId); // Cargar transacciones de la cuenta seleccionada
-        loadWithdrawals(accountId); // Cargar retiros de la cuenta seleccionada
-        loadTransfers(accountId); // Cargar transferencias de la cuenta seleccionada
+updateBalanceDisplay();
+
+// Cargar movimientos de la cuenta seleccionada (default)
+const defaultAccount = userAccounts.find(acc => acc.isDefault) || userAccounts[0];
+if (defaultAccount) {
+    loadTransactions(defaultAccount.id);
+    loadWithdrawals(defaultAccount.id);
+    loadTransfers(defaultAccount.id);
+} // Cargar transferencias de la cuenta seleccionada
     }
 
     /**

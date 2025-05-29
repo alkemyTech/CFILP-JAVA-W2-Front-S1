@@ -1,6 +1,6 @@
 let transactionsData = [];
 let transactionsCurrentPage = 1;
-const transactionsPerPage = 5; 
+const transactionsPerPage = 5;
 let transfersData = [];
 let transfersCurrentPage = 1;
 
@@ -46,15 +46,26 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
 
+    userData = JSON.parse(localStorage.getItem("data"));
+    if (userData) {
+        const userNameElement = document.getElementById("userName");
+        const userRoleElement = document.getElementById("userRole");
+
+        userNameElement.textContent = `${userData.name} ${userData.lastName}`;
+        userRoleElement.textContent = `@${userData.username}`;
+    }
 
     // Mostrar/ocultar botón de admin según el rol
     const adminBtn = document.getElementById("btn-administrador");
     const userDataLS = JSON.parse(localStorage.getItem('data'));
+
     if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
         adminBtn.style.display = "block";
     } else {
         adminBtn.style.display = "none";
     }
+
+    loadCards(userDataLS)
 
     // Redirigir al panel de admin solo si es admin
     adminBtn.addEventListener("click", function () {
@@ -110,38 +121,48 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-// // Función para cargar el saldo // esta funcion no esta funcionando bien .
-// ahora el saldo se actualiza desde el accountsManager
-function loadBalance(userId, isRefresh = true) { //false
+//FUNCIONA
+function loadBalance(userId, isRefresh = true) {
     const balanceElement = document.getElementById('balanceAmount');
-    console.log("loadBalance");
     if (isRefresh) {
         balanceElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-        console.log("actualizando saldo...");
     }
 
-    fetch(`http://localhost:8080/api/accounts/user/${userId}`,
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            }
+    fetch(`http://localhost:8080/api/accounts/user/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
         }
-    ).then(res => res.json())
-
+    })
+        .then(res => res.json())
         .then(data => {
-            const balance = data[0].balance;
-            console.log(balance);
-            balanceElement.innerText = balance;
-        }
-        ).catch(error => {
-            console.error('Error al obtener los datos: ', error)
+            // Obtener el ID de la cuenta seleccionada
+            let selectedAccountId = null;
+            if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+                selectedAccountId = window.accountsManager.getSelectedAccountId();
+            }
+            if (!selectedAccountId) {
+                const defaultAccount = getDefaultAccount();
+                selectedAccountId = defaultAccount ? defaultAccount.id : null;
+            }
 
+            // Buscar la cuenta seleccionada en el array de cuentas
+            const selectedAccount = data.find(acc => acc.id === selectedAccountId);
+
+            if (selectedAccount) {
+                balanceElement.innerText = selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else if (data.length > 0) {
+                // Si no se encuentra, mostrar la primera cuenta como fallback
+                balanceElement.innerText = data[0].balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                balanceElement.innerText = "0.00";
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos: ', error);
+            balanceElement.innerText = "Error";
         });
-
-
 }
 
 
@@ -207,19 +228,23 @@ document.getElementById('depositForm').addEventListener('submit', async function
         console.log("Depósito realizado:", result);
 
         // Actualizar cuentas y cerrar modal
-        await window.accountsManager.loadAccounts(account.userId);
         document.querySelector('[data-modal="deposit"]').click();
 
-        // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active');
+        const confirmationData = {
+            title: 'Deposito realizado',
+            icon: 'fas fa-check-circle',
+            message: `Depositaste  $${account.currency} ${result.transactionAmount} exitosamente.`,
+            details: `
+            <p>Monto: $${result.transactionAmount}</p>
+            <p>Método: ${result.method}</p>
+            <p>Entidad: ${result.sourceEntity}</p>
+            <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+            `
+        }
 
-        // Mostrar detalles del depósito en el modal de confirmación
-        document.getElementById('confirmationDetails').innerHTML = `
-    <p>Monto: $${result.transactionAmount}</p>
-    <p>Método: ${result.method}</p>
-    <p>Entidad: ${result.sourceEntity}</p>
-    <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
-`;
+
+        window.modalManager.showConfirmation(confirmationData);
+        window.accountsManager.selectAccount(account.id);
 
     } catch (error) {
         console.error(error);
@@ -322,7 +347,11 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
 // Transferir dinero entre cuentas
 document.getElementById('transferForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-
+    const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
+    if (selectedAccount) {
+        document.getElementById('transferAvailableBalance').textContent =
+            `$${selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
     // Obtener datos del formulario
     const amount = parseFloat(document.getElementById('transferAmount').value);
     const concept = document.getElementById('transferConcept').value;
@@ -371,20 +400,23 @@ document.getElementById('transferForm').addEventListener('submit', async functio
         const result = await res.json();
         console.log("Transferencia realizada:", result);
 
-        // Actualizar cuentas y cerrar modal
-        await window.accountsManager.loadAccounts(account.userId);
-        document.querySelector('[data-modal="transfer"]').click();
+        // Actualizar cuentas y cerrar modals
+        document.querySelector('[data-modal="deposit"]').click();
 
-        // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active');
-
-        // Mostrar detalles de la transferencia en el modal de confirmación
-        document.getElementById('confirmationDetails').innerHTML = `
+        const confirmationData = {
+            title: 'Transferencia Realizada',
+            icon: 'fas fa-check-circle',
+            message: `Transferiste  $${account.currency} ${result.transactionAmount} exitosamente a ${result.destinationAccountOwner}.`,
+            details: `
             <p>Monto: $${result.transactionAmount}</p>
-            <p>CBU/CVU: ${result.recipientCBU || '-'}</p>
-            <p>Alias: ${result.recipientAlias || '-'}</p>
+            <p>Concepto: ${concept}</p>
+            <p>Descripción: ${description}</p>
             <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
-        `;
+            `
+        }
+
+        window.modalManager.showConfirmation(confirmationData);
+        window.accountsManager.selectAccount(account.id);
 
     } catch (error) {
         console.error(error);
@@ -399,6 +431,9 @@ document.getElementById('transferForm').addEventListener('submit', async functio
 async function loadTransactions(accountId, page = 1) {
     const tableBody = document.querySelector('#transactionsTable tbody');
     tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
+
+
+    transactionsData = [];
 
     try {
         if (transactionsData.length === 0) {
@@ -517,6 +552,8 @@ async function loadTransfers(accountId, page = 1) {
     const transfersContainer = document.getElementById('transfersContent');
     transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
+    transfersData = [];
+
     try {
         if (transfersData.length === 0) {
             const res = await fetch(`http://localhost:8080/api/transfers/account/${accountId}`, {
@@ -604,6 +641,8 @@ async function loadWithdrawals(accountId, page = 1) {
     const withdrawalsContainer = document.getElementById('withdrawalsContent');
     withdrawalsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
+    withdrawalsData = [];
+
     try {
         if (withdrawalsData.length === 0) {
             const res = await fetch(`http://localhost:8080/api/withdrawals/account/${accountId}`, {
@@ -687,14 +726,14 @@ function renderWithdrawalsPagination(totalPages, accountId) {
 }
 
 
-function loadCards(userId) {
+function loadCards(userDataLS) {
     const cardsContainer = document.getElementById('cardsContent');
 
     // Simulación de llamada a API
     // tODO: fetch a /api/cards/user/{id}
     const cards = [
-        { id: 1, type: 'Visa', number: '4589', holder: 'Juan Pérez', expiry: '12/25' },
-        { id: 2, type: 'Mastercard', number: '5432', holder: 'Juan Pérez', expiry: '08/24' }
+        { id: 1, type: 'Visa', number: '4589', holder: `${userDataLS.name} ${userDataLS.lastName}`, expiry: '12/25' },
+        { id: 2, type: 'Mastercard', number: '5432', holder: `${userDataLS.name} ${userDataLS.lastName}`, expiry: '08/24' }
     ];
 
     let html = '';
@@ -859,19 +898,19 @@ document.getElementById('transferForm').addEventListener('submit', function (e) 
         return;
     }
 
-    // Si se ingresa un CBU, validar su formato (solo números y longitud de 22)
-    if (recipientCBU && (!/^\d+$/.test(recipientCBU) || recipientCBU.length !== 22)) {
-        e.preventDefault();
-        alert("El CBU debe tener 22 dígitos y contener solo números.");
-        return;
-    }
+    // // Si se ingresa un CBU, validar su formato (solo números y longitud de 22)
+    // if (recipientCBU && (!/^\d+$/.test(recipientCBU) || recipientCBU.length !== 22)) {
+    //     e.preventDefault();
+    //     alert("El CBU debe tener 22 dígitos y contener solo números.");
+    //     return;
+    // }
 
-    // Si se ingresa un Alias, validar su formato (alfanumérico, 3 a 20 caracteres)
-    if (recipientAlias && (!/^[a-zA-Z0-9]{3,20}$/.test(recipientAlias))) {
-        e.preventDefault();
-        alert("El Alias debe tener entre 3 y 20 caracteres y contener solo letras y números.");
-        return;
-    }
+    // // Si se ingresa un Alias, validar su formato (alfanumérico, 3 a 20 caracteres)
+    // if (recipientAlias && (!/^[a-zA-Z0-9]{3,20}$/.test(recipientAlias))) {
+    //     e.preventDefault();
+    //     alert("El Alias debe tener entre 3 y 20 caracteres y contener solo letras y números.");
+    //     return;
+    // }
 });
 
 // Deshabilitar campos mutuamente exclusivos en el formulario de transferencia

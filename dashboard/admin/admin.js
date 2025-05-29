@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Mostrar/ocultar botón de admin según el rol
+    const clientBtn = document.getElementById("btn-cliente");
+    clientBtn.addEventListener("click", function () {
+        window.location.href = "/dashboard/client/client.html";
+    });
+
     // Cargar datos iniciales
     loadUsers();
     loadRoles();
@@ -46,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners para filtros
     document.getElementById('roleFilter').addEventListener('change', loadUsers);
     document.getElementById('statusFilter').addEventListener('change', loadUsers);
-    document.getElementById('chartPeriod').addEventListener('change', updateTransactionsChart);
     document.getElementById('accountStatusFilter')?.addEventListener('change', loadAccounts);
     document.getElementById('accountTypeFilter')?.addEventListener('change', loadAccounts);
 });
@@ -438,7 +443,6 @@ function initCharts() {
     initUsersChart();
 }
 
-// Gráfico de transacciones mensuales
 async function initTransactionsChart() {
     const ctx = document.getElementById('transactionsChart').getContext('2d');
 
@@ -449,57 +453,52 @@ async function initTransactionsChart() {
             }
         });
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                throw new Error('No autorizado. Por favor, inicia sesión.');
-            } else {
-                throw new Error('Error al obtener transacciones: ' + response.statusText);
-            }
-        }
+        if (!response.ok) throw new Error('Error al obtener transacciones');
 
-        const data = await response.json();
+        const transactions = await response.json();
 
-        const labels = data.map(item => item.date);
-        const depositData = data.map(item => item.deposits);
-        const withdrawalData = data.map(item => item.withdrawals);
-        const transferData = data.map(item => item.transfers);
-
-        const chartData = {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Depósitos',
-                    data: depositData,
-                    backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                    borderColor: 'rgba(46, 204, 113, 1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                },
-                {
-                    label: 'Retiros',
-                    data: withdrawalData,
-                    backgroundColor: 'rgba(231, 76, 60, 0.2)',
-                    borderColor: 'rgba(231, 76, 60, 1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                },
-                {
-                    label: 'Transferencias',
-                    data: transferData,
-                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                }
-            ]
-        };
+        window.rawTransactionData = transactions;
 
         window.transactionsChart = new Chart(ctx, {
             type: 'line',
-            data: chartData,
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Depósitos',
+                        data: [],
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Retiros',
+                        data: [],
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Transferencias',
+                        data: [],
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    }
+                ]
+            },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Transacciones del Mes Actual'
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true
@@ -507,47 +506,64 @@ async function initTransactionsChart() {
                 }
             }
         });
+
+        // Mostrar solo el mes actual
+        updateTransactionsChart();
+
     } catch (error) {
-        console.error('Error al obtener los datos de transacciones:', error);
+        console.error('Error al cargar gráfico de transacciones:', error);
     }
 }
 
-// Función para actualizar el gráfico de transacciones (si usás esta funcionalidad)
 function updateTransactionsChart() {
-    const period = document.getElementById('chartPeriod').value;
+    if (!window.rawTransactionData) return;
 
-    let labels = [];
-    let depositData = [];
-    let withdrawalData = [];
-    let transferData = [];
+    const now = new Date();
+    const filtered = window.rawTransactionData
+        .map(tx => ({ ...tx, parsedDate: new Date(tx.transactionDate) }))
+        .filter(tx => tx.parsedDate.getMonth() === now.getMonth() && tx.parsedDate.getFullYear() === now.getFullYear());
 
-    switch (period) {
-        case 'week':
-            labels = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-            depositData = [30, 45, 25, 60, 35, 20, 15];
-            withdrawalData = [20, 35, 15, 40, 25, 10, 5];
-            transferData = [25, 30, 20, 35, 30, 15, 10];
-            break;
-        case 'month':
-            labels = ['1 Mayo', '5 Mayo', '10 Mayo', '15 Mayo', '20 Mayo', '25 Mayo', '30 Mayo'];
-            depositData = [65, 59, 80, 81, 56, 55, 40];
-            withdrawalData = [28, 48, 40, 19, 86, 27, 90];
-            transferData = [45, 25, 50, 30, 65, 40, 70];
-            break;
-        case 'year':
-            labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-            depositData = [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 85, 90];
-            withdrawalData = [28, 48, 40, 19, 86, 27, 90, 50, 45, 60, 35, 40];
-            transferData = [45, 25, 50, 30, 65, 40, 70, 55, 40, 50, 60, 75];
-            break;
-    }
+    const grouped = {};
 
-    window.transactionsChart.data.labels = labels;
-    window.transactionsChart.data.datasets[0].data = depositData;
-    window.transactionsChart.data.datasets[1].data = withdrawalData;
-    window.transactionsChart.data.datasets[2].data = transferData;
-    window.transactionsChart.update();
+    filtered.forEach(tx => {
+        const d = tx.parsedDate;
+        const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+
+        if (!grouped[key]) {
+            grouped[key] = { deposits: 0, withdrawals: 0, transfers: 0 };
+        }
+
+        switch (tx.transactionType) {
+            case 'DEPOSIT':
+                grouped[key].deposits += 1;
+                break;
+            case 'WITHDRAWAL':
+                grouped[key].withdrawals += 1;
+                break;
+            case 'TRANSFER_IN':
+            case 'TRANSFER_OUT':
+                grouped[key].transfers += 1;
+                break;
+        }
+    });
+
+    const labels = Object.keys(grouped).sort();
+    const depositData = labels.map(key => grouped[key].deposits);
+    const withdrawalData = labels.map(key => grouped[key].withdrawals);
+    const transferData = labels.map(key => grouped[key].transfers);
+
+    const chart = window.transactionsChart;
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = depositData;
+    chart.data.datasets[1].data = withdrawalData;
+    chart.data.datasets[2].data = transferData;
+    chart.update();
+
+    console.log('Datos agrupados:', grouped);
+    console.log('Labels generados:', labels);
 }
+
+
 
 // Gráfico de distribución de usuarios
 async function initUsersChart() {
@@ -569,10 +585,10 @@ async function initUsersChart() {
         }
 
         const data = await response.json();
-
-        const activeUsers = data.filter(user => user.active).length;
-        const inactiveUsers = data.filter(user => !user.active).length;
+        const activeUsers = data.filter(user => user.roles.includes('Cliente')).length;
         const adminUsers = data.filter(user => user.roles.includes('Administrativo')).length;
+        const inactiveUsers = data.length - activeUsers - adminUsers;
+
 
         const chartData = {
             labels: ['Usuarios Activos', 'Usuarios Inactivos', 'Administradores'],

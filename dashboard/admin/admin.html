@@ -64,6 +64,13 @@
             <header class="dashboard-header">
                 <h2>Panel de Administración</h2>
                 <div class="header-actions">
+                    <div>
+                        <button class="btn-cliente " id="btn-cliente">
+                            <i class="fas fa-user"></i>
+                            Ir al panel de cliente.
+                        </button>
+                    </div>
+                 
                     <div class="search-bar">
                         <input type="text" placeholder="Buscar..." />
                         <i class="fas fa-search"></i>
@@ -132,13 +139,6 @@
                 <section class="card chart-card">
                     <div class="card-header">
                         <h3>Transacciones Mensuales</h3>
-                        <div class="card-actions">
-                            <select id="chartPeriod">
-                                <option value="week">Esta semana</option>
-                                <option value="month" selected>Este mes</option>
-                                <option value="year">Este año</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="card-content">
                         <canvas id="transactionsChart"></canvas>
