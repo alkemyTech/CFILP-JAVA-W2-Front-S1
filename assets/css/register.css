@@ -367,5 +367,53 @@ select {
     select {
         width: 100%;
         max-width: 100%; /* que ocupe todo el ancho disponible en móvil */
+ 
+    }
+}
+
+.success-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e6f4ea;
+    border: 1px solid #c2e0c6;
+    border-radius: 10px;
+    padding: 30px 40px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.6s ease-in-out;
+    color: #2e7d32;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.success-icon {
+    font-size: 40px;
+    color: #43a047;
+    margin-bottom: 10px;
+}
+
+.success-message h3 {
+    font-size: 24px;
+    margin: 10px 0;
+    color: #2e7d32;
+}
+
+.success-message p {
+    font-size: 16px;
+    margin: 5px 0;
+    text-align: center;
+    color: #2e7d32;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
