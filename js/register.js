@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('registerForm');
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
-    const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+    const togglePasswordButtons = document.querySelectorAll('.toggle-password-register');
+    selectProvince();
 
     // Función para mostrar/ocultar contraseña
     togglePasswordButtons.forEach(button => {
@@ -344,7 +345,7 @@ function selectLocation(departamentoId) {
         });
 }
 
-$d.addEventListener("DOMContentLoaded", selectProvince);
+
 
 $selectProvincias.addEventListener('change', function(event) {
     const provinciaId = event.target.value;
