@@ -54,36 +54,26 @@ class TransferModalHandler {
     }
   }
 
-  /**
-   * Inicializa los datos en el modal de transferencia
-   * @param {Object} data - Datos para inicializar
-   */
-  initModalData(data) {
-    // Inicializar campos del modal de transferencia
-    if (data.recipient) {
-      // Configurar destinatario según el tipo
-      if (data.recipientType) {
-        const typeSelect = document.getElementById("transferType")
-        if (typeSelect) {
-          typeSelect.value = data.recipientType
-          // Disparar el evento change para mostrar los campos correctos
-          typeSelect.dispatchEvent(new Event("change"))
+initModalData(data) {
+    if (data.recipient && data.recipientType) {
+      const typeSelect = document.getElementById("transferType")
+      if (typeSelect) {
+        typeSelect.value = data.recipientType
+        typeSelect.dispatchEvent(new Event("change"))
 
-          // Rellenar el campo correspondiente
-          switch (data.recipientType) {
-            case "email":
-              const emailInput = document.getElementById("recipientEmail")
-              if (emailInput) emailInput.value = data.recipient
-              break
-            case "phone":
-              const phoneInput = document.getElementById("recipientPhone")
-              if (phoneInput) phoneInput.value = data.recipient
-              break
-            case "alkywallet":
-              const walletInput = document.getElementById("recipientWallet")
-              if (walletInput) walletInput.value = data.recipient
-              break
-          }
+        switch (data.recipientType) {
+          case "email":
+            const emailInput = document.getElementById("recipientEmail")
+            if (emailInput) emailInput.value = data.recipient
+            break
+          case "phone":
+            const phoneInput = document.getElementById("recipientPhone")
+            if (phoneInput) phoneInput.value = data.recipient
+            break
+          case "alkywallet":
+            const walletInput = document.getElementById("recipientWallet")
+            if (walletInput) walletInput.value = data.recipient
+            break
         }
       }
     }
@@ -96,11 +86,15 @@ class TransferModalHandler {
       }
     }
 
-    // Actualizar saldo disponible si se proporciona
-    if (data.availableBalance) {
-      const balanceElement = this.modal.querySelector(".balance-amount")
+    // 🔥 ACTUALIZAR SALDO DISPONIBLE desde accountsManager
+    const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault)
+    if (selectedAccount) {
+      const balanceElement = this.modal.querySelector("#transferAvailableBalance")
       if (balanceElement) {
-        balanceElement.textContent = `$${data.availableBalance.toFixed(2)}`
+        balanceElement.textContent = `$${selectedAccount.balance.toLocaleString('es-AR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}`
       }
     }
   }

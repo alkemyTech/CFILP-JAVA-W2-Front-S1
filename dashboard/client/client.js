@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Mostrar/ocultar botón de admin según el rol
     const adminBtn = document.getElementById("btn-administrador");
     const userDataLS = JSON.parse(localStorage.getItem('data'));
+    
     if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
         adminBtn.style.display = "block";
     } else {
@@ -340,7 +341,7 @@ document.getElementById('transferForm').addEventListener('submit', async functio
     e.preventDefault();
 const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
 if (selectedAccount) {
-    document.getElementById('withdrawAvailableBalance').textContent =
+    document.getElementById('transferAvailableBalance').textContent =
         `$${selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
     // Obtener datos del formulario
@@ -723,8 +724,8 @@ function loadCards(userDataLS) {
     // Simulación de llamada a API
     // tODO: fetch a /api/cards/user/{id}
     const cards = [
-        { id: 1, type: 'Visa', number: '4589', holder: userDataLS.name, expiry: '12/25' },
-        { id: 2, type: 'Mastercard', number: '5432', holder: userDataLS.name , expiry: '08/24' }
+        { id: 1, type: 'Visa', number: '4589', holder: `${userDataLS.name} ${userDataLS.lastName}`, expiry: '12/25' },
+        { id: 2, type: 'Mastercard', number: '5432', holder: `${userDataLS.name} ${userDataLS.lastName}`, expiry: '08/24' }
     ];
 
     let html = '';
