@@ -112,36 +112,47 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 // // Función para cargar el saldo // esta funcion no esta funcionando bien .
 // ahora el saldo se actualiza desde el accountsManager
-function loadBalance(userId, isRefresh = true) { //false
+function loadBalance(userId, isRefresh = true) {
     const balanceElement = document.getElementById('balanceAmount');
-    console.log("loadBalance");
     if (isRefresh) {
         balanceElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-        console.log("actualizando saldo...");
     }
 
-    fetch(`http://localhost:8080/api/accounts/user/${userId}`,
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            }
+    fetch(`http://localhost:8080/api/accounts/user/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
         }
-    ).then(res => res.json())
-
-        .then(data => {
-            const balance = data[0].balance;
-            console.log(balance);
-            balanceElement.innerText = balance;
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Obtener el ID de la cuenta seleccionada
+        let selectedAccountId = null;
+        if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+            selectedAccountId = window.accountsManager.getSelectedAccountId();
         }
-        ).catch(error => {
-            console.error('Error al obtener los datos: ', error)
+        if (!selectedAccountId) {
+            const defaultAccount = getDefaultAccount();
+            selectedAccountId = defaultAccount ? defaultAccount.id : null;
+        }
 
-        });
+        // Buscar la cuenta seleccionada en el array de cuentas
+        const selectedAccount = data.find(acc => acc.id === selectedAccountId);
 
-
+        if (selectedAccount) {
+            balanceElement.innerText = selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else if (data.length > 0) {
+            // Si no se encuentra, mostrar la primera cuenta como fallback
+            balanceElement.innerText = data[0].balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else {
+            balanceElement.innerText = "0.00";
+        }
+    })
+    .catch(error => {
+        console.error('Error al obtener los datos: ', error);
+        balanceElement.innerText = "Error";
+    });
 }
 
 
