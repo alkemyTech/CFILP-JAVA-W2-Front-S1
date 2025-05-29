@@ -207,19 +207,22 @@ document.getElementById('depositForm').addEventListener('submit', async function
         console.log("Depósito realizado:", result);
 
         // Actualizar cuentas y cerrar modal
-        await window.accountsManager.loadAccounts(account.userId);
         document.querySelector('[data-modal="deposit"]').click();
 
-        // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active');
+         const confirmationData = {
+            title: 'Deposito realizado',
+            icon: 'fas fa-check-circle',
+            message: `Depositaste  $${account.currency} ${result.transactionAmount} exitosamente.`,
+            details: `
+            <p>Monto: $${result.transactionAmount}</p>
+            <p>Método: ${result.method}</p>
+            <p>Entidad: ${result.sourceEntity}</p>
+            <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
+            `
+        }
 
-        // Mostrar detalles del depósito en el modal de confirmación
-        document.getElementById('confirmationDetails').innerHTML = `
-    <p>Monto: $${result.transactionAmount}</p>
-    <p>Método: ${result.method}</p>
-    <p>Entidad: ${result.sourceEntity}</p>
-    <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
-`;
+        window.modalManager.showConfirmation(confirmationData);
+        window.accountsManager.selectAccount(account.id);
 
     } catch (error) {
         console.error(error);
@@ -371,21 +374,24 @@ document.getElementById('transferForm').addEventListener('submit', async functio
         const result = await res.json();
         console.log("Transferencia realizada:", result);
 
-        // Actualizar cuentas y cerrar modal
-        await window.accountsManager.loadAccounts(account.userId);
-        document.querySelector('[data-modal="transfer"]').click();
+        // Actualizar cuentas y cerrar modals
+        document.querySelector('[data-modal="deposit"]').click();
 
-        // Abrir el modal de confirmación
-        document.getElementById('confirmationModal').classList.add('active');
-
-        // Mostrar detalles de la transferencia en el modal de confirmación
-        document.getElementById('confirmationDetails').innerHTML = `
+         const confirmationData = {
+            title: 'Transferencia Realizada',
+            icon: 'fas fa-check-circle',
+            message: `Transferiste  $${account.currency} ${result.transactionAmount} exitosamente a ${result.destinationAccountOwner}.`,
+            details: `
             <p>Monto: $${result.transactionAmount}</p>
-            <p>CBU/CVU: ${result.recipientCBU || '-'}</p>
-            <p>Alias: ${result.recipientAlias || '-'}</p>
+            <p>Método: ${result.method}</p>
+            <p>Entidad: ${result.sourceEntity}</p>
             <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
-        `;
+            `
+        }
 
+        window.modalManager.showConfirmation(confirmationData);
+        window.accountsManager.selectAccount(account.id);
+     
     } catch (error) {
         console.error(error);
         alert("No se pudo realizar la transferencia.");
