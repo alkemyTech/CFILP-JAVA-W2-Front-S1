@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-  // Cargar datos iniciales
+    // Cargar datos iniciales
     loadUsers();
     loadRoles();
     loadAdminTransactions();
     initCharts();
     loadAccounts();
 
-   // Event listeners para filtros
+    // Event listeners para filtros
     document.getElementById('roleFilter').addEventListener('change', loadUsers);
     document.getElementById('statusFilter').addEventListener('change', loadUsers);
     document.getElementById('chartPeriod').addEventListener('change', updateTransactionsChart);
@@ -213,6 +213,10 @@ async function loadAdminTransactions(page = 1) {
             tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No hay transacciones disponibles</td></tr>`;
             return;
         }
+
+        // Ordenar por fecha descendente
+        transactionsData.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+
 
         // Paginación
         const totalPages = Math.ceil(transactionsData.length / transactionsPerPage);
