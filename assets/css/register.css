@@ -8,8 +8,7 @@
 .form-container {
     padding: 30px 40px;
     overflow-y: auto;
-    max-height: 100vh;
-        width: 100%;
+    max-height: 85vh;
     max-width: 100%; /* Añadir esto para que crezca con el contenedor padre */
     box-sizing: border-box;
 }
@@ -91,7 +90,117 @@
     color: #43cea2;
 }
 
+.btn-login {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  
+}
 
+.btn-login:hover {
+  background-color: #0056b3;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+  margin: 0 12px;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Botones sociales genéricos */
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Google */
+.btn-social.google {
+  background-color: #ffffff;
+  color: #444;
+  border: 1px solid #ddd;
+}
+
+.btn-social.google:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Facebook */
+.btn-social.facebook {
+  background-color: #3b5998;
+  color: #ffffff;
+}
+
+.btn-social.facebook:hover {
+  background-color: #2d4373;
+}
+
+/* Iconos dentro de botones */
+.btn-social i {
+  font-size: 18px;
+}
+
+.input-group select {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  padding-right: 40px; /* espacio para el ícono */
+}
+
+.toggle-password-register {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1;
+}
 
 /* Estilos para el indicador de fortaleza de contraseña */
 .weak { background-color: #e74c3c; width: 25%; }
