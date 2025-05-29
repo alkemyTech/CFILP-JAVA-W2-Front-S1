@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         adminBtn.style.display = "none";
     }
 
+    loadCards(userDataLS)
+
     // Redirigir al panel de admin solo si es admin
     adminBtn.addEventListener("click", function () {
         if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
@@ -110,8 +112,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-// // Función para cargar el saldo // esta funcion no esta funcionando bien .
-// ahora el saldo se actualiza desde el accountsManager
+//FUNCIONA
 function loadBalance(userId, isRefresh = true) {
     const balanceElement = document.getElementById('balanceAmount');
     if (isRefresh) {
@@ -232,6 +233,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
             `
         }
 
+ 
         window.modalManager.showConfirmation(confirmationData);
         window.accountsManager.selectAccount(account.id);
 
@@ -417,6 +419,9 @@ async function loadTransactions(accountId, page = 1) {
     const tableBody = document.querySelector('#transactionsTable tbody');
     tableBody.innerHTML = '<tr><td colspan="4"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>';
 
+
+    transactionsData = [];
+
     try {
         if (transactionsData.length === 0) {
             const res = await fetch(`http://localhost:8080/api/transactions/account/${accountId}`, {
@@ -534,6 +539,8 @@ async function loadTransfers(accountId, page = 1) {
     const transfersContainer = document.getElementById('transfersContent');
     transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
+    transfersData  = [];
+
     try {
         if (transfersData.length === 0) {
             const res = await fetch(`http://localhost:8080/api/transfers/account/${accountId}`, {
@@ -621,6 +628,8 @@ async function loadWithdrawals(accountId, page = 1) {
     const withdrawalsContainer = document.getElementById('withdrawalsContent');
     withdrawalsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
+    withdrawalsData = [];
+
     try {
         if (withdrawalsData.length === 0) {
             const res = await fetch(`http://localhost:8080/api/withdrawals/account/${accountId}`, {
@@ -704,14 +713,14 @@ function renderWithdrawalsPagination(totalPages, accountId) {
 }
 
 
-function loadCards(userId) {
+function loadCards(userDataLS) {
     const cardsContainer = document.getElementById('cardsContent');
 
     // Simulación de llamada a API
     // tODO: fetch a /api/cards/user/{id}
     const cards = [
-        { id: 1, type: 'Visa', number: '4589', holder: 'Juan Pérez', expiry: '12/25' },
-        { id: 2, type: 'Mastercard', number: '5432', holder: 'Juan Pérez', expiry: '08/24' }
+        { id: 1, type: 'Visa', number: '4589', holder: userDataLS.name, expiry: '12/25' },
+        { id: 2, type: 'Mastercard', number: '5432', holder: userDataLS.name , expiry: '08/24' }
     ];
 
     let html = '';
