@@ -338,7 +338,11 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
 // Transferir dinero entre cuentas
 document.getElementById('transferForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-
+const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
+if (selectedAccount) {
+    document.getElementById('withdrawAvailableBalance').textContent =
+        `$${selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
     // Obtener datos del formulario
     const amount = parseFloat(document.getElementById('transferAmount').value);
     const concept = document.getElementById('transferConcept').value;
@@ -396,8 +400,8 @@ document.getElementById('transferForm').addEventListener('submit', async functio
             message: `Transferiste  $${account.currency} ${result.transactionAmount} exitosamente a ${result.destinationAccountOwner}.`,
             details: `
             <p>Monto: $${result.transactionAmount}</p>
-            <p>Método: ${result.method}</p>
-            <p>Entidad: ${result.sourceEntity}</p>
+            <p>Concepto: ${concept}</p>
+            <p>Descripción: ${description}</p>
             <p>Fecha: ${result.transactionDate ? new Date(result.transactionDate).toLocaleString('es-AR') : '-'}</p>
             `
         }
@@ -885,19 +889,19 @@ document.getElementById('transferForm').addEventListener('submit', function (e) 
         return;
     }
 
-    // Si se ingresa un CBU, validar su formato (solo números y longitud de 22)
-    if (recipientCBU && (!/^\d+$/.test(recipientCBU) || recipientCBU.length !== 22)) {
-        e.preventDefault();
-        alert("El CBU debe tener 22 dígitos y contener solo números.");
-        return;
-    }
+    // // Si se ingresa un CBU, validar su formato (solo números y longitud de 22)
+    // if (recipientCBU && (!/^\d+$/.test(recipientCBU) || recipientCBU.length !== 22)) {
+    //     e.preventDefault();
+    //     alert("El CBU debe tener 22 dígitos y contener solo números.");
+    //     return;
+    // }
 
-    // Si se ingresa un Alias, validar su formato (alfanumérico, 3 a 20 caracteres)
-    if (recipientAlias && (!/^[a-zA-Z0-9]{3,20}$/.test(recipientAlias))) {
-        e.preventDefault();
-        alert("El Alias debe tener entre 3 y 20 caracteres y contener solo letras y números.");
-        return;
-    }
+    // // Si se ingresa un Alias, validar su formato (alfanumérico, 3 a 20 caracteres)
+    // if (recipientAlias && (!/^[a-zA-Z0-9]{3,20}$/.test(recipientAlias))) {
+    //     e.preventDefault();
+    //     alert("El Alias debe tener entre 3 y 20 caracteres y contener solo letras y números.");
+    //     return;
+    // }
 });
 
 // Deshabilitar campos mutuamente exclusivos en el formulario de transferencia
