@@ -62,6 +62,16 @@
                     <p id="user-name">userName</p>
                 </div>
                 <div class="header-actions">
+
+                    <div>
+                        <button class="btn-administrador " id="btn-administrador">
+                            <i class="fas fa-bars"></i>
+                            Ir al panel de administrador.
+                        </button>
+                    </div>
+
+
+
                     <div class="search-bar">
                         <input type="text" placeholder="Buscar..." />
                         <i class="fas fa-search"></i>
@@ -148,6 +158,7 @@
                             <!-- Transactions will be loaded here -->
                         </tbody>
                     </table>
+                    <div id="transactionsPagination" class="pagination"></div>
                 </div>
             </section>
 
@@ -164,6 +175,7 @@
                     <div class="card-content" id="transfersContent">
                         <!-- Transfers will be loaded here -->
                     </div>
+                    <div id="transfersPagination" class="pagination"></div>
                 </section>
 
                 <!-- Withdrawals -->
@@ -177,6 +189,7 @@
                     <div class="card-content" id="withdrawalsContent">
                         <!-- Withdrawals will be loaded here -->
                     </div>
+                    <div id="withdrawalsPagination" class="pagination"></div>
                 </section>
             </div>
 
@@ -462,11 +475,13 @@
 
                             <div class="form-group">
                                 <label for="recipientCBU">CBU/CVU del destinatario</label>
-                                <input type="text" id="recipientCBU" name="recipientCBU" placeholder="CBU o CVU del destinatario" />
+                                <input type="text" id="recipientCBU" name="recipientCBU"
+                                    placeholder="CBU o CVU del destinatario" />
                             </div>
                             <div class="form-group">
                                 <label for="recipientAlias">Alias del destinatario</label>
-                                <input type="text" id="recipientAlias" name="recipientAlias" placeholder="Alias del destinatario" />
+                                <input type="text" id="recipientAlias" name="recipientAlias"
+                                    placeholder="Alias del destinatario" />
                             </div>
                         </div>
 
@@ -604,7 +619,8 @@
 
                         <div class="form-group">
                             <label for="withdrawBranch">Sucursal o entidad</label>
-                            <input type="text" id="withdrawBranch" name="withdrawBranch" placeholder="Ej: Banco Nación, Sucursal 123" required />
+                            <input type="text" id="withdrawBranch" name="withdrawBranch"
+                                placeholder="Ej: Banco Nación, Sucursal 123" required />
                         </div>
 
                         <div class="transaction-summary">
@@ -685,8 +701,8 @@
                     <form id="addAccountForm" class="modal-form">
                         <div class="form-group">
                             <label for="accountName">Nombre de la cuenta</label>
-                            <input type="text" id="accountName" name="accountName" placeholder="Ej: Mi cuenta principal"
-                                required />
+                            <input type="text" id="accountName" name="accountName"
+                                placeholder="Ej: Mi cuenta principal" />
                         </div>
                         <div class="form-group">
                             <label for="accountType">Tipo de cuenta</label>

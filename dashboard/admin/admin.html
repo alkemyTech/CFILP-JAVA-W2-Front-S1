@@ -2,40 +2,56 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AlkyWallet - Panel de Administración</title>
-    <link rel="stylesheet" href="./../../assets/css/style.css">
-    <link rel="stylesheet" href="./../../assets/css/mobile-menu.css">
-    <link rel="stylesheet" href="./../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="./../../assets/css/admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml">
+    <link rel="stylesheet" href="./../../assets/css/style.css" />
+    <link rel="stylesheet" href="./../../assets/css/mobile-menu.css" />
+    <link rel="stylesheet" href="./../../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="./../../assets/css/admin.css" />
+    <link rel="stylesheet" href="./../../assets/css/admin-modal.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="./../../assets/img/wallet_icon.png" type="image/svg+xml" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class = "dashboard">
+<body class="dashboard">
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar admin-sidebar">
             <div class="logo-container">
-                <img src="./../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45">
+                <img src="./../../assets/img/wallet_white_icon.png" alt="icono AlkyWallet" width="45" height="45" />
                 <h1>AlkyWallet</h1>
             </div>
             <div class="admin-badge">Administrador</div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="active menu-link"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="menu-link"><a href="#users"><i class="fas fa-users"></i> Usuarios</a></li>
-                    <li class="menu-link"><a href="#roles"><i class="fas fa-user-tag"></i> Roles</a></li>
-                    <li class="menu-link"><a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a></li>
-                    <li class="menu-link"><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a></li>
-                    <li class="menu-link"><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
-                    <li class="menu-link"><a href="./../../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <li class="active menu-link">
+                        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#users"><i class="fas fa-users"></i> Usuarios</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#roles"><i class="fas fa-user-tag"></i> Roles</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#accounts"><i class="fas fa-money-check-alt"></i> Cuentas</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#transactions"><i class="fas fa-exchange-alt"></i> Transacciones</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+                    </li>
+                    <li class="menu-link">
+                        <a href="./../../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar
+                            Sesión</a>
+                    </li>
                 </ul>
             </nav>
             <div class="user-info">
-                <img src="./../../assets/img/programmer.png" alt="Foto de perfil" class="profile-pic">
+                <img src="./../../assets/img/programmer.png" alt="Foto de perfil" class="profile-pic" />
                 <div>
                     <p class="user-name">Admin AlkyWallet</p>
                     <p class="user-role">Administrador</p>
@@ -49,7 +65,7 @@
                 <h2>Panel de Administración</h2>
                 <div class="header-actions">
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar...">
+                        <input type="text" placeholder="Buscar..." />
                         <i class="fas fa-search"></i>
                     </div>
                     <div class="notifications">
@@ -68,7 +84,9 @@
                     <div class="stat-info">
                         <h3>Usuarios Totales</h3>
                         <p class="stat-value">1,254</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 12% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 12% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -78,7 +96,9 @@
                     <div class="stat-info">
                         <h3>Transacciones</h3>
                         <p class="stat-value">8,549</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 8% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 8% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -88,7 +108,9 @@
                     <div class="stat-info">
                         <h3>Ingresos</h3>
                         <p class="stat-value">$125,430</p>
-                        <p class="stat-change positive"><i class="fas fa-arrow-up"></i> 15% este mes</p>
+                        <p class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 15% este mes
+                        </p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -98,7 +120,9 @@
                     <div class="stat-info">
                         <h3>Usuarios Activos</h3>
                         <p class="stat-value">876</p>
-                        <p class="stat-change negative"><i class="fas fa-arrow-down"></i> 3% este mes</p>
+                        <p class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i> 3% este mes
+                        </p>
                     </div>
                 </div>
             </div>
@@ -136,8 +160,12 @@
                 <div class="card-header">
                     <h3>Lista de Usuarios</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-user-plus"></i> Nuevo Usuario</button>
-                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                        <button class="add-btn">
+                            <i class="fas fa-user-plus"></i> Nuevo Usuario
+                        </button>
+                        <button class="export-btn">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -164,10 +192,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
+                                <th>Usuario</th>
                                 <th>Email</th>
                                 <th>Rol</th>
                                 <th>Estado</th>
-                                <th>Fecha Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -175,15 +203,7 @@
                             <!-- Users will be loaded here -->
                         </tbody>
                     </table>
-                    <div class="pagination">
-                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <span class="pagination-ellipsis">...</span>
-                        <button class="pagination-btn">10</button>
-                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
+                    <div class="pagination" id="usersPagination"></div>
                 </div>
             </section>
 
@@ -192,7 +212,9 @@
                 <div class="card-header">
                     <h3>Gestión de Roles</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-plus"></i> Nuevo Rol</button>
+                        <button class="add-btn">
+                            <i class="fas fa-plus"></i> Nuevo Rol
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -239,17 +261,21 @@
                             <!-- Transactions will be loaded here -->
                         </tbody>
                     </table>
+                    <div id="adminTransactionsPagination" class="pagination"></div>
                 </div>
             </section>
-
 
             <!-- Accounts Management -->
             <section id="accounts" class="card accounts-card">
                 <div class="card-header">
                     <h3>Administración de Cuentas</h3>
                     <div class="card-actions">
-                        <button class="add-btn"><i class="fas fa-plus"></i> Nueva Cuenta</button>
-                        <button class="export-btn"><i class="fas fa-file-export"></i> Exportar</button>
+                        <button class="add-btn">
+                            <i class="fas fa-plus"></i> Nueva Cuenta
+                        </button>
+                        <button class="export-btn">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -275,94 +301,18 @@
                     <table class="accounts-table" id="accountsTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>Usuario</th>
                                 <th>Tipo</th>
-                                <th>Número</th>
                                 <th>Saldo</th>
                                 <th>Estado</th>
-                                <th>Fecha Creación</th>
+                                <th>Fecha de creación</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>Juan Pérez</td>
-                                <td>Ahorro</td>
-                                <td>1234-5678-9012-3456</td>
-                                <td>$15,750.00</td>
-                                <td><span class="user-status status-active">Activa</span></td>
-                                <td>15/01/2023</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Suspender">
-                                            <i class="fas fa-ban"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1002</td>
-                                <td>María López</td>
-                                <td>Corriente</td>
-                                <td>9876-5432-1098-7654</td>
-                                <td>$8,320.50</td>
-                                <td><span class="user-status status-active">Activa</span></td>
-                                <td>20/02/2023</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Suspender">
-                                            <i class="fas fa-ban"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1003</td>
-                                <td>Carlos Rodríguez</td>
-                                <td>Ahorro</td>
-                                <td>5678-1234-5678-1234</td>
-                                <td>$25,100.75</td>
-                                <td><span class="user-status status-inactive">Inactiva</span></td>
-                                <td>10/11/2022</td>
-                                <td>
-                                    <div class="user-actions">
-                                        <div class="action-icon view-icon" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </div>
-                                        <div class="action-icon edit-icon" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </div>
-                                        <div class="action-icon delete-icon" title="Activar">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
-                    <div class="pagination">
-                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <span class="pagination-ellipsis">...</span>
-                        <button class="pagination-btn">10</button>
-                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
+                    <div class="pagination" id="accountsPagination"></div>
                 </div>
             </section>
         </main>
@@ -392,15 +342,463 @@
             </a>
         </nav>
     </div>
+    <!-- Modales para administración de usuarios y cuentas -->
+
+    <!-- Modal para ver detalles de usuario -->
+    <div id="userDetailsModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-user"></i> Detalles del usuario</h3>
+                <button class="modal-close" data-modal="userDetailsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="user-details-content">
+                    <div class="user-avatar">
+                        <div class="avatar-circle">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-status-badge" id="userStatusBadge">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">Activo</span>
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>ID de usuario:</label>
+                            <span id="userDetailId">#1001</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Nombre completo:</label>
+                            <span id="userDetailName">Juan Pérez</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Correo electrónico:</label>
+                            <span id="userDetailEmail">juan.perez@email.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Teléfono:</label>
+                            <span id="userDetailPhone">+54 11 1234-5678</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Fecha de registro:</label>
+                            <span id="userDetailDate">15/01/2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Último acceso:</label>
+                            <span id="userDetailLastLogin">Hoy, 14:30</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Saldo total:</label>
+                            <span id="userDetailBalance" class="balance-amount">$15,750.00</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Transacciones:</label>
+                            <span id="userDetailTransactions">127</span>
+                        </div>
+                    </div>
+
+                    <div class="user-activity">
+                        <h4>Actividad reciente</h4>
+                        <div class="activity-list" id="userActivityList">
+                            <div class="activity-item">
+                                <i class="fas fa-arrow-up text-success"></i>
+                                <span>Depósito de $500.00</span>
+                                <small>Hace 2 horas</small>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-exchange-alt text-info"></i>
+                                <span>Transferencia a María López</span>
+                                <small>Ayer</small>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-arrow-down text-warning"></i>
+                                <span>Retiro de $200.00</span>
+                                <small>Hace 3 días</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="userDetailsModal">Cerrar</button>
+                <button type="button" class="btn-primary" id="editUserBtn">Editar usuario</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar usuario -->
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar usuario</h3>
+                <button class="modal-close" data-modal="editUserModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editUserForm" class="modal-form">
+                    <input type="hidden" id="editUserId" name="userId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editUserName">Nombre completo</label>
+                            <input type="text" id="editUserName" name="userName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserEmail">Correo electrónico</label>
+                            <input type="email" id="editUserEmail" name="userEmail" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editUserPhone">Teléfono</label>
+                            <input type="tel" id="editUserPhone" name="userPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserStatus">Estado</label>
+                            <select id="editUserStatus" name="userStatus" required>
+                                <option value="active">Activo</option>
+                                <option value="inactive">Inactivo</option>
+                                <option value="suspended">Suspendido</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editUserNotes">Notas administrativas</label>
+                        <textarea id="editUserNotes" name="userNotes" rows="3"
+                            placeholder="Notas internas sobre el usuario..."></textarea>
+                    </div>
+
+                    <div class="permissions-section">
+                        <h4>Permisos</h4>
+                        <div class="permissions-grid">
+                            <label class="permission-item">
+                                <input type="checkbox" id="canTransfer" name="permissions" value="transfer">
+                                <span>Puede transferir</span>
+                            </label>
+                            <label class="permission-item">
+                                <input type="checkbox" id="canWithdraw" name="permissions" value="withdraw">
+                                <span>Puede retirar</span>
+                            </label>
+                            <label class="permission-item">
+                                <input type="checkbox" id="canDeposit" name="permissions" value="deposit">
+                                <span>Puede depositar</span>
+                            </label>
+                            <label class="permission-item">
+                                <input type="checkbox" id="canInvest" name="permissions" value="invest">
+                                <span>Puede invertir</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="editUserModal">Cancelar</button>
+                <button type="submit" form="editUserForm" class="btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar usuario -->
+    <div id="deleteUserModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-trash"></i> Eliminar usuario</h3>
+                <button class="modal-close" data-modal="deleteUserModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar a <strong id="deleteUserName"></strong> (<span
+                        id="deleteUserEmail"></span>)?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="deleteUserModal">Cancelar</button>
+                <button type="button" class="btn-danger" id="confirmDeleteUser">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de cuenta -->
+    <div id="accountDetailsModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-credit-card"></i> Detalles de la cuenta</h3>
+                <button class="modal-close" data-modal="accountDetailsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="account-details-content">
+                    <div class="account-header">
+                        <div class="account-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="account-info">
+                            <h4 id="accountDetailNumber">1234-5678-9012-3456</h4>
+                            <span id="accountDetailType" class="account-type-badge">Cuenta de Ahorro</span>
+                            <div class="account-status-badge" id="accountStatusBadge">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Activa</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>ID de cuenta:</label>
+                            <span id="accountDetailId">#1001</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Titular:</label>
+                            <span id="accountDetailOwner">Juan Pérez</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Saldo actual:</label>
+                            <span id="accountDetailBalance" class="balance-amount">$15,750.00</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Fecha de creación:</label>
+                            <span id="accountDetailCreated">15/01/2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Última transacción:</label>
+                            <span id="accountDetailLastTransaction">Hoy, 14:30</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Total transacciones:</label>
+                            <span id="accountDetailTotalTransactions">127</span>
+                        </div>
+                    </div>
+
+                    <div class="account-stats">
+                        <h4>Estadísticas</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="accountInflows">$25,430.00</div>
+                                <div class="stat-label">Total ingresos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="accountOutflows">$9,680.00</div>
+                                <div class="stat-label">Total egresos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="accountAvgTransaction">$198.50</div>
+                                <div class="stat-label">Promedio por transacción</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-transactions">
+                        <h4>Transacciones recientes</h4>
+                        <div class="transactions-list" id="accountTransactionsList">
+                            <div class="transaction-item">
+                                <div class="transaction-icon income">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <span class="transaction-description">Depósito</span>
+                                    <small class="transaction-date">Hoy, 14:30</small>
+                                </div>
+                                <div class="transaction-amount income">+$500.00</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <span class="transaction-description">Transferencia a María López</span>
+                                    <small class="transaction-date">Ayer, 10:15</small>
+                                </div>
+                                <div class="transaction-amount transfer">-$300.00</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon expense">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <span class="transaction-description">Retiro</span>
+                                    <small class="transaction-date">Hace 3 días</small>
+                                </div>
+                                <div class="transaction-amount expense">-$200.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="accountDetailsModal">Cerrar</button>
+                <button type="button" class="btn-primary" id="editAccountBtn">Editar cuenta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar cuenta -->
+    <div id="editAccountModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar cuenta</h3>
+                <button class="modal-close" data-modal="editAccountModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editAccountForm" class="modal-form">
+                    <input type="hidden" id="editAccountId" name="accountId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAccountNumber">Número de cuenta</label>
+                            <input type="text" id="editAccountNumber" name="accountNumber" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAccountType">Tipo de cuenta</label>
+                            <select id="editAccountType" name="accountType" required>
+                                <option value="savings">Cuenta de Ahorro</option>
+                                <option value="checking">Cuenta Corriente</option>
+                                <option value="investment">Cuenta de Inversión</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAccountStatus">Estado</label>
+                            <select id="editAccountStatus" name="accountStatus" required>
+                                <option value="active">Activa</option>
+                                <option value="inactive">Inactiva</option>
+                                <option value="suspended">Suspendida</option>
+                                <option value="frozen">Congelada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAccountLimit">Límite diario</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="editAccountLimit" name="accountLimit" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAccountNotes">Notas administrativas</label>
+                        <textarea id="editAccountNotes" name="accountNotes" rows="3"
+                            placeholder="Notas internas sobre la cuenta..."></textarea>
+                    </div>
+
+                    <div class="account-settings">
+                        <h4>Configuraciones</h4>
+                        <div class="settings-grid">
+                            <label class="setting-item">
+                                <input type="checkbox" id="allowTransfers" name="settings" value="transfers">
+                                <span>Permitir transferencias</span>
+                            </label>
+                            <label class="setting-item">
+                                <input type="checkbox" id="allowWithdrawals" name="settings" value="withdrawals">
+                                <span>Permitir retiros</span>
+                            </label>
+                            <label class="setting-item">
+                                <input type="checkbox" id="allowDeposits" name="settings" value="deposits">
+                                <span>Permitir depósitos</span>
+                            </label>
+                            <label class="setting-item">
+                                <input type="checkbox" id="requireApproval" name="settings" value="approval">
+                                <span>Requiere aprobación</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="editAccountModal">Cancelar</button>
+                <button type="submit" form="editAccountForm" class="btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para suspender/activar cuenta -->
+    <div id="toggleAccountModal" class="modal-overlay">
+        <div class="modal-container confirmation-modal">
+            <div class="modal-header" id="toggleAccountHeader">
+                <h3><i class="fas fa-ban"></i> <span id="toggleAccountTitle">Suspender cuenta</span></h3>
+                <button class="modal-close" data-modal="toggleAccountModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="toggle-content">
+                    <div class="action-icon" id="toggleActionIcon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h4 id="toggleAccountQuestion">¿Estás seguro de que deseas suspender esta cuenta?</h4>
+                    <p id="toggleAccountDescription">La cuenta será suspendida temporalmente y el usuario no podrá
+                        realizar transacciones.</p>
+
+                    <div class="account-summary">
+                        <div class="summary-item">
+                            <strong id="toggleAccountNumber">1234-5678-9012-3456</strong>
+                            <span id="toggleAccountOwner">Juan Pérez</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Saldo actual: <strong id="toggleAccountBalance">$15,750.00</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="toggleReason">Motivo <span class="required">*</span></label>
+                        <select id="toggleReason" name="reason" required>
+                            <option value="">Selecciona un motivo</option>
+                            <option value="security">Motivos de seguridad</option>
+                            <option value="fraud">Sospecha de fraude</option>
+                            <option value="request">Solicitud del usuario</option>
+                            <option value="maintenance">Mantenimiento</option>
+                            <option value="violation">Violación de términos</option>
+                            <option value="other">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="toggleComments">Comentarios adicionales</label>
+                        <textarea id="toggleComments" name="comments" rows="3"
+                            placeholder="Describe el motivo en detalle..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-modal="toggleAccountModal">Cancelar</button>
+                <button type="button" class="btn-warning" id="confirmToggleAccount">
+                    <span id="toggleButtonText">Suspender cuenta</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    </div>
     <script src="./../../js/auth.js"></script>
     <script src="./../../js/api.js"></script>
+    <script src="./components/modals/adminModalManager.js"></script>
     <script src="./admin.js"></script>
+    <script src="./components/modals/userModals.js"></script>
+    <script src="./components/modals/accountModals.js"></script>
+    <script src="./components/modals/confirmationModal.js"></script>
     <script src="./../../js/menuActiveState.js"></script>
     <script src="./../../js/mobile-menu.js" defer></script>
     <script>
-        document.body.classList.add('has-mobile-menu');
+        document.body.classList.add("has-mobile-menu");
     </script>
-   
 </body>
 
 </html>

@@ -86,6 +86,7 @@
         updateBalanceDisplay();
         loadTransactions(userAccounts[0].id); // Cargar transacciones de la primera cuenta
         loadWithdrawals(userAccounts[0].id); // Cargar retiros de la primera cuenta
+        loadTransfers(userAccounts[0].id); // Cargar transferencias de la primera cuenta
     }
 
     /**
@@ -206,6 +207,7 @@
         updateBalanceDisplay();
         loadTransactions(accountId); // Cargar transacciones de la cuenta seleccionada
         loadWithdrawals(accountId); // Cargar retiros de la cuenta seleccionada
+        loadTransfers(accountId); // Cargar transferencias de la cuenta seleccionada
     }
 
     /**
