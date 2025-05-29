@@ -1,6 +1,6 @@
 let transactionsData = [];
 let transactionsCurrentPage = 1;
-const transactionsPerPage = 5; 
+const transactionsPerPage = 5;
 let transfersData = [];
 let transfersCurrentPage = 1;
 
@@ -46,11 +46,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.accountsManager.loadAccounts(userId); // Cargar cuentas del usuario
     loadDollarRates();
 
+    userData = JSON.parse(localStorage.getItem("data"));
+    if (userData) {
+        const userNameElement = document.getElementById("userName");
+        const userRoleElement = document.getElementById("userRole");
+
+        userNameElement.textContent = `${userData.name} ${userData.lastName}`;
+        userRoleElement.textContent = `@${userData.username}`;
+    }
 
     // Mostrar/ocultar botón de admin según el rol
     const adminBtn = document.getElementById("btn-administrador");
     const userDataLS = JSON.parse(localStorage.getItem('data'));
-    
+
     if (userDataLS && userDataLS.roles && userDataLS.roles.includes("Administrativo")) {
         adminBtn.style.display = "block";
     } else {
@@ -127,34 +135,34 @@ function loadBalance(userId, isRefresh = true) {
             'Content-Type': 'application/json'
         }
     })
-    .then(res => res.json())
-    .then(data => {
-        // Obtener el ID de la cuenta seleccionada
-        let selectedAccountId = null;
-        if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
-            selectedAccountId = window.accountsManager.getSelectedAccountId();
-        }
-        if (!selectedAccountId) {
-            const defaultAccount = getDefaultAccount();
-            selectedAccountId = defaultAccount ? defaultAccount.id : null;
-        }
+        .then(res => res.json())
+        .then(data => {
+            // Obtener el ID de la cuenta seleccionada
+            let selectedAccountId = null;
+            if (window.accountsManager.getSelectedAccountId && typeof window.accountsManager.getSelectedAccountId === 'function') {
+                selectedAccountId = window.accountsManager.getSelectedAccountId();
+            }
+            if (!selectedAccountId) {
+                const defaultAccount = getDefaultAccount();
+                selectedAccountId = defaultAccount ? defaultAccount.id : null;
+            }
 
-        // Buscar la cuenta seleccionada en el array de cuentas
-        const selectedAccount = data.find(acc => acc.id === selectedAccountId);
+            // Buscar la cuenta seleccionada en el array de cuentas
+            const selectedAccount = data.find(acc => acc.id === selectedAccountId);
 
-        if (selectedAccount) {
-            balanceElement.innerText = selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        } else if (data.length > 0) {
-            // Si no se encuentra, mostrar la primera cuenta como fallback
-            balanceElement.innerText = data[0].balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        } else {
-            balanceElement.innerText = "0.00";
-        }
-    })
-    .catch(error => {
-        console.error('Error al obtener los datos: ', error);
-        balanceElement.innerText = "Error";
-    });
+            if (selectedAccount) {
+                balanceElement.innerText = selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else if (data.length > 0) {
+                // Si no se encuentra, mostrar la primera cuenta como fallback
+                balanceElement.innerText = data[0].balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                balanceElement.innerText = "0.00";
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos: ', error);
+            balanceElement.innerText = "Error";
+        });
 }
 
 
@@ -222,7 +230,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
         // Actualizar cuentas y cerrar modal
         document.querySelector('[data-modal="deposit"]').click();
 
-         const confirmationData = {
+        const confirmationData = {
             title: 'Deposito realizado',
             icon: 'fas fa-check-circle',
             message: `Depositaste  $${account.currency} ${result.transactionAmount} exitosamente.`,
@@ -234,7 +242,7 @@ document.getElementById('depositForm').addEventListener('submit', async function
             `
         }
 
- 
+
         window.modalManager.showConfirmation(confirmationData);
         window.accountsManager.selectAccount(account.id);
 
@@ -339,11 +347,11 @@ if (withdrawAmountInput && withdrawSummaryAmount && withdrawTotal) {
 // Transferir dinero entre cuentas
 document.getElementById('transferForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
-if (selectedAccount) {
-    document.getElementById('transferAvailableBalance').textContent =
-        `$${selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+    const selectedAccount = window.accountsManager.getAccounts().find(acc => acc.isDefault);
+    if (selectedAccount) {
+        document.getElementById('transferAvailableBalance').textContent =
+            `$${selectedAccount.balance.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
     // Obtener datos del formulario
     const amount = parseFloat(document.getElementById('transferAmount').value);
     const concept = document.getElementById('transferConcept').value;
@@ -395,7 +403,7 @@ if (selectedAccount) {
         // Actualizar cuentas y cerrar modals
         document.querySelector('[data-modal="deposit"]').click();
 
-         const confirmationData = {
+        const confirmationData = {
             title: 'Transferencia Realizada',
             icon: 'fas fa-check-circle',
             message: `Transferiste  $${account.currency} ${result.transactionAmount} exitosamente a ${result.destinationAccountOwner}.`,
@@ -409,7 +417,7 @@ if (selectedAccount) {
 
         window.modalManager.showConfirmation(confirmationData);
         window.accountsManager.selectAccount(account.id);
-     
+
     } catch (error) {
         console.error(error);
         alert("No se pudo realizar la transferencia.");
@@ -544,7 +552,7 @@ async function loadTransfers(accountId, page = 1) {
     const transfersContainer = document.getElementById('transfersContent');
     transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
-    transfersData  = [];
+    transfersData = [];
 
     try {
         if (transfersData.length === 0) {
