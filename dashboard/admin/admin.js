@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+        // Mostrar/ocultar botón de admin según el rol
+    const clientBtn = document.getElementById("btn-cliente");
+    clientBtn.addEventListener("click", function () {
+            window.location.href = "/dashboard/client/client.html";
+    });
+
     // Cargar datos iniciales
     loadUsers();
     loadRoles();

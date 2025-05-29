@@ -392,3 +392,27 @@ body{
         gap: 10px;
     }
 }
+
+
+.btn-cliente {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 10px;
+  background: linear-gradient(90deg, #0055ff 0%, #4766ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  translate: -10% 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.15);
+  transition: 0.2s;
+}
+
+.btn-cliente:hover {
+  background: linear-gradient(90deg, #4766ff 0%, #0055ff 100%);
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.25);
+}
