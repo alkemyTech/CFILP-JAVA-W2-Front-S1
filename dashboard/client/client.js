@@ -1,6 +1,14 @@
 let transactionsData = [];
 let transactionsCurrentPage = 1;
-const transactionsPerPage = 5; // o el número que prefieras
+const transactionsPerPage = 5; 
+let transfersData = [];
+let transfersCurrentPage = 1;
+
+let withdrawalsData = [];
+let withdrawalsCurrentPage = 1;
+
+const itemsPerPage = 5;
+
 
 document.addEventListener('DOMContentLoaded', async function () {
     // verificar si el usuario está autenticado
@@ -505,37 +513,38 @@ function renderTransactionsPagination(totalPages, accountId) {
     });
 }
 
-
-async function loadTransfers(accountId) {
+async function loadTransfers(accountId, page = 1) {
     const transfersContainer = document.getElementById('transfersContent');
     transfersContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
     try {
-        const res = await fetch(`http://localhost:8080/api/transfers/account/${accountId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            }
-        });
-        // Verificar si la respuesta es exitosa
-        if (!res.ok) throw new Error("No se pudieron obtener las transferencias");
+        if (transfersData.length === 0) {
+            const res = await fetch(`http://localhost:8080/api/transfers/account/${accountId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        // Verificar si la respuesta es un array
-        if (res.status === 204) {
-            transfersContainer.innerHTML = '<div>No se hicieron transferencias en esta cuenta.</div>';
-            return;
+            if (!res.ok) throw new Error("No se pudieron obtener las transferencias");
+            if (res.status === 204) {
+                transfersContainer.innerHTML = '<div>No se hicieron transferencias en esta cuenta.</div>';
+                return;
+            }
+
+            transfersData = await res.json();
+            transfersData.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
         }
 
-        const transfers = await res.json();
-        transfers.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
-
+        const totalPages = Math.ceil(transfersData.length / itemsPerPage);
+        transfersCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (transfersCurrentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const transfersToShow = transfersData.slice(start, end);
 
         let html = '';
-
-        transfers.forEach(transfer => {
-            console.log("Transferencia:", transfer);
-            // Mostrar el alias, CBU o nombre 
+        transfersToShow.forEach(transfer => {
             const destinationOwner = `Transferencia a ${transfer.destinationAccountOwner}`;
             const formattedDate = new Date(transfer.transactionDate).toLocaleDateString('es-AR');
             const formattedAmount = transfer.transactionAmount.toLocaleString('es-AR', {
@@ -558,6 +567,7 @@ async function loadTransfers(accountId) {
         });
 
         transfersContainer.innerHTML = html || '<div>No hay transferencias.</div>';
+        renderTransfersPagination(totalPages, accountId);
 
     } catch (error) {
         console.error(error);
@@ -565,37 +575,64 @@ async function loadTransfers(accountId) {
     }
 }
 
-async function loadWithdrawals(accountId) {
+function renderTransfersPagination(totalPages, accountId) {
+    const paginationDiv = document.getElementById('transfersPagination');
+    let html = `
+        <button class="pagination-btn" ${transfersCurrentPage === 1 ? 'disabled' : ''} data-page="${transfersCurrentPage - 1}">
+            <i class="fas fa-chevron-left"></i>
+        </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === transfersCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${transfersCurrentPage === totalPages ? 'disabled' : ''} data-page="${transfersCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadTransfers(accountId, page);
+        });
+    });
+}
+
+async function loadWithdrawals(accountId, page = 1) {
     const withdrawalsContainer = document.getElementById('withdrawalsContent');
     withdrawalsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
 
     try {
-        const res = await fetch(`http://localhost:8080/api/withdrawals/account/${accountId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
+        if (withdrawalsData.length === 0) {
+            const res = await fetch(`http://localhost:8080/api/withdrawals/account/${accountId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!res.ok) throw new Error("No se pudieron obtener los retiros");
+            if (res.status === 204) {
+                withdrawalsContainer.innerHTML = '<div>No se hicieron retiros en esta cuenta.</div>';
+                return;
             }
-        });
 
-        // Verificar si la respuesta es exitosa
-        if (!res.ok) throw new Error("No se pudieron obtener los retiros");
-
-        // Verificar si la respuesta es un array
-        if (res.status === 204) {
-            withdrawalsContainer.innerHTML = '<div>No se hicieron retiros en esta cuenta.</div>';
-            return;
+            withdrawalsData = await res.json();
+            withdrawalsData.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
         }
 
-
-        const withdrawals = await res.json();
-        withdrawals.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
-
+        const totalPages = Math.ceil(withdrawalsData.length / itemsPerPage);
+        withdrawalsCurrentPage = Math.max(1, Math.min(page, totalPages));
+        const start = (withdrawalsCurrentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const withdrawalsToShow = withdrawalsData.slice(start, end);
 
         let html = '';
-
-        withdrawals.forEach(withdrawal => {
-            const formattedDate = new Date(withdrawal.transactionDate || withdrawal.transactionDate).toLocaleDateString('es-AR');
+        withdrawalsToShow.forEach(withdrawal => {
+            const formattedDate = new Date(withdrawal.transactionDate).toLocaleDateString('es-AR');
             const formattedAmount = (withdrawal.amount || withdrawal.transactionAmount).toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -616,12 +653,39 @@ async function loadWithdrawals(accountId) {
         });
 
         withdrawalsContainer.innerHTML = html || '<div>No hay retiros.</div>';
+        renderWithdrawalsPagination(totalPages, accountId);
 
     } catch (error) {
         console.error(error);
         withdrawalsContainer.innerHTML = '<div>Error al cargar retiros.</div>';
     }
 }
+
+function renderWithdrawalsPagination(totalPages, accountId) {
+    const paginationDiv = document.getElementById('withdrawalsPagination');
+    let html = `
+        <button class="pagination-btn" ${withdrawalsCurrentPage === 1 ? 'disabled' : ''} data-page="${withdrawalsCurrentPage - 1}">
+            <i class="fas fa-chevron-left"></i>
+        </button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="pagination-btn${i === withdrawalsCurrentPage ? ' active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="pagination-btn" ${withdrawalsCurrentPage === totalPages ? 'disabled' : ''} data-page="${withdrawalsCurrentPage + 1}">
+        <i class="fas fa-chevron-right"></i>
+    </button>`;
+
+    paginationDiv.innerHTML = html;
+
+    paginationDiv.querySelectorAll('.pagination-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const page = parseInt(this.getAttribute('data-page'));
+            if (!isNaN(page)) loadWithdrawals(accountId, page);
+        });
+    });
+}
+
 
 function loadCards(userId) {
     const cardsContainer = document.getElementById('cardsContent');
